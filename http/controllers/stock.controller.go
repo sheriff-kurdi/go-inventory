@@ -38,7 +38,8 @@ func (controller StockController) FindById(ctx *fiber.Ctx) error {
 		return ctx.Status(response.GetStatus()).JSON(response.GetData())
 	}
 	//find by id
-	response := controller.service.FindById(bookId)
+	languageCode := ctx.GetReqHeaders()["Accept-Language"]
+	response := controller.service.FindById(bookId, languageCode)
 	return ctx.Status(response.GetStatus()).JSON(response.GetData())
 }
 

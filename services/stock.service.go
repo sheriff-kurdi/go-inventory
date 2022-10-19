@@ -28,12 +28,12 @@ func (service StockService) ListAll(languageCode string) (response resources2.IR
 	return resources2.GetSuccess200Resource(stockList, "")
 }
 
-func (service StockService) FindById(bookId int) (response resources2.IResource) {
-	var book responses.StockResponse
-	if err := infrastructure_database.PostgresDB.Model(stock_domain_entities.StockItem{}).Where("id = ?", bookId).First(&book).Scan(&book).Error; err != nil {
+func (service StockService) FindById(stockId int, languageCode string) (response resources2.IResource) {
+	stock, err := service.repository.FindById(stockId, languageCode)
+	if err != nil {
 		return resources2.GetError500Resource(err.Error())
 	}
-	return resources2.GetSuccess200Resource(book, "")
+	return resources2.GetSuccess200Resource(stock, "")
 }
 
 func (service StockService) Create(request requests.CreateStockRequest) (response resources2.IResource) {
