@@ -1,0 +1,3 @@
+INSERT INTO "stock_items" ("id", "created_at", "updated_at", "deleted_at", "cost_price", "selling_price", "discount", "total_stock", "available_stock", "reserved_stock", "is_discounted") VALUES
+                                                                                                                                                                                               (1,	'2022-10-19 19:46:41.886815+00',	NULL,	NULL,	120,	170,	15,	10,	8,	2,	'1'),
+                                                                                                                                                                                               (2,	'2022-10-19 19:46:41.886815+00',	NULL,	NULL,	80,	130,	5,	15,	10,	5,	'1');

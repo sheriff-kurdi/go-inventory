@@ -1,0 +1,5 @@
+INSERT INTO "stock_item_details" ("id", "created_at", "updated_at", "deleted_at", "name", "description", "language_code", "stock_item_id") VALUES
+                                                                                                                                          (1,	'2022-10-19 19:49:45.188554+00',	NULL,	NULL,	'Polo T-Shirt',	'Black Polo T-Shirt',	'en',	'1'),
+                                                                                                                                          (2,	'2022-10-19 19:49:45.188554+00',	NULL,	NULL,	'تيشرت بولو',	'تيشرت بولو اسود',	'ar',	'1'),
+                                                                                                                                          (3,	'2022-10-19 19:49:45.188554+00',	NULL,	NULL,	'Lacoste Shirt',	'White Lacoste Shirt',	'en',	'2'),
+                                                                                                                                          (4,	'2022-10-19 19:49:45.188554+00',	NULL,	NULL,	'قميص لاكوست',	'قميص لاكوست ابيض',	'ar',	'2');
