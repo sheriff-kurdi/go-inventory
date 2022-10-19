@@ -28,15 +28,6 @@ func (service StockService) ListAll(languageCode string) (response resources2.IR
 	return resources2.GetSuccess200Resource(stockList, "")
 }
 
-func (service StockService) ListAllDiscounted() (response resources2.IResource) {
-	var books []responses.StockResponse
-	books, err := service.repository.ListAllDiscounted()
-	if err != nil {
-		return resources2.GetError500Resource(err.Error())
-	}
-	return resources2.GetSuccess200Resource(books, "")
-}
-
 func (service StockService) FindById(bookId int) (response resources2.IResource) {
 	var book responses.StockResponse
 	if err := infrastructure_database.PostgresDB.Model(stock_domain_entities.StockItem{}).Where("id = ?", bookId).First(&book).Scan(&book).Error; err != nil {
