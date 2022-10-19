@@ -7,5 +7,5 @@ type StockItemDetails struct {
 	Name         string `json:"name"`
 	Description  string `json:"description"`
 	LanguageCode string `json:"language_code"`
-	StockItemId  string `json:"stock_item_id"`
+	StockItemId  int    `json:"stock_item_id"`
 }

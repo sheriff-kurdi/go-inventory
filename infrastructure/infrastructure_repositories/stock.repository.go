@@ -18,7 +18,7 @@ func (repository StockRepository) ListAll(languageCode string) (stockList []resp
 		languageCode = "ar"
 	}
 	ListAllByLanguageQuery := `SELECT * FROM stock_items 
-								JOIN stock_item_details ON stock_item_details.id = stock_items.id AND stock_item_details.language_code = ?`
+								JOIN stock_item_details ON stock_item_details.stock_item_id	 = stock_items.id AND stock_item_details.language_code = ?`
 
 	err = infrastructure_database.PostgresDB.Raw(ListAllByLanguageQuery, languageCode).Scan(&stockList).Error
 	return
