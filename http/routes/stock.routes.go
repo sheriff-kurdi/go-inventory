@@ -13,7 +13,6 @@ func StockRoutes(router *fiber.App) {
 	stockApp.Use(middlewares.AuthenticationMiddleware)
 
 	stockApp.Get("/", bookController.GetAll)
-	stockApp.Get("/discounted", bookController.GetAllDiscounted)
 	stockApp.Get("/:id", bookController.FindById)
 	stockApp.Post("/", bookController.Create)
 	stockApp.Patch("/:id", bookController.Update)

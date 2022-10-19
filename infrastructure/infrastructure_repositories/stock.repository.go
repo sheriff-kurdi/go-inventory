@@ -14,6 +14,9 @@ func NewStockRepository() *StockRepository {
 }
 
 func (repository StockRepository) ListAll(languageCode string) (stockList []responses.StockResponse, err error) {
+	if languageCode == "" {
+		languageCode = "ar"
+	}
 	ListAllByLanguageQuery := `SELECT * FROM stock_items 
 								JOIN stock_item_details ON stock_item_details.id = stock_items.id AND stock_item_details.language_code = ?`
 

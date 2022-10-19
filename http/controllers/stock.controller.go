@@ -24,7 +24,8 @@ func NewStockController() *StockController {
 
 func (controller StockController) GetAll(ctx *fiber.Ctx) error {
 	//get all
-	response := controller.service.ListAll("ar")
+	languageCode := ctx.GetReqHeaders()["Accept-Language"]
+	response := controller.service.ListAll(languageCode)
 	return ctx.Status(response.GetStatus()).JSON(response.GetData())
 }
 
