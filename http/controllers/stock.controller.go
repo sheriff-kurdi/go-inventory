@@ -24,7 +24,7 @@ func NewStockController() *StockController {
 
 func (controller StockController) GetAll(ctx *fiber.Ctx) error {
 	//get all
-	languageCode := ctx.GetReqHeaders()["Accept-Language"]
+	languageCode := ctx.GetReqHeaders()["language"]
 	response := controller.service.ListAll(languageCode)
 	return ctx.Status(response.GetStatus()).JSON(response.GetData())
 }
@@ -38,7 +38,7 @@ func (controller StockController) FindById(ctx *fiber.Ctx) error {
 		return ctx.Status(response.GetStatus()).JSON(response.GetData())
 	}
 	//find by id
-	languageCode := ctx.GetReqHeaders()["Accept-Language"]
+	languageCode := ctx.GetReqHeaders()["language"]
 	response := controller.service.FindById(bookId, languageCode)
 	return ctx.Status(response.GetStatus()).JSON(response.GetData())
 }
