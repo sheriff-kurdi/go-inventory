@@ -29,14 +29,14 @@ func (repository StockRepository) ListAll(languageCode string) (stockList []resp
 	return
 }
 
-func (repository StockRepository) FindById(stockItemId int, languageCode string) (stockList []responses.StockResponse, err error) {
+func (repository StockRepository) FindById(stockItemId int, languageCode string) (stock responses.StockResponse, err error) {
 	if languageCode == "" {
 		languageCode = os.Getenv("DEFAULT_LANGUAGE")
 	}
 	ListAllByLanguageQuery := `SELECT * FROM stock_items 
 								JOIN stock_item_details ON stock_item_details.stock_item_id	 = stock_items.id AND stock_item_details.language_code = ? WHERE stock_items.id = ?`
 
-	err = infrastructure_database.PostgresDB.Raw(ListAllByLanguageQuery, languageCode, stockItemId).Scan(&stockList).Error
+	err = infrastructure_database.PostgresDB.Raw(ListAllByLanguageQuery, languageCode, stockItemId).Scan(&stock).Error
 	return
 }
 
