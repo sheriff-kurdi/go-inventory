@@ -60,19 +60,23 @@ func (controller StockController) Create(ctx *fiber.Ctx) error {
 // Update a book
 func (controller StockController) Update(ctx *fiber.Ctx) error {
 	//check param
-	bookId, err := strconv.Atoi(ctx.Params("id"))
+	stockItemId, err := strconv.Atoi(ctx.Params("id"))
 	if err != nil {
 		response := resources.GetError500Resource(err.Error())
 		return ctx.Status(response.GetStatus()).JSON(response.GetData())
 	}
 	// Validate request
-	var request requests.CreateStockRequest
+	var request requests.UpdateStockRequest
 	if err := ctx.BodyParser(&request); err != nil {
 		response := resources.GetError500Resource(err.Error())
 		return ctx.Status(response.GetStatus()).JSON(response.GetData())
 	}
 	//update
-	response := controller.service.Update(request, bookId)
+	if request.UpdateStockItemRequest.Id != stockItemId {
+		response := resources.GetError400Resource("stock item id should be equal request id")
+		return ctx.Status(response.GetStatus()).JSON(response.GetData())
+	}
+	response := controller.service.Update(request, stockItemId)
 	return ctx.Status(response.GetStatus()).JSON(response.GetData())
 }
 

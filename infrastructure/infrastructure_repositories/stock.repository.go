@@ -60,8 +60,32 @@ func (repository StockRepository) CreateDetails(connection *gorm.DB, stockItemDe
 	return
 }
 
+func (repository StockRepository) UpdateDetails(connection *gorm.DB, stockItemDetailsEntities []stockDomainEntities.StockItemDetails) (err error) {
+
+	createStockItemDetailsJson, err := json.Marshal(stockItemDetailsEntities)
+	if err != nil {
+		return
+	}
+	createStockQuery := `UPDATE stock_item_details stockItemDetail SET 
+                              "name" = itemDetail."name",
+                              "description" = itemDetail."description",
+                              "updated_at" = itemDetail."UpdatedAt"
+						 FROM (SELECT * FROM json_to_recordset(?) AS X ("name" varchar, "description" varchar, language_code varchar, "stock_item_id" int, "UpdatedAt" timestamp)) AS itemDetail
+						 WHERE stockItemDetail.stock_item_id = itemDetail.stock_item_id AND stockItemDetail.language_code = itemDetail.language_code;`
+
+	result := connection.Exec(createStockQuery, string(createStockItemDetailsJson))
+	if result.Error != nil {
+		err = result.Error
+		return
+	}
+	if result.RowsAffected < int64(len(stockItemDetailsEntities)) {
+		return errors.New("all items details not created")
+	}
+	return
+}
+
 func (repository StockRepository) DeleteStockDetails(connection *gorm.DB, stockItemId int) (err error) {
-	deleteStockDetailsQuery := `DELETE FROM stock_item_details WHERE stock_item_id = ?;`
+	deleteStockDetailsQuery := `DELETE FROM stock_item_details WHERE stock_item_id = ? ;`
 
 	result := connection.Exec(deleteStockDetailsQuery, stockItemId)
 	if result.Error != nil {

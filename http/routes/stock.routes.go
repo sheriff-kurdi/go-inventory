@@ -15,7 +15,7 @@ func StockRoutes(router *fiber.App) {
 	stockApp.Get("/", bookController.GetAll)
 	stockApp.Get("/:id", bookController.FindById)
 	stockApp.Post("/", bookController.Create)
-	stockApp.Patch("/:id", bookController.Update)
+	stockApp.Put("/:id", bookController.Update)
 	stockApp.Delete("/:id", bookController.Delete)
 
 }

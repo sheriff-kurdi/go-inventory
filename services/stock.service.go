@@ -58,15 +58,26 @@ func (service StockService) Create(request requests.CreateStockRequest) (respons
 	return resources2.GetSuccess201Resource(request, "created")
 }
 
-func (service StockService) Update(request requests.CreateStockRequest, bookId int) (response resources2.IResource) {
-	var bookModel stock_domain_entities.StockItem
-	//bookModel.Name = request.Title
-	bookModel.Id = uint(bookId)
-	err := infrastructure_database.PostgresDB.Save(&bookModel).Error
+func (service StockService) Update(request requests.UpdateStockRequest, stockItemId int) (response resources2.IResource) {
+	connection := infrastructure_database.PostgresDB
+	transaction := connection.Begin()
+
+	stockItemEntity := request.ToStockItemEntity()
+	stockItemEntity.Id = uint(stockItemId)
+
+	err := transaction.Save(&stockItemEntity).Error
 	if err != nil {
 		return resources2.GetError500Resource(err.Error())
 	}
-	return resources2.GetSuccess200Resource(bookModel, "updated")
+	// update details
+	stockItemDetailsEntities := request.ToStockItemDetailsEntities(int(stockItemEntity.Id))
+	err = service.repository.UpdateDetails(transaction, stockItemDetailsEntities)
+	if err != nil {
+		transaction.Rollback()
+		return resources2.GetError500Resource(err.Error())
+	}
+	transaction.Commit()
+	return resources2.GetSuccess200Resource(request, "updated")
 }
 
 func (service StockService) Delete(stockItemId int) (response resources2.IResource) {
