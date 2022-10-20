@@ -4,7 +4,6 @@ import (
 	"kurdi-go/domain/domain_entities/stock"
 	resources2 "kurdi-go/helpers/resources"
 	"kurdi-go/http/requests"
-	"kurdi-go/http/responses"
 	"kurdi-go/infrastructure/infrastructure_database"
 	"kurdi-go/infrastructure/infrastructure_repositories"
 )
@@ -37,19 +36,26 @@ func (service StockService) FindById(stockId int, languageCode string) (response
 }
 
 func (service StockService) Create(request requests.CreateStockRequest) (response resources2.IResource) {
-	var books []responses.StockResponse
-	err := infrastructure_database.PostgresDB.Model(&stock_domain_entities.StockItem{}).Scan(&books).Error
-	if err != nil {
-		return resources2.GetError500Resource(err.Error())
-	}
-	stockModel := stock_domain_entities.StockItem{}
-	//stockModel.Name = request.Author
+	connection := infrastructure_database.PostgresDB
+	transaction := connection.Begin()
 
-	err = infrastructure_database.PostgresDB.Create(&stockModel).Error
+	// create stock item
+	stockItemEntity := request.ToStockItemEntity()
+	err := transaction.Model(&stock_domain_entities.StockItem{}).Save(&stockItemEntity).Error
 	if err != nil {
+		transaction.Rollback()
 		return resources2.GetError500Resource(err.Error())
 	}
-	return resources2.GetSuccess200Resource(stockModel, "created")
+
+	// create stock details
+	stockItemDetailsEntities := request.ToStockItemDetailsEntities(int(stockItemEntity.Id))
+	err = service.repository.CreateDetails(transaction, stockItemDetailsEntities)
+	if err != nil {
+		transaction.Rollback()
+		return resources2.GetError500Resource(err.Error())
+	}
+	transaction.Commit()
+	return resources2.GetSuccess201Resource(request, "created")
 }
 
 func (service StockService) Update(request requests.CreateStockRequest, bookId int) (response resources2.IResource) {
