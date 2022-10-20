@@ -69,11 +69,19 @@ func (service StockService) Update(request requests.CreateStockRequest, bookId i
 	return resources2.GetSuccess200Resource(bookModel, "updated")
 }
 
-func (service StockService) Delete(bookId int) (response resources2.IResource) {
-	err := infrastructure_database.PostgresDB.Delete(&stock_domain_entities.StockItem{}, bookId).Error
+func (service StockService) Delete(stockItemId int) (response resources2.IResource) {
+	connection := infrastructure_database.PostgresDB
+	transaction := connection.Begin()
+	err := transaction.Delete(&stock_domain_entities.StockItem{}, stockItemId).Error
 	if err != nil {
+		transaction.Rollback()
 		return resources2.GetError500Resource(err.Error())
 	}
-	return resources2.GetSuccess200Resource(bookId, "Deleted")
+	err = service.repository.DeleteStockDetails(transaction, stockItemId)
+	if err != nil {
+		transaction.Rollback()
+		return resources2.GetError500Resource(err.Error())
+	}
+	return resources2.GetSuccess200Resource(stockItemId, "Deleted")
 
 }

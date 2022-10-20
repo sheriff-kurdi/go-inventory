@@ -59,3 +59,14 @@ func (repository StockRepository) CreateDetails(connection *gorm.DB, stockItemDe
 	}
 	return
 }
+
+func (repository StockRepository) DeleteStockDetails(connection *gorm.DB, stockItemId int) (err error) {
+	deleteStockDetailsQuery := `DELETE FROM stock_item_details WHERE stock_item_id = ?;`
+
+	result := connection.Exec(deleteStockDetailsQuery, stockItemId)
+	if result.Error != nil {
+		err = result.Error
+		return
+	}
+	return
+}
