@@ -1,1 +1,0 @@
-TRUNCATE TABLE stock_item_details
