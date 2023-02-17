@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "y7Ie9lU802zAcYWGUlf7eGOFJVY7V4EyS/9iPop6U2kwuD+sNz/ZAkqA4NZ8zI5zFihle3i94o/QfJGy6nt3QA==",
+  "success": true,
+  "projectFilePath": "/home/kurdi/Development/ECommerceMicroservices/src/Inventory/Kurdi.ECommerce.Inventory.Services/Kurdi.ECommerce.Inventory.Services.csproj",
+  "expectedPackageFiles": [
+    "/home/kurdi/.nuget/packages/microsoft.entityframeworkcore.abstractions/7.0.0/microsoft.entityframeworkcore.abstractions.7.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

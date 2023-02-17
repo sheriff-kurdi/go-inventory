@@ -1,0 +1,15 @@
+/home/kurdi/Development/ECommerceMicroservices/src/Inventory/Kurdi.ECommerce.Inventory.Services/bin/Debug/net7.0/Kurdi.ECommerce.Inventory.Services.deps.json
+/home/kurdi/Development/ECommerceMicroservices/src/Inventory/Kurdi.ECommerce.Inventory.Services/bin/Debug/net7.0/Kurdi.ECommerce.Inventory.Services.dll
+/home/kurdi/Development/ECommerceMicroservices/src/Inventory/Kurdi.ECommerce.Inventory.Services/bin/Debug/net7.0/Kurdi.ECommerce.Inventory.Services.pdb
+/home/kurdi/Development/ECommerceMicroservices/src/Inventory/Kurdi.ECommerce.Inventory.Services/bin/Debug/net7.0/Kurdi.ECommerce.Inventory.Core.dll
+/home/kurdi/Development/ECommerceMicroservices/src/Inventory/Kurdi.ECommerce.Inventory.Services/bin/Debug/net7.0/Kurdi.ECommerce.Inventory.Core.pdb
+/home/kurdi/Development/ECommerceMicroservices/src/Inventory/Kurdi.ECommerce.Inventory.Services/obj/Debug/net7.0/Kurdi.ECommerce.Inventory.Services.csproj.AssemblyReference.cache
+/home/kurdi/Development/ECommerceMicroservices/src/Inventory/Kurdi.ECommerce.Inventory.Services/obj/Debug/net7.0/Kurdi.ECommerce.Inventory.Services.GeneratedMSBuildEditorConfig.editorconfig
+/home/kurdi/Development/ECommerceMicroservices/src/Inventory/Kurdi.ECommerce.Inventory.Services/obj/Debug/net7.0/Kurdi.ECommerce.Inventory.Services.AssemblyInfoInputs.cache
+/home/kurdi/Development/ECommerceMicroservices/src/Inventory/Kurdi.ECommerce.Inventory.Services/obj/Debug/net7.0/Kurdi.ECommerce.Inventory.Services.AssemblyInfo.cs
+/home/kurdi/Development/ECommerceMicroservices/src/Inventory/Kurdi.ECommerce.Inventory.Services/obj/Debug/net7.0/Kurdi.ECommerce.Inventory.Services.csproj.CoreCompileInputs.cache
+/home/kurdi/Development/ECommerceMicroservices/src/Inventory/Kurdi.ECommerce.Inventory.Services/obj/Debug/net7.0/Kurdi.ECommerce.Inventory.Services.csproj.CopyComplete
+/home/kurdi/Development/ECommerceMicroservices/src/Inventory/Kurdi.ECommerce.Inventory.Services/obj/Debug/net7.0/Kurdi.ECommerce.Inventory.Services.dll
+/home/kurdi/Development/ECommerceMicroservices/src/Inventory/Kurdi.ECommerce.Inventory.Services/obj/Debug/net7.0/refint/Kurdi.ECommerce.Inventory.Services.dll
+/home/kurdi/Development/ECommerceMicroservices/src/Inventory/Kurdi.ECommerce.Inventory.Services/obj/Debug/net7.0/Kurdi.ECommerce.Inventory.Services.pdb
+/home/kurdi/Development/ECommerceMicroservices/src/Inventory/Kurdi.ECommerce.Inventory.Services/obj/Debug/net7.0/ref/Kurdi.ECommerce.Inventory.Services.dll
