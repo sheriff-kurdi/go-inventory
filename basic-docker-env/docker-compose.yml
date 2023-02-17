@@ -1,0 +1,73 @@
+version: '3'
+services:
+
+
+  postgres_db:
+    image: mdillon/postgis
+    restart: always
+    environment:
+      #this environment for creating an empty database
+      - POSTGRES_DB=main_system
+      - POSTGRES_PASSWORD=123456789
+      - POSTGRES_USER=postgres
+    ports:
+      - 5432:5432
+    #volumes:
+     # - /main_system.sql
+    networks:
+      basic_env:
+        ipv4_address: 10.5.0.2
+        
+        
+        
+  mysql_db:
+    image: mysql
+    restart: always
+    environment:
+      #this environment for creating an empty database
+      - MYSQL_ROOT_PASSWORD=123456789
+    ports:
+      - 3306:3306
+    networks:
+      basic_env:
+        ipv4_address: 10.5.0.3    
+
+        
+        
+  mongo_db:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      basic_env:
+        ipv4_address: 10.5.0.4
+      
+      
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8084:8080
+    networks:
+      basic_env:
+        ipv4_address: 10.5.0.5
+      
+      
+  elastic-mq:
+    image: softwaremill/elasticmq
+    restart: always
+    ports:
+      - 9324:9324
+    networks:
+      basic_env:
+        ipv4_address: 10.5.0.6
+      
+networks:
+  basic_env:
+    driver: bridge
+    ipam:
+      config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1
+
