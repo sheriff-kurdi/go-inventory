@@ -1,13 +1,12 @@
 package com.kurdi.ecommerce.inventoryservice.services;
 
-import com.kurdi.ecommerce.inventoryservice.entities.categories.Category;
-import com.kurdi.ecommerce.inventoryservice.entities.stock.details.StockItemDetails;
-import com.kurdi.ecommerce.inventoryservice.entities.stock.item.StockItem;
-import com.kurdi.ecommerce.inventoryservice.entities.stock.item.StockItemQuantity;
-import com.kurdi.ecommerce.inventoryservice.projections.StockItemProjection;
-import com.kurdi.ecommerce.inventoryservice.repositories.StockItemDetailsRepository;
-import com.kurdi.ecommerce.inventoryservice.repositories.StockItemsRepository;
-import com.kurdi.ecommerce.inventoryservice.requests.stock.CreateStockItemRequest;
+import com.kurdi.ecommerce.inventoryservice.domain.entities.categories.Category;
+import com.kurdi.ecommerce.inventoryservice.domain.entities.stock.item.StockItem;
+import com.kurdi.ecommerce.inventoryservice.domain.entities.stock.item.StockItemQuantity;
+import com.kurdi.ecommerce.inventoryservice.infrastructure.projections.StockItemProjection;
+import com.kurdi.ecommerce.inventoryservice.infrastructure.repositories.StockItemDetailsRepository;
+import com.kurdi.ecommerce.inventoryservice.infrastructure.repositories.StockItemsRepository;
+import com.kurdi.ecommerce.inventoryservice.api.requests.stock.CreateStockItemRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
