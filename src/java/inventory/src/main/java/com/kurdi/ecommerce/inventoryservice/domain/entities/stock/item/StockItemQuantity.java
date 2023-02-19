@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 @Embeddable
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class StockItemQuantity implements Serializable {
@@ -16,7 +15,6 @@ public class StockItemQuantity implements Serializable {
     int availableStock = 0;
     @Setter(AccessLevel.NONE)
     int reservedStock = 0;
-
 
     public void addStock(int quantity) {
         totalStock += quantity;
