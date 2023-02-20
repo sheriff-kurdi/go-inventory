@@ -14,11 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Service
 public class StockItemsService {
@@ -75,6 +72,7 @@ public class StockItemsService {
         return stockItem;
     }
 
+    @Transactional
     public StockItem edit(StockItem stockItem, String sku)
     {
         if(!stockItem.getSku().equals(sku))
@@ -94,6 +92,7 @@ public class StockItemsService {
         return stockItemsRepository.save(stockItem);
     }
 
+    @Transactional
     public StockItem delete(String sku)
     {
         if(!stockItemsRepository.existsById(sku))
@@ -116,6 +115,15 @@ public class StockItemsService {
         return stockItem;
     }
 
+    public StockItem AddStock(String sku, int stockQuantity){
+        //TODO: test againest database.
+        StockItem stockItem = stockItemsRepository.findBySku(sku).stream().findFirst().get();
+
+        stockItem.getStockItemQuantity().addStock(stockQuantity);
+        stockItemsRepository.save(stockItem);
+
+        return stockItem;
+    }
 
 
 

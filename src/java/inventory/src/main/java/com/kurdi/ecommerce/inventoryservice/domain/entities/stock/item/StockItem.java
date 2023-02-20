@@ -22,6 +22,7 @@ import java.util.*;
 @Table(name = "stock_items")
 public class StockItem implements Serializable {
     @Id
+    @Builder.Default
     String sku = new GUIDGenerator().toString();
     Integer SupplierIdentity;
     @Embedded
@@ -29,8 +30,10 @@ public class StockItem implements Serializable {
     @Embedded
     StockItemQuantity stockItemQuantity;
     @ManyToOne(fetch = FetchType.EAGER)
+    @Builder.Default
     Category category = new Category();
     @OneToMany(mappedBy = "stockItemDetailsId.stockItem", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @Builder.Default
     List<StockItemDetails> stockItemDetails = new ArrayList<>();
 
 
