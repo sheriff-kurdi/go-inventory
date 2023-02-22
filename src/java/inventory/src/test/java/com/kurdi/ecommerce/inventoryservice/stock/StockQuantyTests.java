@@ -130,4 +130,34 @@ class StockQuantyTests {
 		assertEquals(stockItemQuantity.getReservedStock(), actualReservedStock);
 	}
 
+	/*
+	 * selling
+	 */
+	@Test
+	void sellingWithTotalStockTest() {
+		StockItemQuantity stockItemQuantity = new StockItemQuantity();
+
+		int actualAddedStock = 100;
+		stockItemQuantity.addStock(actualAddedStock);
+
+		int actualsoldStock = 10;
+		stockItemQuantity.selling(actualsoldStock);
+		int actualStock = actualAddedStock - actualsoldStock;
+		assertEquals(stockItemQuantity.getTotalStock(), actualStock);
+	}
+
+	@Test
+	void sellingWithAvailableStockTest() {
+		StockItemQuantity stockItemQuantity = new StockItemQuantity();
+
+		int actualAddedStock = 100;
+		stockItemQuantity.addStock(actualAddedStock);
+
+		int actualsoldStock = 10;
+		stockItemQuantity.selling(actualsoldStock);
+		int actualStock = actualAddedStock - actualsoldStock;
+
+		assertEquals(stockItemQuantity.getAvailableStock(), actualStock);
+	}
+
 }

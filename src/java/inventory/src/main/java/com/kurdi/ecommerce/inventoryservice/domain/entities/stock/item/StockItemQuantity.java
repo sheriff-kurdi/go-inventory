@@ -30,4 +30,9 @@ public class StockItemQuantity implements Serializable {
         availableStock += quantity;
         reservedStock -= quantity;
     }
+
+    public void selling(int quantity) {
+        availableStock -= quantity;
+        totalStock -= quantity;
+    }
 }
