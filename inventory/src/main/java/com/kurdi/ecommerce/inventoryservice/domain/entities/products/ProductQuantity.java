@@ -1,4 +1,4 @@
-package com.kurdi.ecommerce.inventoryservice.domain.entities.stock.item;
+package com.kurdi.ecommerce.inventoryservice.domain.entities.products;
 
 import lombok.*;
 import javax.persistence.Embeddable;
@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StockItemQuantity implements Serializable {
+public class ProductQuantity implements Serializable {
     @Setter(AccessLevel.NONE)
     int totalStock = 0;
     @Setter(AccessLevel.NONE)

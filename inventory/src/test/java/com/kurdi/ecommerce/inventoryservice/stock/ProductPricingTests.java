@@ -4,14 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import com.kurdi.ecommerce.inventoryservice.domain.entities.stock.item.StockItemPrices;
+import com.kurdi.ecommerce.inventoryservice.domain.entities.products.ProductPrices;
 
-class StockPricingTests {
+
+class ProductPricingTests {
 
 
 	@Test
 	void sellingPriceWithDiscountStockTest() {
-		StockItemPrices stockItemPricing = StockItemPrices.builder()
+		ProductPrices stockItemPricing = ProductPrices.builder()
 		.costPrice(80)
 		.sellingPrice(100)
 		.discount(10)
@@ -25,7 +26,7 @@ class StockPricingTests {
 
 	@Test
 	void sellingPriceWithoutDiscountStockTest() {
-		StockItemPrices stockItemPricing = StockItemPrices.builder()
+		ProductPrices stockItemPricing = ProductPrices.builder()
 		.costPrice(80)
 		.sellingPrice(100)
 		.discount(10)

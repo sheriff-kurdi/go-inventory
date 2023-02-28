@@ -4,16 +4,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import com.kurdi.ecommerce.inventoryservice.domain.entities.stock.item.StockItemQuantity;
+import com.kurdi.ecommerce.inventoryservice.domain.entities.products.ProductQuantity;
 
-class StockQuantyTests {
+
+class ProductQuantyTests {
 
 	/*
 	 * Add Stock
 	 */
 	@Test
 	void addQuantityWithTotalStockTest() {
-		StockItemQuantity stockItemQuantity = new StockItemQuantity();
+		ProductQuantity stockItemQuantity = new ProductQuantity();
 
 		int actualAddedStock = 10;
 		stockItemQuantity.addStock(actualAddedStock);
@@ -23,7 +24,7 @@ class StockQuantyTests {
 
 	@Test
 	void addQuantityWithAvailableStockTest() {
-		StockItemQuantity stockItemQuantity = new StockItemQuantity();
+		ProductQuantity stockItemQuantity = new ProductQuantity();
 
 		int actualAddedStock = 10;
 		stockItemQuantity.addStock(actualAddedStock);
@@ -36,7 +37,7 @@ class StockQuantyTests {
 	 */
 	@Test
 	void reserveQuantityWithTotalStockTest() {
-		StockItemQuantity stockItemQuantity = new StockItemQuantity();
+		ProductQuantity stockItemQuantity = new ProductQuantity();
 
 		int actualAddedStock = 100;
 		stockItemQuantity.addStock(actualAddedStock);
@@ -49,7 +50,7 @@ class StockQuantyTests {
 
 	@Test
 	void reserveQuantityWithAvailableStockTest() {
-		StockItemQuantity stockItemQuantity = new StockItemQuantity();
+		ProductQuantity stockItemQuantity = new ProductQuantity();
 
 		int actualAddedStock = 100;
 		stockItemQuantity.addStock(actualAddedStock);
@@ -64,7 +65,7 @@ class StockQuantyTests {
 
 	@Test
 	void reserveQuantityWithReservedStockTest() {
-		StockItemQuantity stockItemQuantity = new StockItemQuantity();
+		ProductQuantity stockItemQuantity = new ProductQuantity();
 
 		int actualAddedStock = 100;
 		stockItemQuantity.addStock(actualAddedStock);
@@ -80,7 +81,7 @@ class StockQuantyTests {
 	 */
 	@Test
 	void CancelReservationQuantityWithTotalStockTest() {
-		StockItemQuantity stockItemQuantity = new StockItemQuantity();
+		ProductQuantity stockItemQuantity = new ProductQuantity();
 
 		int actualAddedStock = 100;
 		stockItemQuantity.addStock(actualAddedStock);
@@ -96,7 +97,7 @@ class StockQuantyTests {
 
 	@Test
 	void CancelReservationQuantityWithAvailableStockTest() {
-		StockItemQuantity stockItemQuantity = new StockItemQuantity();
+		ProductQuantity stockItemQuantity = new ProductQuantity();
 
 		int actualAddedStock = 100;
 		stockItemQuantity.addStock(actualAddedStock);
@@ -114,7 +115,7 @@ class StockQuantyTests {
 
 	@Test
 	void CancelReservationWithReservedStockTest() {
-		StockItemQuantity stockItemQuantity = new StockItemQuantity();
+		ProductQuantity stockItemQuantity = new ProductQuantity();
 
 		int actualAddedStock = 100;
 		stockItemQuantity.addStock(actualAddedStock);
@@ -135,7 +136,7 @@ class StockQuantyTests {
 	 */
 	@Test
 	void sellingWithTotalStockTest() {
-		StockItemQuantity stockItemQuantity = new StockItemQuantity();
+		ProductQuantity stockItemQuantity = new ProductQuantity();
 
 		int actualAddedStock = 100;
 		stockItemQuantity.addStock(actualAddedStock);
@@ -148,7 +149,7 @@ class StockQuantyTests {
 
 	@Test
 	void sellingWithAvailableStockTest() {
-		StockItemQuantity stockItemQuantity = new StockItemQuantity();
+		ProductQuantity stockItemQuantity = new ProductQuantity();
 
 		int actualAddedStock = 100;
 		stockItemQuantity.addStock(actualAddedStock);

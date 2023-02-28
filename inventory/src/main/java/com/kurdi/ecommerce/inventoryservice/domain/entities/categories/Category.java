@@ -1,7 +1,8 @@
 package com.kurdi.ecommerce.inventoryservice.domain.entities.categories;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kurdi.ecommerce.inventoryservice.domain.entities.stock.item.StockItem;
+import com.kurdi.ecommerce.inventoryservice.domain.entities.products.Product;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,7 +27,7 @@ public class Category implements Serializable {
     boolean isParent;
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
-    Set<StockItem> stockItems;
+    Set<Product> stockItems;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "category")
     Set<CategoryDetails> categoryDetails;
 

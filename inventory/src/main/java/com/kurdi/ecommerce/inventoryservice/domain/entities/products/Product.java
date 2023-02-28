@@ -1,8 +1,7 @@
-package com.kurdi.ecommerce.inventoryservice.domain.entities.stock.item;
+package com.kurdi.ecommerce.inventoryservice.domain.entities.products;
 
 import com.kurdi.ecommerce.inventoryservice.domain.entities.categories.Category;
-import com.kurdi.ecommerce.inventoryservice.domain.entities.stock.details.StockItemDetails;
-
+import com.kurdi.ecommerce.inventoryservice.domain.entities.products.details.ProductDetails;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.id.GUIDGenerator;
@@ -20,28 +19,28 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "stock_items")
-public class StockItem implements Serializable {
+public class Product implements Serializable {
     @Id
     @Builder.Default
     String sku = new GUIDGenerator().toString();
     Integer SupplierIdentity;
     @Embedded
-    StockItemPrices stockItemPrices;
+    ProductPrices stockItemPrices;
     @Embedded
-    StockItemQuantity stockItemQuantity;
+    ProductQuantity stockItemQuantity;
     @ManyToOne(fetch = FetchType.EAGER)
     @Builder.Default
     Category category = new Category();
     @OneToMany(mappedBy = "stockItemDetailsId.stockItem", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @Builder.Default
-    List<StockItemDetails> stockItemDetails = new ArrayList<>();
+    List<ProductDetails> stockItemDetails = new ArrayList<>();
 
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        StockItem stockItem = (StockItem) o;
+        Product stockItem = (Product) o;
         return sku != null && Objects.equals(sku, stockItem.sku);
     }
     @Override

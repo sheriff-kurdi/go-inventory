@@ -1,7 +1,8 @@
-package com.kurdi.ecommerce.inventoryservice.domain.entities.stock.details;
+package com.kurdi.ecommerce.inventoryservice.domain.entities.products.details;
 
 import com.kurdi.ecommerce.inventoryservice.domain.entities.Language;
-import com.kurdi.ecommerce.inventoryservice.domain.entities.stock.item.StockItem;
+import com.kurdi.ecommerce.inventoryservice.domain.entities.products.Product;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,10 +20,10 @@ import java.util.Objects;
 @NoArgsConstructor
 @Embeddable
 @Data
-public class StockItemDetailsId implements Serializable {
+public class ProductDetailsId implements Serializable {
     @ManyToOne
     @JoinColumn(name = "sku", nullable = false)
-    private StockItem stockItem;
+    private Product stockItem;
     @ManyToOne
     @JoinColumn(name = "language_code")
     private Language language;
@@ -32,7 +33,7 @@ public class StockItemDetailsId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        StockItemDetailsId that = (StockItemDetailsId) o;
+        ProductDetailsId that = (ProductDetailsId) o;
         return stockItem != null && Objects.equals(stockItem, that.stockItem)
                 && language != null && Objects.equals(language, that.language);
     }

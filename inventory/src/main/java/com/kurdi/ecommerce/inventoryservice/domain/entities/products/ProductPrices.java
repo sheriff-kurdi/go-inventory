@@ -1,4 +1,4 @@
-package com.kurdi.ecommerce.inventoryservice.domain.entities.stock.item;
+package com.kurdi.ecommerce.inventoryservice.domain.entities.products;
 
 import lombok.*;
 
@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class StockItemPrices implements Serializable {
+public class ProductPrices implements Serializable {
 
     double costPrice;
     @Getter(AccessLevel.NONE)

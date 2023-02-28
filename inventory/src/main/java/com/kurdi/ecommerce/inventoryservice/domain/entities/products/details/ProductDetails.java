@@ -1,4 +1,4 @@
-package com.kurdi.ecommerce.inventoryservice.domain.entities.stock.details;
+package com.kurdi.ecommerce.inventoryservice.domain.entities.products.details;
 
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -15,9 +15,9 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "stock_items_details")
-public class StockItemDetails implements Serializable {
+public class ProductDetails implements Serializable {
     @EmbeddedId
-    StockItemDetailsId stockItemDetailsId;
+    ProductDetailsId stockItemDetailsId;
     String name;
     String description;
 
@@ -25,7 +25,7 @@ public class StockItemDetails implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        StockItemDetails that = (StockItemDetails) o;
+        ProductDetails that = (ProductDetails) o;
         return stockItemDetailsId != null && Objects.equals(stockItemDetailsId, that.stockItemDetailsId);
     }
 

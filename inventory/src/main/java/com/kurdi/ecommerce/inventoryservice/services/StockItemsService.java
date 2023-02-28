@@ -1,130 +1,128 @@
 package com.kurdi.ecommerce.inventoryservice.services;
 
-import com.kurdi.ecommerce.inventoryservice.domain.entities.categories.Category;
-import com.kurdi.ecommerce.inventoryservice.domain.entities.stock.item.StockItem;
-import com.kurdi.ecommerce.inventoryservice.domain.entities.stock.item.StockItemQuantity;
-import com.kurdi.ecommerce.inventoryservice.infrastructure.projections.StockItemProjection;
-import com.kurdi.ecommerce.inventoryservice.infrastructure.repositories.StockItemDetailsRepository;
-import com.kurdi.ecommerce.inventoryservice.infrastructure.repositories.StockItemsRepository;
-import com.kurdi.ecommerce.inventoryservice.api.requests.stock.CreateStockItemRequest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
+// import com.kurdi.ecommerce.inventoryservice.domain.entities.categories.Category;
+// import com.kurdi.ecommerce.inventoryservice.infrastructure.projections.StockItemProjection;
+// import com.kurdi.ecommerce.inventoryservice.infrastructure.repositories.StockItemDetailsRepository;
+// import com.kurdi.ecommerce.inventoryservice.infrastructure.repositories.StockItemsRepository;
+// import com.kurdi.ecommerce.inventoryservice.api.requests.stock.CreateStockItemRequest;
+// import org.springframework.data.domain.Page;
+// import org.springframework.data.domain.PageRequest;
+// import org.springframework.data.domain.Pageable;
+// import org.springframework.data.domain.Sort;
+// import org.springframework.security.core.Authentication;
+// import org.springframework.security.core.context.SecurityContextHolder;
+// import org.springframework.stereotype.Service;
+// import javax.transaction.Transactional;
 
 
-@Service
-public class StockItemsService {
-    final StockItemsRepository stockItemsRepository;
-    final StockItemDetailsRepository stockItemDetailsRepository;
+// @Service
+// public class StockItemsService {
+//     final StockItemsRepository stockItemsRepository;
+//     final StockItemDetailsRepository stockItemDetailsRepository;
 
-    public StockItemsService(StockItemsRepository stockItemsRepository, StockItemDetailsRepository stockItemDetailsRepository) {
-        this.stockItemsRepository = stockItemsRepository;
-        this.stockItemDetailsRepository = stockItemDetailsRepository;
-    }
+//     public StockItemsService(StockItemsRepository stockItemsRepository, StockItemDetailsRepository stockItemDetailsRepository) {
+//         this.stockItemsRepository = stockItemsRepository;
+//         this.stockItemDetailsRepository = stockItemDetailsRepository;
+//     }
 
-    public Page<StockItemProjection> getAll(String languageCode, int page, int pageSize){
+//     public Page<StockItemProjection> getAll(String languageCode, int page, int pageSize){
 
-        Pageable sortedBySKUDesc =
-                PageRequest.of(page, pageSize, Sort.by("sku").descending());
+//         Pageable sortedBySKUDesc =
+//                 PageRequest.of(page, pageSize, Sort.by("sku").descending());
 
-            return stockItemsRepository.getAll(languageCode == null ? "ar" : languageCode, sortedBySKUDesc);
-    }
+//             return stockItemsRepository.getAll(languageCode == null ? "ar" : languageCode, sortedBySKUDesc);
+//     }
 
-    public StockItemProjection getBySKU(String sku, String languageCode){
+//     public StockItemProjection getBySKU(String sku, String languageCode){
 
-        if(!stockItemsRepository.existsById(sku))
-        {
-            return null;
-        }
-        return stockItemsRepository.getBySKU(sku, languageCode == null ? "ar" : languageCode);
-    }
+//         if(!stockItemsRepository.existsById(sku))
+//         {
+//             return null;
+//         }
+//         return stockItemsRepository.getBySKU(sku, languageCode == null ? "ar" : languageCode);
+//     }
 
-    @Transactional
-    public StockItem create(CreateStockItemRequest stockItemRequest)
-    {
-        //TODO: implement authorization
-        /*
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            Integer identity = Integer.parseInt(auth.getPrincipal().toString());
-        **/
-        StockItemQuantity stockItemQuantity = new StockItemQuantity();
-        stockItemQuantity.addStock(stockItemRequest.getStockQuantity());
+//     @Transactional
+//     public StockItem create(CreateStockItemRequest stockItemRequest)
+//     {
+//         //TODO: implement authorization
+//         /*
+//             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//             Integer identity = Integer.parseInt(auth.getPrincipal().toString());
+//         **/
+//         StockItemQuantity stockItemQuantity = new StockItemQuantity();
+//         stockItemQuantity.addStock(stockItemRequest.getStockQuantity());
 
-        StockItem stockItem = StockItem.builder()
-                //.SupplierIdentity(identity)
-                .sku(stockItemRequest.getSku())
-                //.stockItemDetails(stockItemRequest.getStockItemDetails())
-                .stockItemQuantity(stockItemQuantity)
-                .category(Category.builder().name(stockItemRequest.getCategory()).build())
-                .stockItemPrices(stockItemRequest.getPrices())
-                .build();
+//         StockItem stockItem = StockItem.builder()
+//                 //.SupplierIdentity(identity)
+//                 .sku(stockItemRequest.getSku())
+//                 //.stockItemDetails(stockItemRequest.getStockItemDetails())
+//                 .stockItemQuantity(stockItemQuantity)
+//                 .category(Category.builder().name(stockItemRequest.getCategory()).build())
+//                 .stockItemPrices(stockItemRequest.getPrices())
+//                 .build();
 
-        stockItemsRepository.save(stockItem);
-        stockItemDetailsRepository.saveAll(stockItemRequest.getStockItemDetails());
-        stockItem.setStockItemDetails(stockItemRequest.getStockItemDetails());
-        stockItemsRepository.save(stockItem);
+//         stockItemsRepository.save(stockItem);
+//         stockItemDetailsRepository.saveAll(stockItemRequest.getStockItemDetails());
+//         stockItem.setStockItemDetails(stockItemRequest.getStockItemDetails());
+//         stockItemsRepository.save(stockItem);
 
-        return stockItem;
-    }
+//         return stockItem;
+//     }
 
-    @Transactional
-    public StockItem edit(StockItem stockItem, String sku)
-    {
-        if(!stockItem.getSku().equals(sku))
-        {
-            return null;
-        }
-        if(!stockItemsRepository.existsById(sku))
-        {
-            return null;
-        }
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Integer identity = Integer.parseInt(auth.getPrincipal().toString());
-        if(!stockItemsRepository.getBySKU(sku,"ar").getSupplierIdentity().equals(identity))
-        {
-            return null;
-        }
-        return stockItemsRepository.save(stockItem);
-    }
+//     @Transactional
+//     public StockItem edit(StockItem stockItem, String sku)
+//     {
+//         if(!stockItem.getSku().equals(sku))
+//         {
+//             return null;
+//         }
+//         if(!stockItemsRepository.existsById(sku))
+//         {
+//             return null;
+//         }
+//         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//         Integer identity = Integer.parseInt(auth.getPrincipal().toString());
+//         if(!stockItemsRepository.getBySKU(sku,"ar").getSupplierIdentity().equals(identity))
+//         {
+//             return null;
+//         }
+//         return stockItemsRepository.save(stockItem);
+//     }
 
-    @Transactional
-    public StockItem delete(String sku)
-    {
-        if(!stockItemsRepository.existsById(sku))
-        {
-            return null;
+//     @Transactional
+//     public StockItem delete(String sku)
+//     {
+//         if(!stockItemsRepository.existsById(sku))
+//         {
+//             return null;
 
-        }
-        StockItem stockItem = stockItemsRepository.findById(sku).get();
+//         }
+//         StockItem stockItem = stockItemsRepository.findById(sku).get();
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Integer identity = Integer.parseInt(auth.getPrincipal().toString());
-        if(!stockItemsRepository.findById(sku).get().getSupplierIdentity().equals(identity))
-        {
-            //TODO: return un authorized exception error and then handle exception
-            return null;
+//         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//         Integer identity = Integer.parseInt(auth.getPrincipal().toString());
+//         if(!stockItemsRepository.findById(sku).get().getSupplierIdentity().equals(identity))
+//         {
+//             //TODO: return un authorized exception error and then handle exception
+//             return null;
 
-        }
-        stockItemsRepository.delete(stockItem);
+//         }
+//         stockItemsRepository.delete(stockItem);
 
-        return stockItem;
-    }
+//         return stockItem;
+//     }
 
-    public StockItem AddStock(String sku, int stockQuantity){
-        //TODO: test againest database.
-        StockItem stockItem = stockItemsRepository.findBySku(sku).stream().findFirst().get();
+//     public StockItem AddStock(String sku, int stockQuantity){
+//         //TODO: test againest database.
+//         StockItem stockItem = stockItemsRepository.findBySku(sku).stream().findFirst().get();
 
-        stockItem.getStockItemQuantity().addStock(stockQuantity);
-        stockItemsRepository.save(stockItem);
+//         stockItem.getStockItemQuantity().addStock(stockQuantity);
+//         stockItemsRepository.save(stockItem);
 
-        return stockItem;
-    }
+//         return stockItem;
+//     }
 
 
 
-}
+//}

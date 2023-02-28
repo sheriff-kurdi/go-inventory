@@ -1,6 +1,6 @@
 package com.kurdi.ecommerce.inventoryservice.infrastructure.repositories;
 
-import com.kurdi.ecommerce.inventoryservice.domain.entities.stock.item.StockItem;
+import com.kurdi.ecommerce.inventoryservice.domain.entities.products.Product;
 import com.kurdi.ecommerce.inventoryservice.infrastructure.projections.StockItemProjection;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface StockItemsRepository extends PagingAndSortingRepository<StockItem, String> {
+public interface StockItemsRepository extends PagingAndSortingRepository<Product, String> {
         @Query(value = "select stock.sku as sku, stock.available_stock as availableStock, stock.reserved_stock as ReservedStock, stock.cost_price as CostPrice"
                         +
                         ", stock.selling_price as SellingPrice, stock.is_discounted as IsDiscounted ,stock.total_stock as TotalStock"
@@ -34,6 +34,6 @@ public interface StockItemsRepository extends PagingAndSortingRepository<StockIt
                         " where stock.sku =  :SKU ;", nativeQuery = true)
         StockItemProjection getBySKU(@Param("SKU") String SKU, @Param("languageCode") String languageCode);
 
-        List<StockItem> findBySku(String sku);
+        List<Product> findBySku(String sku);
 
 }
