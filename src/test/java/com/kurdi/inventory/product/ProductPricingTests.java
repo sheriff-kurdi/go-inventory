@@ -1,4 +1,4 @@
-package com.kurdi.inventory.stock;
+package com.kurdi.inventory.product;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
