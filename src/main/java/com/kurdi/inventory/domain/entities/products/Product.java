@@ -1,15 +1,11 @@
 package com.kurdi.inventory.domain.entities.products;
-
 import com.kurdi.inventory.domain.entities.categories.Category;
 import com.kurdi.inventory.domain.entities.products.details.ProductDetails;
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.hibernate.id.GUIDGenerator;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
-
 
 @Getter
 @Setter
@@ -18,12 +14,13 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "stock_items")
+@Table(name = "products")
 public class Product implements Serializable {
     @Id
+    String id;
     @Builder.Default
-    String sku = new GUIDGenerator().toString();
-    Integer SupplierIdentity;
+    private List<Stock> stock = new ArrayList<>();
+    Integer supplierIdentity;
     @Embedded
     ProductPrices stockItemPrices;
     @Embedded
@@ -33,16 +30,24 @@ public class Product implements Serializable {
     Category category = new Category();
     @OneToMany(mappedBy = "stockItemDetailsId.stockItem", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @Builder.Default
-    List<ProductDetails> stockItemDetails = new ArrayList<>();
-
+    private List<ProductDetails> productDetails = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Product stockItem = (Product) o;
-        return sku != null && Objects.equals(sku, stockItem.sku);
+        if (this == o)
+            return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
+            return false;
+        Product product = (Product) o;
+
+        for (Stock stockItem : product.stock) {
+            if (this.stock.stream().anyMatch(s -> s.sku.generateSKU() == stockItem.sku.generateSKU())) {
+                return true;
+            }
+        }
+        return false;
     }
+
     @Override
     public int hashCode() {
         return getClass().hashCode();

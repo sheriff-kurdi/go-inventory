@@ -14,7 +14,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "stock_items_details")
+@Table(name = "product_details")
 public class ProductDetails implements Serializable {
     @EmbeddedId
     ProductDetailsId stockItemDetailsId;
