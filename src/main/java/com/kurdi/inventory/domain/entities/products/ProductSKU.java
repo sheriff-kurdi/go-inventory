@@ -15,13 +15,10 @@ public class ProductSKU implements Serializable {
     String sku;
     int modelId;
     String seasonCode;
-    int typeId;
     String typeCode;
     String genderCode;
     String ageCode;
-    int colorId;
     String colorCode;
-    int sizeId;
     String sizeCode;
     int serialNumber;
     int purchaseReceiptId;
