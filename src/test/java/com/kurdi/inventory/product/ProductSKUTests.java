@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import com.kurdi.inventory.domain.entities.products.ProductSKU;
 import com.kurdi.inventory.domain.enums.products.Ages;
 import com.kurdi.inventory.domain.enums.products.Genders;
+import com.kurdi.inventory.domain.enums.products.Seasons;
+import com.kurdi.inventory.domain.enums.products.Types;
 
 class ProductSKUTests {
 
@@ -116,6 +118,28 @@ class ProductSKUTests {
 		productSKU.skuDecode(SKU);
 
 		assertEquals(ExpectedSerial, productSKU.getSerialNumber());
+	}
+
+	@Test
+	void SKUGeneratingWithEnumsTest() {
+		// modelCode-seasonCode-typeCode-genderCode-ageCode-colorCode-sizeCode-serialNumber-purchaseReceiptId
+		// 115-SPR2020-SHIRT-MALE-ADULTS-RED-S-1-120
+
+		String ExpectedSKU = "115-SPR2020-SHIRTS-MALE-ADULTS-RED-S-1-120";
+		ProductSKU productSKU = ProductSKU.builder()
+		.modelId(115)
+		.seasonCode(Seasons.SPRING.getSeason(2020))
+		.typeCode(Types.SHIRTS.name())
+		.genderCode(Genders.MALE.name())
+		.ageCode(Ages.ADULTS.name())
+		.colorCode("RED")
+		.sizeCode("S")
+		.serialNumber(1)
+		.purchaseReceiptId(120)
+		.build();
+		String actualSKU = productSKU.generateSKU();
+
+		assertEquals(ExpectedSKU, actualSKU);
 	}
 
 }
