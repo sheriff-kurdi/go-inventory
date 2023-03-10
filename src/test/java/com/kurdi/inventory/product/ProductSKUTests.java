@@ -12,29 +12,7 @@ import com.kurdi.inventory.domain.enums.products.Types;
 
 class ProductSKUTests {
 
-	final private String SKU = "115-SPR2020-SHIRT-MALE-ADULTS-RED-S-1-120";
-	@Test
-	void SKUGeneratorTest() {
-		// modelCode-seasonCode-typeCode-genderCode-ageCode-colorCode-sizeCode-serialNumber-purchaseReceiptId
-		// 115-SPR2020-SHIRT-MALE-ADULTS-RED-S-1-120
-
-		ProductSKU productSKU = ProductSKU.builder()
-				.modelId(115)
-				.seasonCode("SPR2020")
-				.typeCode("SHIRT")
-				.genderCode(Genders.MALE.name())
-				.ageCode(Ages.ADULTS.name())
-				.colorCode("RED")
-				.sizeCode("S")
-				.serialNumber(1)
-				.purchaseReceiptId(120)
-				.build();
-
-		String actualSKU = productSKU.generateSKU();
-
-		assertEquals(SKU, actualSKU);
-
-	}
+	final private String SKU = "115-SPR2020-SHIRTS-MALE-ADULTS-RED-S-1-120";
 
 	@Test
 	void SKUModelIdDecoderTest() {
@@ -65,7 +43,7 @@ class ProductSKUTests {
 		// modelCode-seasonCode-typeCode-genderCode-ageCode-colorCode-sizeCode-serialNumber-purchaseReceiptId
 		// 115-SPR2020-SHIRT-MALE-ADULTS-RED-S-1-120
 
-		String ExpectedType = "SHIRT";
+		String ExpectedType = "SHIRTS";
 		ProductSKU productSKU = new ProductSKU();
 		productSKU.skuDecode(SKU);
 
@@ -125,18 +103,18 @@ class ProductSKUTests {
 		// modelCode-seasonCode-typeCode-genderCode-ageCode-colorCode-sizeCode-serialNumber-purchaseReceiptId
 		// 115-SPR2020-SHIRT-MALE-ADULTS-RED-S-1-120
 
-		String ExpectedSKU = "115-SPR2020-SHIRTS-MALE-ADULTS-RED-S-1-120";
+		String ExpectedSKU = SKU;
 		ProductSKU productSKU = ProductSKU.builder()
-		.modelId(115)
-		.seasonCode(Seasons.SPRING.getSeason(2020))
-		.typeCode(Types.SHIRTS.name())
-		.genderCode(Genders.MALE.name())
-		.ageCode(Ages.ADULTS.name())
-		.colorCode("RED")
-		.sizeCode("S")
-		.serialNumber(1)
-		.purchaseReceiptId(120)
-		.build();
+				.modelId(115)
+				.seasonCode(Seasons.SPRING.getSeason(2020))
+				.typeCode(Types.SHIRTS.name())
+				.genderCode(Genders.MALE.name())
+				.ageCode(Ages.ADULTS.name())
+				.colorCode("RED")
+				.sizeCode("S")
+				.serialNumber(1)
+				.purchaseReceiptId(120)
+				.build();
 		String actualSKU = productSKU.generateSKU();
 
 		assertEquals(ExpectedSKU, actualSKU);
