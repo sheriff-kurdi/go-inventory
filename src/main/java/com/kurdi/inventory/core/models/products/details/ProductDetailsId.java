@@ -1,13 +1,13 @@
-package com.kurdi.inventory.domain.entities.products.details;
-
-import com.kurdi.inventory.domain.entities.Language;
-import com.kurdi.inventory.domain.entities.products.Product;
+package com.kurdi.inventory.core.models.products.details;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
+
+import com.kurdi.inventory.core.models.Language;
+import com.kurdi.inventory.core.models.products.Product;
 
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;

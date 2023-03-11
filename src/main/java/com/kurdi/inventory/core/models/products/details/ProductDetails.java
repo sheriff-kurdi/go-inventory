@@ -1,4 +1,4 @@
-package com.kurdi.inventory.domain.entities.products.details;
+package com.kurdi.inventory.core.models.products.details;
 
 import lombok.*;
 import org.hibernate.Hibernate;

@@ -1,4 +1,4 @@
-package com.kurdi.inventory.domain.entities.categories;
+package com.kurdi.inventory.core.models.categories;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

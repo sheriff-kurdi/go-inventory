@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import com.kurdi.inventory.domain.entities.products.ProductPrices;
+import com.kurdi.inventory.core.models.products.ProductPrices;
 
 
 class ProductPricingTests {

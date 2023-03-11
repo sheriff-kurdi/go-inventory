@@ -1,4 +1,4 @@
-package com.kurdi.inventory.domain.entities;
+package com.kurdi.inventory.core.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

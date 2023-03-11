@@ -1,3 +1,4 @@
+package com.kurdi.inventory.data.repositories;
 // package com.kurdi.ecommerce.inventoryservice.infrastructure.repositories;
 
 // import com.kurdi.ecommerce.inventoryservice.domain.entities.products.Product;

@@ -1,3 +1,4 @@
+package com.kurdi.inventory.data.projections;
 // package com.kurdi.ecommerce.inventoryservice.infrastructure.projections;
 
 // public interface StockItemProjection {

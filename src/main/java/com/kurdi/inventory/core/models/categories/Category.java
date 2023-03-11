@@ -1,7 +1,7 @@
-package com.kurdi.inventory.domain.entities.categories;
+package com.kurdi.inventory.core.models.categories;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kurdi.inventory.domain.entities.products.Product;
+import com.kurdi.inventory.core.models.products.Product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

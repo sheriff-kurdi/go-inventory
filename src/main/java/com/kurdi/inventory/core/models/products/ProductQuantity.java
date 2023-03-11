@@ -1,4 +1,4 @@
-package com.kurdi.inventory.domain.entities.products;
+package com.kurdi.inventory.core.models.products;
 
 import lombok.*;
 import javax.persistence.Embeddable;

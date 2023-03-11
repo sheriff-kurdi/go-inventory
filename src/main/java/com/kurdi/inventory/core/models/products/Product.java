@@ -1,10 +1,11 @@
-package com.kurdi.inventory.domain.entities.products;
+package com.kurdi.inventory.core.models.products;
 
-import com.kurdi.inventory.domain.entities.categories.Category;
-import com.kurdi.inventory.domain.entities.products.details.ProductDetails;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.id.GUIDGenerator;
+
+import com.kurdi.inventory.core.models.categories.Category;
+import com.kurdi.inventory.core.models.products.details.ProductDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,7 +24,6 @@ public class Product implements Serializable {
     @Id
     @Builder.Default
     String sku = new GUIDGenerator().toString();
-    Integer SupplierIdentity;
     @Embedded
     ProductPrices stockItemPrices;
     @Embedded
@@ -33,7 +33,7 @@ public class Product implements Serializable {
     Category category = new Category();
     @OneToMany(mappedBy = "stockItemDetailsId.stockItem", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @Builder.Default
-    List<ProductDetails> stockItemDetails = new ArrayList<>();
+    private List<ProductDetails> stockItemDetails = new ArrayList<>();
 
 
     @Override
