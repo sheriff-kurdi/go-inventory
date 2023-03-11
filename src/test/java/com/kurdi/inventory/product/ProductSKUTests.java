@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import com.kurdi.inventory.domain.entities.products.ProductSKU;
+import com.kurdi.inventory.domain.entities.products.skus.ClothesSKU;
 import com.kurdi.inventory.domain.enums.products.Ages;
 import com.kurdi.inventory.domain.enums.products.Genders;
 import com.kurdi.inventory.domain.enums.products.Seasons;
@@ -20,7 +20,7 @@ class ProductSKUTests {
 		// 115-SPR2020-SHIRT-MALE-ADULTS-RED-S-1-120
 
 		int ExpectedModel = 115;
-		ProductSKU productSKU = new ProductSKU();
+		ClothesSKU productSKU = new ClothesSKU();
 		productSKU.skuDecode(this.SKU);
 
 		assertEquals(ExpectedModel, productSKU.getModelId());
@@ -32,7 +32,7 @@ class ProductSKUTests {
 		// 115-SPR2020-SHIRT-MALE-ADULTS-RED-S-1-120
 
 		String ExpectedSeason = "SPR2020";
-		ProductSKU productSKU = new ProductSKU();
+		ClothesSKU productSKU = new ClothesSKU();
 		productSKU.skuDecode(SKU);
 
 		assertEquals(ExpectedSeason, productSKU.getSeasonCode());
@@ -44,7 +44,7 @@ class ProductSKUTests {
 		// 115-SPR2020-SHIRT-MALE-ADULTS-RED-S-1-120
 
 		String ExpectedType = "SHIRTS";
-		ProductSKU productSKU = new ProductSKU();
+		ClothesSKU productSKU = new ClothesSKU();
 		productSKU.skuDecode(SKU);
 
 		assertEquals(ExpectedType, productSKU.getTypeCode());
@@ -56,7 +56,7 @@ class ProductSKUTests {
 		// 115-SPR2020-SHIRT-MALE-ADULTS-RED-S-1-120
 
 		String ExpectedGender = "MALE";
-		ProductSKU productSKU = new ProductSKU();
+		ClothesSKU productSKU = new ClothesSKU();
 		productSKU.skuDecode(SKU);
 
 		assertEquals(ExpectedGender, productSKU.getGenderCode());
@@ -68,7 +68,7 @@ class ProductSKUTests {
 		// 115-SPR2020-SHIRT-MALE-ADULTS-RED-S-1-120
 
 		String ExpectedAge = "ADULTS";
-		ProductSKU productSKU = new ProductSKU();
+		ClothesSKU productSKU = new ClothesSKU();
 		productSKU.skuDecode(SKU);
 
 		assertEquals(ExpectedAge, productSKU.getAgeCode());
@@ -80,7 +80,7 @@ class ProductSKUTests {
 		// 115-SPR2020-SHIRT-MALE-ADULTS-RED-S-1-120
 
 		String ExpectedSize = "S";
-		ProductSKU productSKU = new ProductSKU();
+		ClothesSKU productSKU = new ClothesSKU();
 		productSKU.skuDecode(SKU);
 
 		assertEquals(ExpectedSize, productSKU.getSizeCode());
@@ -92,7 +92,7 @@ class ProductSKUTests {
 		// 115-SPR2020-SHIRT-MALE-ADULTS-RED-S-1-120
 
 		int ExpectedSerial = 1;
-		ProductSKU productSKU = new ProductSKU();
+		ClothesSKU productSKU = new ClothesSKU();
 		productSKU.skuDecode(SKU);
 
 		assertEquals(ExpectedSerial, productSKU.getSerialNumber());
@@ -104,7 +104,7 @@ class ProductSKUTests {
 		// 115-SPR2020-SHIRT-MALE-ADULTS-RED-S-1-120
 
 		String ExpectedSKU = SKU;
-		ProductSKU productSKU = ProductSKU.builder()
+		ClothesSKU productSKU = ClothesSKU.builder()
 				.modelId(115)
 				.seasonCode(Seasons.SPRING.getSeason(2020))
 				.typeCode(Types.SHIRTS.name())

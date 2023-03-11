@@ -18,8 +18,6 @@ import java.util.*;
 public class Product implements Serializable {
     @Id
     String id;
-    @Builder.Default
-    private List<Stock> stock = new ArrayList<>();
     Integer supplierIdentity;
     @Embedded
     ProductPrices stockItemPrices;
@@ -40,7 +38,7 @@ public class Product implements Serializable {
             return false;
         Product product = (Product) o;
 
-        for (Stock stockItem : product.stock) {
+        for (StockItem stockItem : product.stock) {
             if (this.stock.stream().anyMatch(s -> s.sku.generateSKU() == stockItem.sku.generateSKU())) {
                 return true;
             }

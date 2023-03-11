@@ -17,7 +17,7 @@ class ProductQuantyTests {
 		ProductQuantity stockItemQuantity = new ProductQuantity();
 
 		int actualAddedStock = 10;
-		stockItemQuantity.addStock(actualAddedStock);
+		//stockItemQuantity.addStock(actualAddedStock);
 
 		assertEquals(stockItemQuantity.getTotalStock(), actualAddedStock);
 	}

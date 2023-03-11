@@ -1,15 +1,16 @@
-package com.kurdi.inventory.domain.entities.products;
+package com.kurdi.inventory.domain.entities.products.skus;
 
 import lombok.*;
 import javax.persistence.Embeddable;
-import java.io.Serializable;
+
+import com.kurdi.inventory.domain.contracts.products.SKU;
+
 
 @Embeddable
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class ProductSKU implements Serializable {
+public class ClothesSKU implements  SKU {
     @Setter(AccessLevel.NONE)
     @Getter(AccessLevel.NONE)
     String sku;

@@ -5,20 +5,20 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.kurdi.inventory.domain.contracts.products.SKU;
+
 import lombok.*;
 
 @Getter
 @Setter
 @ToString
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "stocks")
-public class Stock implements Serializable {
+public class StockItem implements Serializable {
     int id;
-    @Builder.Default
-    ProductSKU sku = new ProductSKU();
+    SKU sku;
     int purchaseReciept;
     int purchasePrice;
 
