@@ -1,9 +1,11 @@
-package stock_domain_entities
+package products
 
-import "kurdi-go/domain/domain_entities"
+import (
+	"kurdi-go/core/entities"
+)
 
-type StockItemDetails struct {
-	domain_entities.Entity
+type ProductDetails struct {
+	entities.Entity
 	Name         string `json:"name"`
 	Description  string `json:"description"`
 	LanguageCode string `json:"language_code"`

@@ -1,12 +1,12 @@
-package stock_domain_entities
+package products
 
 import (
+	"kurdi-go/core/entities"
 	"gorm.io/gorm"
-	"kurdi-go/domain/domain_entities"
 )
 
-type StockItem struct {
-	domain_entities.Entity
+type Product struct {
+	entities.Entity
 	CostPrice      float32 `json:"cost_price"`
 	SellingPrice   float32 `json:"selling_price"`
 	Discount       float32 `json:"discount"`
@@ -16,9 +16,9 @@ type StockItem struct {
 	IsDiscounted   bool    `json:"is_discounted"`
 }
 
-func (stockItem *StockItem) AfterFind(tx *gorm.DB) (err error) {
-	if stockItem.IsDiscounted {
-		stockItem.SellingPrice -= stockItem.Discount
+func (product *Product) AfterFind(tx *gorm.DB) (err error) {
+	if product.IsDiscounted {
+		product.SellingPrice -= product.Discount
 	}
 	return
 }
