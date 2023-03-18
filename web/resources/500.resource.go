@@ -12,7 +12,7 @@ type Error500 struct {
 	Data    *fiber.Map
 }
 
-func GetError500Resource(message string) IResource {
+func ServerError(message string) IResource {
 	errors := make(map[string]interface{})
 	dataJson := &fiber.Map{
 		"success": true,

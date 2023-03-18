@@ -11,7 +11,7 @@ type Success201 struct {
 	Data    *fiber.Map
 }
 
-func GetSuccess201Resource(data interface{}, message string) IResource {
+func Created(data interface{}, message string) IResource {
 
 	dataJson := &fiber.Map{
 		"success": true,

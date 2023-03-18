@@ -6,10 +6,10 @@ import (
 )
 
 type ProductsService struct {
-	repository repository.ProductsRepository
+	repository repository.IProductsRepository
 }
 
-func NewProductsService(productRepository repository.ProductsRepository) ProductsService {
+func NewProductsService(productRepository repository.IProductsRepository) ProductsService {
 	service := ProductsService{
 		repository: productRepository,
 	}

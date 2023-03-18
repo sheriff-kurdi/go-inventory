@@ -8,7 +8,7 @@ type Error400 struct {
 	Data    *fiber.Map
 }
 
-func GetError400Resource(message string) IResource {
+func BadRequest(message string) IResource {
 	errors := make(map[string]interface{})
 	dataJson := &fiber.Map{
 		"success": true,

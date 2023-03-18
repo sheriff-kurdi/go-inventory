@@ -8,7 +8,7 @@ type Error404 struct {
 	Data    *fiber.Map
 }
 
-func GetError404Resource(message string) IResource {
+func NotFound(message string) IResource {
 	errors := make(map[string]interface{})
 	dataJson := &fiber.Map{
 		"success": true,

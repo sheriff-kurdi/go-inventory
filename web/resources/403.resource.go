@@ -8,7 +8,7 @@ type Error403 struct {
 	Data    *fiber.Map
 }
 
-func GetError403Resource(message string) IResource {
+func Forbiden(message string) IResource {
 	errors := make(map[string]interface{})
 	dataJson := &fiber.Map{
 		"success": true,

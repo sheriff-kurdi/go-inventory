@@ -8,11 +8,10 @@ type NoContent204 struct {
 	Data    *fiber.Map
 }
 
-func GetNoContent204Resource(data interface{}, message string) IResource {
+func NoContent(message string) IResource {
 	dataJson := &fiber.Map{
 		"success": true,
 		"message": message,
-		"data":    data,
 	}
 	resource := NoContent204{Status: 204, Message: "", Data: dataJson}
 	return &resource

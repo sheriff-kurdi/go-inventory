@@ -8,7 +8,7 @@ type Error401 struct {
 	Data    *fiber.Map
 }
 
-func GetError401Resource(message string) IResource {
+func UnAuthorized(message string) IResource {
 	errors := make(map[string]interface{})
 	dataJson := &fiber.Map{
 		"success": true,

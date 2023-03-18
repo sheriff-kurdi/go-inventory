@@ -2,7 +2,7 @@ package repositories
 
 import "kurdi-go/core/entities/products"
 
-type ProductsRepository interface {
+type IProductsRepository interface {
 	SelectAll() []products.Product
 	// SelectAllByCondition(query string) []products.Product
 	// SelectByCondition(query string) products.Product
