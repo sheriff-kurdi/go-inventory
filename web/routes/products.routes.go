@@ -13,5 +13,6 @@ func ProductsRoutes(router *fiber.App) {
 	productsRoutes := router.Group("/products").Use(middlewares.AuthenticationMiddleware)
 
 	productsRoutes.Get("/", productsController.GetAll)
+	productsRoutes.Get("/:id", productsController.FindById)
 
 }
