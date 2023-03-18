@@ -21,7 +21,6 @@ func NewProductsController() *ProductsController {
 
 // GetAll GET /products
 // GetAll all products
-
 func (controller ProductsController) GetAll(ctx *fiber.Ctx) error {
 	//get all
 	products := controller.productsService.ListAll()

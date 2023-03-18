@@ -5,9 +5,10 @@ import (
 )
 
 type ProductDetails struct {
-	Name         string `json:"name"`
-	Description  string `json:"description"`
-	LanguageCode string `json:"language_code"`
-	StockItemId  int    `json:"stock_item_id"`
+	Name         string            `json:"name"`
+	Description  string            `json:"description"`
+	LanguageCode string            `gorm:"primaryKey" json:"language_code"`
+	Language     entities.Language `gorm:"foreignKey:language_code"`
+	ProducId     int               `gorm:"primaryKey" json:"product_id"`
 	entities.TimeStamps
 }
