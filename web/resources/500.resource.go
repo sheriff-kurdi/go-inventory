@@ -2,7 +2,6 @@ package resources
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"go.uber.org/zap"
 )
 
 type Error500 struct {
@@ -18,9 +17,9 @@ func ServerError(message string) IResource {
 		"message": message,
 		"data":    errors,
 	}
-	logger, _ := zap.NewProduction()
-	defer logger.Sync()
-	logger.Error("Internal Server Error", zap.Any(message, errors))
+	// logger, _ := zap.NewProduction()
+	// defer logger.Sync()
+	// logger.Error("Internal Server Error", zap.Any(message, errors))
 	resource := Error500{Status: 500, Message: "", Data: dataJson}
 	return &resource
 }
