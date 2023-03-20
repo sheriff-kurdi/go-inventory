@@ -59,3 +59,12 @@ func (repository ProductsRepository) SelectByCriteria(searchCriteria repositorie
 
 	return products
 }
+
+func (repository ProductsRepository) SelectAllByDetails(languageCode string) []products.Product {
+	var products []products.Product
+	query := `SELECT * FROM products 
+		join product_details on product_details.language_code = ? and product_details.product_id = products.id;`
+
+	repository.Connection.Raw(query, languageCode).Scan(&products)
+	return products
+}
