@@ -1,9 +1,8 @@
 package resources
 
 import (
-	"encoding/json"
 	"github.com/gofiber/fiber/v2"
-	"kurdi-go/helpers/logger"
+	"go.uber.org/zap"
 )
 
 type Error500 struct {
@@ -19,7 +18,9 @@ func ServerError(message string) IResource {
 		"message": message,
 		"data":    errors,
 	}
-	logger.Info(json.Marshal(errors))
+	logger, _ := zap.NewProduction()
+	defer logger.Sync()
+	logger.Error("Internal Server Error", zap.Any(message, errors))
 	resource := Error500{Status: 500, Message: "", Data: dataJson}
 	return &resource
 }

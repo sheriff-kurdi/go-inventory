@@ -27,6 +27,34 @@ func (repository ProductsRepository) SelectAll() []products.Product {
 
 func (repository ProductsRepository) SelectByCriteria(searchCriteria repositories.ProductsSearcheCriteria) []products.Product {
 	var products []products.Product
+	query := `SELECT * FROM products `
+	params := make([]interface{}, 0)
+
+	if searchCriteria.Id != nil  || searchCriteria.CostPriceFrom != nil || searchCriteria.CostPriceTo != nil || searchCriteria.IsDiscounted != nil{
+		query += "WHERE "
+	}
+
+	if searchCriteria.Id != nil {
+		params = append(params, &searchCriteria.Id) 
+		query += "products.id = ?"
+	}
+
+	if searchCriteria.CostPriceFrom != nil {
+		params = append(params, &searchCriteria.CostPriceFrom) 
+		query += "products.cost_price >= ?"
+	}
+
+	if searchCriteria.CostPriceTo != nil {
+		params = append(params, &searchCriteria.CostPriceFrom) 
+		query += "products.cost_price <= ?"
+	}
+
+	if searchCriteria.IsDiscounted != nil {
+		params = append(params, &searchCriteria.IsDiscounted) 
+		query += "products.is_discounted = ?"
+	}
+
+	repository.Connection.Raw(query, params...).Scan(&products)
 
 	return products
 }
