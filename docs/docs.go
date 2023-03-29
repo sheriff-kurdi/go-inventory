@@ -12,8 +12,7 @@ const docTemplate = `{
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
             "name": "API Support",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
+            "email": "your@mail.com"
         },
         "license": {
             "name": "Apache 2.0",
@@ -24,9 +23,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/products/{id}": {
+        "/v1/products": {
             "get": {
-                "description": "get string by ID",
+                "description": "Get all exists books.",
                 "consumes": [
                     "application/json"
                 ],
@@ -34,18 +33,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "accounts"
+                    "Books"
                 ],
-                "summary": "Show an account",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Account ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
+                "summary": "get all exists books",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -55,18 +45,6 @@ const docTemplate = `{
                                 "$ref": "#/definitions/products.Product"
                             }
                         }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {}
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {}
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {}
                     }
                 }
             }
@@ -164,8 +142,10 @@ const docTemplate = `{
         }
     },
     "securityDefinitions": {
-        "BasicAuth": {
-            "type": "basic"
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`
@@ -173,11 +153,11 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
-	BasePath:         "/api/v1",
+	Host:             "",
+	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Swagger Example API",
-	Description:      "This is a sample server celler server.",
+	Title:            "API",
+	Description:      "This is an auto-generated API Docs.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

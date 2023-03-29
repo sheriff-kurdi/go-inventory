@@ -3,6 +3,7 @@ module kurdi-go
 go 1.18
 
 require (
+	github.com/arsmn/fiber-swagger/v2 v2.31.1
 	github.com/gofiber/fiber/v2 v2.42.0
 	github.com/joho/godotenv v1.4.0
 	github.com/stretchr/testify v1.8.2

@@ -19,20 +19,14 @@ func NewProductsController() *ProductsController {
 	return &controller
 }
 
-// GetAll GET /products
-// GetAll all products
-// ShowAccount godoc
-// @Summary      Show an account
-// @Description  get string by ID
-// @Tags         accounts
-// @Accept       json
-// @Produce      json
-// @Param        id   path      int  true  "Account ID"
-// @Success      200  {object}  []products.Product
-// @Failure      400  {object}  resources.IResource
-// @Failure      404  {object}  resources.IResource
-// @Failure      500  {object}  resources.IResource
-// @Router       /products/{id} [get]
+// GetBooks func gets all exists books.
+// @Description Get all exists books.
+// @Summary get all exists books
+// @Tags Books
+// @Accept json
+// @Produce json
+// @Success 200 {array} products.Product
+// @Router /v1/products [get]
 func (controller ProductsController) GetAll(ctx *fiber.Ctx) error {
 	//get all
 	//s := products.Product{}
