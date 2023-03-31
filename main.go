@@ -3,12 +3,12 @@ package main
 import (
 	"kurdi-go/infrastructure/database"
 	postgresDatabse "kurdi-go/infrastructure/database/postgres"
+	"kurdi-go/web/config"
 	"kurdi-go/web/middlewares"
 	"kurdi-go/web/routes"
-	"log"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/joho/godotenv"
 
 	_ "github.com/swaggo/fiber-swagger/example/docs"
 )
@@ -30,10 +30,7 @@ func main() {
 	app := fiber.New()
 
 	//----------env file loading-------
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	config.ENVConfig()
 	//----------------------------
 
 	//----------Database-------
@@ -47,11 +44,8 @@ func main() {
 	routes.ProductsRoutes(app)
 	//----------------------------
 
-
-
 	//---------Port-------------
-	err = app.Listen(":3000")
-	if err != nil {
+	err := app.Listen(os.Getenv("PORT")); if err != nil{
 		return
 	}
 	//----------------------------
