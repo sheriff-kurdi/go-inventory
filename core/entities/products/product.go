@@ -7,25 +7,26 @@ import (
 type Product struct {
 	Id             uint             `gorm:"primary"`
 	ProductDetails []ProductDetails `gorm:"foreignKey:ProducId" json:"product_details"`
-	Quantity       ProductQuantity  `json:"quantity"`
+	ProductQuantity
 	entities.TimeStamps
 }
 
 //-------stock quantities section-----
-func (product *Product)AddStock(quantity int){
-	product.Quantity.TotalStock += quantity
-	product.Quantity.AvailableStock += quantity
+func (product *Product) AddStock(quantity int) {
+	product.TotalStock += quantity
+	product.AvailableStock += quantity
 }
-func (product *Product)ReserveStock(quantity int){
-	product.Quantity.ReservedStock += quantity
-	product.Quantity.AvailableStock -= quantity
+func (product *Product) ReserveStock(quantity int) {
+	product.ReservedStock += quantity
+	product.AvailableStock -= quantity
 }
-func (product *Product)CancelReservation(quantity int){
-	product.Quantity.ReservedStock -= quantity
-	product.Quantity.AvailableStock += quantity
+func (product *Product) CancelReservation(quantity int) {
+	product.ReservedStock -= quantity
+	product.AvailableStock += quantity
 }
-func (product *Product)Selling(quantity int){
-	product.Quantity.TotalStock -= quantity
-	product.Quantity.AvailableStock -= quantity
+func (product *Product) Selling(quantity int) {
+	product.TotalStock -= quantity
+	product.AvailableStock -= quantity
 }
+
 //-------end stock quantities section-----

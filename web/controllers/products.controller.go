@@ -19,11 +19,19 @@ func NewProductsController() *ProductsController {
 	return &controller
 }
 
-// GetAll GET /products
-// GetAll all products
+// GetBooks func gets all exists books.
+// @Description Get all exists books.
+// @Summary get all exists books
+// @Tags Books
+// @Accept json
+// @Produce json
+// @Success 200 {array} products.Product
+// @Router /v1/products [get]
 func (controller ProductsController) GetAll(ctx *fiber.Ctx) error {
 	//get all
-	products := controller.productsService.ListAll()
+	//s := products.Product{}
+	languageCode := ctx.Query("language_code")
+	products := controller.productsService.ListAll(languageCode)
 	response := resources.Ok(products, "")
 	return ctx.Status(response.GetStatus()).JSON(response.GetData())
 }
@@ -32,12 +40,14 @@ func (controller ProductsController) GetAll(ctx *fiber.Ctx) error {
 // Find a product
 func (controller ProductsController) FindById(ctx *fiber.Ctx) error {
 	productId, err := strconv.Atoi(ctx.Params("id"))
+	languageCode := ctx.Query("language_code")
+
 	if err != nil {
 		response := resources.ServerError(err.Error())
 		return ctx.Status(response.GetStatus()).JSON(response.GetData())
 	}
 	//find by id
-	product := controller.productsService.FindById(productId)
+	product := controller.productsService.FindById(productId, languageCode)
 	var response resources.IResource
 
 	if product == nil {

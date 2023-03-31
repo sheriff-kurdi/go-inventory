@@ -3,22 +3,34 @@ package main
 import (
 	"kurdi-go/infrastructure/database"
 	postgresDatabse "kurdi-go/infrastructure/database/postgres"
+	"kurdi-go/web/config"
+	"kurdi-go/web/middlewares"
 	"kurdi-go/web/routes"
-	"log"
+	"os"
+
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/joho/godotenv"
+
+	_ "github.com/swaggo/fiber-swagger/example/docs"
 )
 
+// @title Inventory API
+// @version 1.0
+// @description This is an inventory API Docs.
+// @termsOfService http://swagger.io/terms/
+// @contact.name API Support
+// @contact.email your@mail.com
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+// @BasePath /api
 func main() {
 	//app
 	app := fiber.New()
 
 	//----------env file loading-------
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	config.ENVConfig()
 	//----------------------------
 
 	//----------Database-------
@@ -27,18 +39,13 @@ func main() {
 	//----------------------------
 
 	//---------Routes-------------
-	app.Use(cors.New(cors.Config{
-		AllowHeaders:     "*",
-		AllowOrigins:     "*",
-		AllowCredentials: true,
-		AllowMethods:     "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
-	}))
+	middlewares.FiberMiddleware(app) // Register Fiber's middleware for app.
+	routes.SwaggerRoute(app)
 	routes.ProductsRoutes(app)
 	//----------------------------
 
 	//---------Port-------------
-	err = app.Listen(":3000")
-	if err != nil {
+	err := app.Listen(os.Getenv("PORT")); if err != nil{
 		return
 	}
 	//----------------------------

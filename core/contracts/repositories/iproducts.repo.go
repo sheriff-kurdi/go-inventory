@@ -1,13 +1,13 @@
 package repositories
 
 import (
-	"kurdi-go/core/entities/products"
+	"kurdi-go/core/vm"
 )
 
 type IProductsRepository interface {
-	SelectAll() []products.Product
-	SelectByCriteria(searchCriteria ProductsSearcheCriteria) []products.Product
-	SelectAllByDetails(languageCode string) []products.Product
+	SelectAll() []vm.Product
+	SelectByCriteria(searchCriteria ProductsSearcheCriteria) []vm.Product
+	SelectAllByDetails(languageCode string) []vm.Product
 	//SelectById(query string) products.Product
 	// SelectAllByCondition(query string) []products.Product
 	// SelectByCondition(query string) products.Product
@@ -21,4 +21,5 @@ type ProductsSearcheCriteria struct {
 	CostPriceFrom *float32
 	CostPriceTo   *float32
 	IsDiscounted  *bool
+	LanguageCode  *string
 }
