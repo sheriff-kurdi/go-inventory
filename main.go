@@ -13,9 +13,9 @@ import (
 	_ "github.com/swaggo/fiber-swagger/example/docs"
 )
 
-// @title API
+// @title Inventory API
 // @version 1.0
-// @description This is an auto-generated API Docs.
+// @description This is an inventory API Docs.
 // @termsOfService http://swagger.io/terms/
 // @contact.name API Support
 // @contact.email your@mail.com

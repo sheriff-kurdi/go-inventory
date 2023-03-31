@@ -2,7 +2,7 @@ package postgres
 
 import (
 	"kurdi-go/core/contracts/repositories"
-	"kurdi-go/core/entities/products"
+	"kurdi-go/core/vm"
 
 	"gorm.io/gorm"
 )
@@ -18,40 +18,40 @@ func NewProductsRepository(connection *gorm.DB) ProductsRepository {
 	return repository
 }
 
-func (repository ProductsRepository) SelectAll() []products.Product {
-	var products []products.Product
+func (repository ProductsRepository) SelectAll() []vm.Product {
+	var products []vm.Product
 	query := `SELECT * FROM products ;`
 
 	repository.Connection.Raw(query).Scan(&products)
 	return products
 }
 
-func (repository ProductsRepository) SelectByCriteria(searchCriteria repositories.ProductsSearcheCriteria) []products.Product {
-	var products []products.Product
+func (repository ProductsRepository) SelectByCriteria(searchCriteria repositories.ProductsSearcheCriteria) []vm.Product {
+	var products []vm.Product
 	query := `SELECT * FROM products `
 	params := make([]interface{}, 0)
 
-	if searchCriteria.Id != nil  || searchCriteria.CostPriceFrom != nil || searchCriteria.CostPriceTo != nil || searchCriteria.IsDiscounted != nil{
+	if searchCriteria.Id != nil || searchCriteria.CostPriceFrom != nil || searchCriteria.CostPriceTo != nil || searchCriteria.IsDiscounted != nil {
 		query += "WHERE "
 	}
 
 	if searchCriteria.Id != nil {
-		params = append(params, &searchCriteria.Id) 
+		params = append(params, &searchCriteria.Id)
 		query += "products.id = ?"
 	}
 
 	if searchCriteria.CostPriceFrom != nil {
-		params = append(params, &searchCriteria.CostPriceFrom) 
+		params = append(params, &searchCriteria.CostPriceFrom)
 		query += "products.cost_price >= ?"
 	}
 
 	if searchCriteria.CostPriceTo != nil {
-		params = append(params, &searchCriteria.CostPriceFrom) 
+		params = append(params, &searchCriteria.CostPriceFrom)
 		query += "products.cost_price <= ?"
 	}
 
 	if searchCriteria.IsDiscounted != nil {
-		params = append(params, &searchCriteria.IsDiscounted) 
+		params = append(params, &searchCriteria.IsDiscounted)
 		query += "products.is_discounted = ?"
 	}
 
@@ -60,11 +60,12 @@ func (repository ProductsRepository) SelectByCriteria(searchCriteria repositorie
 	return products
 }
 
-func (repository ProductsRepository) SelectAllByDetails(languageCode string) []products.Product {
-	var products []products.Product
-	query := `SELECT * FROM products 
-		join product_details on product_details.language_code = ? and product_details.product_id = products.id;`
+func (repository ProductsRepository) SelectAllByDetails(languageCode string) []vm.Product {
+	var productsList []vm.Product
 
-	repository.Connection.Raw(query, languageCode).Scan(&products)
-	return products
+	query := `SELECT * FROM products
+		join product_details on product_details.language_code = ? and product_details.product_id = products.id;`
+	repository.Connection.Raw(query, languageCode).Scan(&productsList)
+
+	return productsList
 }

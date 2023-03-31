@@ -1,8 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is an auto-generated API Docs.",
-        "title": "API",
+        "description": "This is an inventory API Docs.",
+        "title": "Inventory API",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
             "name": "API Support",
@@ -66,6 +66,9 @@
         "products.Product": {
             "type": "object",
             "properties": {
+                "available_stock": {
+                    "type": "integer"
+                },
                 "createdAt": {
                     "type": "string"
                 },
@@ -81,8 +84,11 @@
                         "$ref": "#/definitions/products.ProductDetails"
                     }
                 },
-                "quantity": {
-                    "$ref": "#/definitions/products.ProductQuantity"
+                "reserved_stock": {
+                    "type": "integer"
+                },
+                "total_stock": {
+                    "type": "integer"
                 },
                 "updatedAt": {
                     "type": "string"
@@ -115,20 +121,6 @@
                 },
                 "updatedAt": {
                     "type": "string"
-                }
-            }
-        },
-        "products.ProductQuantity": {
-            "type": "object",
-            "properties": {
-                "available_stock": {
-                    "type": "integer"
-                },
-                "reserved_stock": {
-                    "type": "integer"
-                },
-                "total_stock": {
-                    "type": "integer"
                 }
             }
         }

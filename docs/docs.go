@@ -74,6 +74,9 @@ const docTemplate = `{
         "products.Product": {
             "type": "object",
             "properties": {
+                "available_stock": {
+                    "type": "integer"
+                },
                 "createdAt": {
                     "type": "string"
                 },
@@ -89,8 +92,11 @@ const docTemplate = `{
                         "$ref": "#/definitions/products.ProductDetails"
                     }
                 },
-                "quantity": {
-                    "$ref": "#/definitions/products.ProductQuantity"
+                "reserved_stock": {
+                    "type": "integer"
+                },
+                "total_stock": {
+                    "type": "integer"
                 },
                 "updatedAt": {
                     "type": "string"
@@ -125,20 +131,6 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
-        },
-        "products.ProductQuantity": {
-            "type": "object",
-            "properties": {
-                "available_stock": {
-                    "type": "integer"
-                },
-                "reserved_stock": {
-                    "type": "integer"
-                },
-                "total_stock": {
-                    "type": "integer"
-                }
-            }
         }
     },
     "securityDefinitions": {
@@ -156,8 +148,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "API",
-	Description:      "This is an auto-generated API Docs.",
+	Title:            "Inventory API",
+	Description:      "This is an inventory API Docs.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

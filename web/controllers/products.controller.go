@@ -30,7 +30,8 @@ func NewProductsController() *ProductsController {
 func (controller ProductsController) GetAll(ctx *fiber.Ctx) error {
 	//get all
 	//s := products.Product{}
-	products := controller.productsService.ListAll()
+	languageCode := ctx.Query("language_code")
+	products := controller.productsService.ListAll(languageCode)
 	response := resources.Ok(products, "")
 	return ctx.Status(response.GetStatus()).JSON(response.GetData())
 }

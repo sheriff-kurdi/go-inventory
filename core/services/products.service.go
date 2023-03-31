@@ -2,7 +2,7 @@ package services
 
 import (
 	repository "kurdi-go/core/contracts/repositories"
-	"kurdi-go/core/entities/products"
+	"kurdi-go/core/vm"
 	postgresDatabse "kurdi-go/infrastructure/database/postgres"
 	"kurdi-go/infrastructure/repositories/postgres"
 
@@ -21,12 +21,12 @@ func NewProductsService() ProductsService {
 	return service
 }
 
-func (service ProductsService) ListAll() []products.Product {
-	return service.repository.SelectAll()
+func (service ProductsService) ListAll(languageCode string) []vm.Product {
+	return service.repository.SelectAllByDetails(languageCode)
 
 }
 
-func (service ProductsService) FindById(id int) *products.Product {
+func (service ProductsService) FindById(id int) *vm.Product {
 	products := service.repository.SelectByCriteria(repository.ProductsSearcheCriteria{
 		Id: &id,
 	})
