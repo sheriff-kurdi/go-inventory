@@ -26,9 +26,10 @@ func (service ProductsService) ListAll(languageCode string) []vm.Product {
 
 }
 
-func (service ProductsService) FindById(id int) *vm.Product {
+func (service ProductsService) FindById(id int, languageCode string) *vm.Product {
 	products := service.repository.SelectByCriteria(repository.ProductsSearcheCriteria{
 		Id: &id,
+		LanguageCode: &languageCode,
 	})
 	if len(products) == 0 {
 		return nil

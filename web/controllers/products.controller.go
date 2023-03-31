@@ -40,12 +40,14 @@ func (controller ProductsController) GetAll(ctx *fiber.Ctx) error {
 // Find a product
 func (controller ProductsController) FindById(ctx *fiber.Ctx) error {
 	productId, err := strconv.Atoi(ctx.Params("id"))
+	languageCode := ctx.Query("language_code")
+
 	if err != nil {
 		response := resources.ServerError(err.Error())
 		return ctx.Status(response.GetStatus()).JSON(response.GetData())
 	}
 	//find by id
-	product := controller.productsService.FindById(productId)
+	product := controller.productsService.FindById(productId, languageCode)
 	var response resources.IResource
 
 	if product == nil {

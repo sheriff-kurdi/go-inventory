@@ -21,4 +21,5 @@ type ProductsSearcheCriteria struct {
 	CostPriceFrom *float32
 	CostPriceTo   *float32
 	IsDiscounted  *bool
+	LanguageCode  *string
 }
