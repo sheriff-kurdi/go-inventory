@@ -64,11 +64,11 @@ info:
   title: Inventory API
   version: "1.0"
 paths:
-  /v1/products:
+  /api/v1/products:
     get:
       consumes:
       - application/json
-      description: Get all exists books.
+      description: Get all products.
       produces:
       - application/json
       responses:
@@ -78,9 +78,30 @@ paths:
             items:
               $ref: '#/definitions/products.Product'
             type: array
-      summary: get all exists books
+      summary: get all products
       tags:
-      - Books
+      - Products
+  /api/v1/products/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get book by given ID.
+      parameters:
+      - description: Product Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/products.Product'
+      summary: get book by given ID
+      tags:
+      - Book
 securityDefinitions:
   ApiKeyAuth:
     in: header

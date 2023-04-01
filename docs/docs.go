@@ -23,9 +23,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/v1/products": {
+        "/api/v1/products": {
             "get": {
-                "description": "Get all exists books.",
+                "description": "Get all products.",
                 "consumes": [
                     "application/json"
                 ],
@@ -33,9 +33,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Books"
+                    "Products"
                 ],
-                "summary": "get all exists books",
+                "summary": "get all products",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -44,6 +44,38 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/products.Product"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/products/{id}": {
+            "get": {
+                "description": "Get book by given ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Book"
+                ],
+                "summary": "get book by given ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/products.Product"
                         }
                     }
                 }

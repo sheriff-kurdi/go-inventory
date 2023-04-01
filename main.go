@@ -8,9 +8,9 @@ import (
 	"kurdi-go/web/routes"
 	"os"
 
-	"github.com/gofiber/fiber/v2"
+	_ "kurdi-go/docs" // load API Docs files (Swagger)
 
-	_ "github.com/swaggo/fiber-swagger/example/docs"
+	"github.com/gofiber/fiber/v2"
 )
 
 // @title Inventory API
@@ -27,7 +27,8 @@ import (
 // @BasePath /api
 func main() {
 	//app
-	app := fiber.New()
+	fiberConfig := config.FiberConfig()
+	app := fiber.New(fiberConfig)
 
 	//----------env file loading-------
 	config.ENVConfig()
