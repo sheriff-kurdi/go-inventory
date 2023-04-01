@@ -24,58 +24,62 @@ func AuthenticationMiddleware() func(c *fiber.Ctx) error {
 			return errors.New("unauthorized access")
 		}
 
-		token, err := extractTokenFromAutoriztionHeader(ctx.Get("Authorization"))
+		token, err := extractTokenFromAutoriztionHeader(ctx, ctx.Get("Authorization"))
 		if err != nil {
-			utils.Logger().Info(err.Error())
-			response := resources.UnAuthorized("GENERAL.INVALID_API_TOKEN")
-			ctx.Status(response.GetStatus()).JSON(response.GetData())
-			return nil
-		}
-		if token == nil {
-			response := resources.UnAuthorized("GENERAL.INVALID_API_TOKEN")
-			ctx.Status(response.GetStatus()).JSON(response.GetData())
 			return nil
 		}
 
-		if claims, ok := token.Claims.(jwt.MapClaims); ok {
-
-			isTokenExpired, err := isTokenExpired(ctx)
-
-			if err != nil {
-				utils.Logger().Info(err.Error())
-				response := resources.UnAuthorized("INVALID_API_TOKEN")
-				ctx.Status(response.GetStatus()).JSON(response.GetData())
-				return nil
-			}
-			if isTokenExpired {
-				// Return status 401 and unauthorized error message.
-				response := resources.UnAuthorized("LOGOUT_EXPIRATION_TOKEN")
-				ctx.Status(response.GetStatus()).JSON(response.GetData())
-			}
-
-			if ok := setTokenClaimsInTheContext(ctx, claims); !ok {
-				utils.Logger().Info(errors.New(", Invalid API token").Error())
-				response := resources.UnAuthorized("INVALID_API_TOKEN")
-				ctx.Status(response.GetStatus()).JSON(response.GetData())
-				return nil
-			}
+		if err := applyTokenClaims(ctx, token); err != nil {
+			return nil
 		}
 		ctx.Next()
 		return nil
 	}
 }
 
-func extractTokenFromAutoriztionHeader(authorizationHeaderValue string) (*jwt.Token, error) {
+func applyTokenClaims(ctx *fiber.Ctx, token *jwt.Token) error {
+	if claims, ok := token.Claims.(jwt.MapClaims); ok {
+
+		isTokenExpired, err := isTokenExpired(ctx)
+
+		if err != nil {
+			utils.Logger().Info(err.Error())
+			response := resources.UnAuthorized("INVALID_API_TOKEN")
+			ctx.Status(response.GetStatus()).JSON(response.GetData())
+			return err
+		}
+		if isTokenExpired {
+			// Return status 401 and unauthorized error message.
+			response := resources.UnAuthorized("LOGOUT_EXPIRATION_TOKEN")
+			ctx.Status(response.GetStatus()).JSON(response.GetData())
+			return err
+		}
+
+		if ok := setTokenClaimsInTheContext(ctx, claims); !ok {
+			utils.Logger().Info(errors.New(", Invalid API token").Error())
+			response := resources.UnAuthorized("INVALID_API_TOKEN")
+			ctx.Status(response.GetStatus()).JSON(response.GetData())
+			return err
+		}
+	}
+	return nil
+}
+
+func extractTokenFromAutoriztionHeader(ctx *fiber.Ctx, authorizationHeaderValue string) (*jwt.Token, error) {
 
 	tokenString := strings.Replace(authorizationHeaderValue, "Bearer ", "", -1)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		// Don't forget to validate the alg is what you expect:
 		if token.Header["alg"] != "HS256" {
 			utils.Logger().Info("Unexpected signing method")
+			response := resources.UnAuthorized("INVALID_API_TOKEN")
+			ctx.Status(response.GetStatus()).JSON(response.GetData())
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			utils.Logger().Info("Unexpected signing method")
+			response := resources.UnAuthorized("GENERAL.INVALID_API_TOKEN")
+			ctx.Status(response.GetStatus()).JSON(response.GetData())
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
@@ -84,6 +88,12 @@ func extractTokenFromAutoriztionHeader(authorizationHeaderValue string) (*jwt.To
 	})
 
 	if err != nil {
+		return nil, err
+	}
+	if token == nil {
+		utils.Logger().Info("Empty token")
+		response := resources.UnAuthorized("GENERAL.INVALID_API_TOKEN")
+		ctx.Status(response.GetStatus()).JSON(response.GetData())
 		return nil, err
 	}
 	return token, nil
