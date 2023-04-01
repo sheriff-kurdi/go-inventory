@@ -37,34 +37,6 @@ func AuthenticationMiddleware() func(c *fiber.Ctx) error {
 	}
 }
 
-func applyTokenClaims(ctx *fiber.Ctx, token *jwt.Token) error {
-	if claims, ok := token.Claims.(jwt.MapClaims); ok {
-
-		isTokenExpired, err := isTokenExpired(ctx)
-
-		if err != nil {
-			utils.Logger().Info(err.Error())
-			response := resources.UnAuthorized("INVALID_API_TOKEN")
-			ctx.Status(response.GetStatus()).JSON(response.GetData())
-			return err
-		}
-		if isTokenExpired {
-			// Return status 401 and unauthorized error message.
-			response := resources.UnAuthorized("LOGOUT_EXPIRATION_TOKEN")
-			ctx.Status(response.GetStatus()).JSON(response.GetData())
-			return err
-		}
-
-		if ok := setTokenClaimsInTheContext(ctx, claims); !ok {
-			utils.Logger().Info(errors.New(", Invalid API token").Error())
-			response := resources.UnAuthorized("INVALID_API_TOKEN")
-			ctx.Status(response.GetStatus()).JSON(response.GetData())
-			return err
-		}
-	}
-	return nil
-}
-
 func extractTokenFromAutoriztionHeader(ctx *fiber.Ctx, authorizationHeaderValue string) (*jwt.Token, error) {
 
 	tokenString := strings.Replace(authorizationHeaderValue, "Bearer ", "", -1)
@@ -97,6 +69,34 @@ func extractTokenFromAutoriztionHeader(ctx *fiber.Ctx, authorizationHeaderValue 
 		return nil, err
 	}
 	return token, nil
+}
+
+func applyTokenClaims(ctx *fiber.Ctx, token *jwt.Token) error {
+	if claims, ok := token.Claims.(jwt.MapClaims); ok {
+
+		isTokenExpired, err := isTokenExpired(ctx)
+
+		if err != nil {
+			utils.Logger().Info(err.Error())
+			response := resources.UnAuthorized("INVALID_API_TOKEN")
+			ctx.Status(response.GetStatus()).JSON(response.GetData())
+			return err
+		}
+		if isTokenExpired {
+			// Return status 401 and unauthorized error message.
+			response := resources.UnAuthorized("LOGOUT_EXPIRATION_TOKEN")
+			ctx.Status(response.GetStatus()).JSON(response.GetData())
+			return err
+		}
+
+		if ok := setTokenClaimsInTheContext(ctx, claims); !ok {
+			utils.Logger().Info(errors.New(", Invalid API token").Error())
+			response := resources.UnAuthorized("INVALID_API_TOKEN")
+			ctx.Status(response.GetStatus()).JSON(response.GetData())
+			return err
+		}
+	}
+	return nil
 }
 
 func isTokenExpired(ctx *fiber.Ctx) (isTokenEXpired bool, err error) {
