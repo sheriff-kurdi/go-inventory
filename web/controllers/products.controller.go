@@ -19,14 +19,13 @@ func NewProductsController() *ProductsController {
 	return &controller
 }
 
-// GetBooks func gets all exists books.
-// @Description Get all exists books.
-// @Summary get all exists books
-// @Tags Books
+// @Description Get all products.
+// @Summary get all products
+// @Tags Products
 // @Accept json
 // @Produce json
 // @Success 200 {array} products.Product
-// @Router /v1/products [get]
+// @Router /api/v1/products [get]
 func (controller ProductsController) GetAll(ctx *fiber.Ctx) error {
 	//get all
 	//s := products.Product{}
@@ -36,8 +35,14 @@ func (controller ProductsController) GetAll(ctx *fiber.Ctx) error {
 	return ctx.Status(response.GetStatus()).JSON(response.GetData())
 }
 
-// FindById GET /products/:id
-// Find a product
+// @Description Get book by given ID.
+// @Summary get book by given ID
+// @Tags Book
+// @Accept json
+// @Produce json
+// @Param id path string true "Product Id"
+// @Success 200 {object} products.Product
+// @Router /api/v1/products/{id} [get]
 func (controller ProductsController) FindById(ctx *fiber.Ctx) error {
 	productId, err := strconv.Atoi(ctx.Params("id"))
 	languageCode := ctx.Query("language_code")
