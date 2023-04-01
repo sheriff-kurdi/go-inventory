@@ -15,7 +15,7 @@
         "version": "1.0"
     },
     "paths": {
-        "/v1/products": {
+        "/api/v1/products": {
             "get": {
                 "security": [
                     {
@@ -30,9 +30,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Books"
+                    "Products"
                 ],
-                "summary": "get all exists books",
+                "summary": "get all products",
                 "responses": {
                     "200": {
                         "description": "OK",

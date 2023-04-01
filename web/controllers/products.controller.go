@@ -19,10 +19,9 @@ func NewProductsController() *ProductsController {
 	return &controller
 }
 
-// GetBooks func gets all exists books.
-// @Description Get all exists books.
-// @Summary get all exists books
-// @Tags Books
+// @Description Get all products.
+// @Summary get all products
+// @Tags Products
 // @Accept json
 // @Produce json
 // @Success 200 {array} products.Product

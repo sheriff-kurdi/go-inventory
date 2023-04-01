@@ -7,8 +7,7 @@ require (
 	github.com/gofiber/fiber/v2 v2.42.0
 	github.com/gofiber/jwt/v2 v2.2.7
 	github.com/joho/godotenv v1.4.0
-	github.com/swaggo/fiber-swagger v1.3.0
-	github.com/swaggo/swag v1.8.10
+	github.com/swaggo/swag v1.8.1
 	gorm.io/driver/postgres v1.3.8
 	gorm.io/gorm v1.23.8
 )

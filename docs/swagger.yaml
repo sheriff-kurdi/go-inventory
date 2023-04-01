@@ -64,11 +64,11 @@ info:
   title: Inventory API
   version: "1.0"
 paths:
-  /v1/products:
+  /api/v1/products:
     get:
       consumes:
       - application/json
-      description: Get all exists books.
+      description: Get all products.
       produces:
       - application/json
       responses:
@@ -100,7 +100,7 @@ paths:
       - ApiKeyAuth: []
       summary: get all exists books
       tags:
-      - Books
+      - Book
 securityDefinitions:
   ApiKeyAuth:
     in: header

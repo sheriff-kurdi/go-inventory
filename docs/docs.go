@@ -23,7 +23,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/v1/products": {
+        "/api/v1/products": {
             "get": {
                 "security": [
                     {
@@ -38,9 +38,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Books"
+                    "Products"
                 ],
-                "summary": "get all exists books",
+                "summary": "get all products",
                 "responses": {
                     "200": {
                         "description": "OK",
