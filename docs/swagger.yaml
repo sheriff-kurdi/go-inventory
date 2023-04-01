@@ -78,6 +78,26 @@ paths:
             items:
               $ref: '#/definitions/products.Product'
             type: array
+      security:
+      - ApiKeyAuth: []
+      summary: get all exists books
+      tags:
+      - Books
+  /v1/products/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get all exists books.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/products.Product'
+      security:
+      - ApiKeyAuth: []
+      - ApiKeyAuth: []
       summary: get all exists books
       tags:
       - Books
