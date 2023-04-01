@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/gofiber/fiber/v2"
 	_ "kurdi-go/docs" // load API Docs files (Swagger)
 	"kurdi-go/infrastructure/database"
 	postgresDatabse "kurdi-go/infrastructure/database/postgres"
@@ -9,6 +8,8 @@ import (
 	"kurdi-go/web/middlewares"
 	"kurdi-go/web/routes"
 	"os"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 // @title Inventory API
@@ -40,7 +41,9 @@ func main() {
 	//---------Routes-------------
 	middlewares.FiberMiddleware(app) // Register Fiber's middleware for app.
 	routes.SwaggerRoute(app)
+	routes.AuthRoutes(app)
 	routes.ProductsRoutes(app)
+
 	//----------------------------
 
 	//---------Port-------------

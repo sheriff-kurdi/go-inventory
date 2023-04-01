@@ -5,9 +5,9 @@ import (
 )
 
 type IProductsRepository interface {
-	SelectAll() []vm.Product
-	SelectByCriteria(searchCriteria ProductsSearcheCriteria) []vm.Product
-	SelectAllByDetails(languageCode string) []vm.Product
+	SelectAll() []vm.ProductVM
+	SelectByCriteria(searchCriteria ProductsSearcheCriteria) []vm.ProductVM
+	SelectAllByDetails(languageCode string) []vm.ProductVM
 	//SelectById(query string) products.Product
 	// SelectAllByCondition(query string) []products.Product
 	// SelectByCondition(query string) products.Product

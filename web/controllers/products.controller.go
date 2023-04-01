@@ -9,7 +9,7 @@ import (
 )
 
 type ProductsController struct {
-	productsService services.ProductsService
+	productsService services.AuthService
 }
 
 func NewProductsController() *ProductsController {
@@ -24,9 +24,9 @@ func NewProductsController() *ProductsController {
 // @Tags Products
 // @Accept json
 // @Produce json
-// @Success 200 {array} products.Product
+// @Success 200 {array} vm.ProductVM
 // @Security ApiKeyAuth
-// @Router /v1/products [get]
+// @Router /api/v1/products [get]
 func (controller ProductsController) GetAll(ctx *fiber.Ctx) error {
 	//get all
 	//s := products.Product{}
@@ -39,13 +39,13 @@ func (controller ProductsController) GetAll(ctx *fiber.Ctx) error {
 // GetBooks func gets all exists books.
 // @Description Get all exists books.
 // @Summary get all exists books
-// @Tags Books
+// @Tags Products
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
-// @Success 200 {object} products.Product
+// @Success 200 {object} vm.ProductVM
 // @Security ApiKeyAuth
-// @Router /v1/products/{id} [get]
+// @Router /api/v1/products/{id} [get]
 func (controller ProductsController) FindById(ctx *fiber.Ctx) error {
 	productId, err := strconv.Atoi(ctx.Params("id"))
 	languageCode := ctx.Query("language_code")

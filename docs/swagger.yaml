@@ -1,18 +1,12 @@
 definitions:
-  entities.Language:
+  vm.LoginVM:
     properties:
-      createdAt:
+      password:
         type: string
-      deletedAt:
-        type: string
-      language_code:
-        type: string
-      name:
-        type: string
-      updatedAt:
+      user_name:
         type: string
     type: object
-  products.Product:
+  vm.ProductVM:
     properties:
       available_stock:
         type: integer
@@ -20,12 +14,14 @@ definitions:
         type: string
       deletedAt:
         type: string
+      description:
+        type: string
       id:
         type: integer
-      product_details:
-        items:
-          $ref: '#/definitions/products.ProductDetails'
-        type: array
+      language_code:
+        type: string
+      name:
+        type: string
       reserved_stock:
         type: integer
       total_stock:
@@ -33,28 +29,9 @@ definitions:
       updatedAt:
         type: string
     type: object
-  products.ProductDetails:
-    properties:
-      createdAt:
-        type: string
-      deletedAt:
-        type: string
-      description:
-        type: string
-      language:
-        $ref: '#/definitions/entities.Language'
-      language_code:
-        type: string
-      name:
-        type: string
-      product_id:
-        type: integer
-      updatedAt:
-        type: string
-    type: object
 info:
   contact:
-    email: your@mail.com
+    email: sheriff.kurdi@gmail.com
     name: API Support
   description: This is an inventory API Docs.
   license:
@@ -64,6 +41,30 @@ info:
   title: Inventory API
   version: "1.0"
 paths:
+  /api/v1/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login and get token.
+      parameters:
+      - description: Login View Model
+        in: body
+        name: lognVM
+        required: true
+        schema:
+          $ref: '#/definitions/vm.LoginVM'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/vm.LoginVM'
+            type: array
+      summary: Login and get token
+      tags:
+      - Auth
   /api/v1/products:
     get:
       consumes:
@@ -76,14 +77,14 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/products.Product'
+              $ref: '#/definitions/vm.ProductVM'
             type: array
       security:
       - ApiKeyAuth: []
-      summary: get all exists books
+      summary: get all products
       tags:
-      - Books
-  /v1/products/{id}:
+      - Products
+  /api/v1/products/{id}:
     get:
       consumes:
       - application/json
@@ -94,13 +95,13 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/products.Product'
+            $ref: '#/definitions/vm.ProductVM'
       security:
       - ApiKeyAuth: []
       - ApiKeyAuth: []
       summary: get all exists books
       tags:
-      - Book
+      - Products
 securityDefinitions:
   ApiKeyAuth:
     in: header
