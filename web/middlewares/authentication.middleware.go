@@ -25,7 +25,7 @@ func AuthenticationMiddleware() func(c *fiber.Ctx) error {
 		}
 
 		token, err := extractTokenFromAutoriztionHeader(ctx.Get("Authorization"))
-		if err == nil {
+		if err != nil {
 			utils.Logger().Info(err.Error())
 			response := resources.UnAuthorized("GENERAL.INVALID_API_TOKEN")
 			ctx.Status(response.GetStatus()).JSON(response.GetData())
