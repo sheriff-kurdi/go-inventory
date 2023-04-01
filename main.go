@@ -1,16 +1,14 @@
 package main
 
 import (
+	"github.com/gofiber/fiber/v2"
+	_ "kurdi-go/docs" // load API Docs files (Swagger)
 	"kurdi-go/infrastructure/database"
 	postgresDatabse "kurdi-go/infrastructure/database/postgres"
 	"kurdi-go/web/config"
 	"kurdi-go/web/middlewares"
 	"kurdi-go/web/routes"
 	"os"
-
-	_ "kurdi-go/docs" // load API Docs files (Swagger)
-
-	"github.com/gofiber/fiber/v2"
 )
 
 // @title Inventory API
@@ -18,7 +16,7 @@ import (
 // @description This is an inventory API Docs.
 // @termsOfService http://swagger.io/terms/
 // @contact.name API Support
-// @contact.email your@mail.com
+// @contact.email sheriff.kurdi@gmail.com
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 // @securityDefinitions.apikey ApiKeyAuth
@@ -46,7 +44,8 @@ func main() {
 	//----------------------------
 
 	//---------Port-------------
-	err := app.Listen(os.Getenv("PORT")); if err != nil{
+	err := app.Listen(os.Getenv("PORT"))
+	if err != nil {
 		return
 	}
 	//----------------------------
