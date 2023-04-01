@@ -3,7 +3,9 @@ package controllers
 import (
 	"kurdi-go/core/services"
 	"kurdi-go/web/resources"
+	"kurdi-go/web/utils"
 	"strconv"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -30,6 +32,30 @@ func NewProductsController() *ProductsController {
 func (controller ProductsController) GetAll(ctx *fiber.Ctx) error {
 	//get all
 	//s := products.Product{}
+	// Get now time.
+	now := time.Now().Unix()
+
+	// Get claims from JWT.
+	claims, err := utils.ExtractTokenMetadata(ctx)
+	if err != nil {
+		// Return status 500 and JWT parse error.
+		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": true,
+			"msg":   err.Error(),
+		})
+	}
+
+	// Set expiration time from JWT data of current book.
+	expires := claims.Expires
+
+	// Checking, if now time greather than expiration from JWT.
+	if now > expires {
+		// Return status 401 and unauthorized error message.
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": true,
+			"msg":   "unauthorized, check expiration time of your token",
+		})
+	}
 	languageCode := ctx.Query("language_code")
 	products := controller.productsService.ListAll(languageCode)
 	response := resources.Ok(products, "")
