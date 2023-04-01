@@ -2,8 +2,6 @@ package main
 
 import (
 	_ "kurdi-go/docs" // load API Docs files (Swagger)
-	"kurdi-go/infrastructure/database"
-	postgresDatabse "kurdi-go/infrastructure/database/postgres"
 	"kurdi-go/web/config"
 	"kurdi-go/web/middlewares"
 	"kurdi-go/web/routes"
@@ -34,8 +32,8 @@ func main() {
 	//----------------------------
 
 	//----------Database-------
-	connection := postgresDatabse.Connect()
-	database.AutoMigrate(connection)
+	// connection := postgresDatabse.Connect()
+	// database.AutoMigrate(connection)
 	//----------------------------
 
 	//---------Routes-------------

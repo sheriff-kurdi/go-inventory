@@ -4,6 +4,7 @@ import (
 	"os"
 	"strconv"
 	"time"
+
 	"github.com/golang-jwt/jwt"
 )
 
@@ -20,6 +21,7 @@ func GenerateNewAccessToken() (string, error) {
 
 	// Set public claims:
 	claims["exp"] = time.Now().Add(time.Minute * time.Duration(minutesCount)).Unix()
+	claims["user_id"] = 1
 
 	// Create a new JWT access token with claims.
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

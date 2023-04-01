@@ -10,7 +10,11 @@ import (
 func ProductsRoutes(app *fiber.App) {
 	productsController := controllers.NewProductsController()
 
-	productsRoutes := app.Group("/api/v1/products", middlewares.JWTProtected())
+	productsRoutes := app.Group("/api/v1/products")
+	productsRoutes.Use(
+		middlewares.JWTProtected(),
+		middlewares.AuthenticationMiddleware(),
+	)
 	productsRoutes.Get("/", productsController.GetAll)
 	productsRoutes.Get("/:id", productsController.FindById)
 

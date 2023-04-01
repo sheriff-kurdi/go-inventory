@@ -9,18 +9,19 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt"
 )
 
-func AuthenticationMiddleware(a *fiber.App) func(c *fiber.Ctx) {
-	return func(c *fiber.Ctx) {
+func AuthenticationMiddleware() func(c *fiber.Ctx) error {
+	return func(c *fiber.Ctx) error {
 
 		if len(c.Get("Authorization")) == 0 {
 			utils.Logger().Info(errors.New("unauthorized access").Error())
 			response := resources.UnAuthorized("GENERAL.API_TOKEN_REQUIRED")
 			c.Status(response.GetStatus()).JSON(response.GetData())
-			return
+			return errors.New("unauthorized access")
 		}
 		tokenString := strings.Replace(c.Get("Authorization"), "Bearer ", "", -1)
 		token, _ := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
@@ -37,17 +38,23 @@ func AuthenticationMiddleware(a *fiber.App) func(c *fiber.Ctx) {
 		if token == nil {
 			response := resources.UnAuthorized("GENERAL.INVALID_API_TOKEN")
 			c.Status(response.GetStatus()).JSON(response.GetData())
-			return
+			return nil
 		}
 		if claims, ok := token.Claims.(jwt.MapClaims); ok {
-			UserId, _ := claims["sub"]
-
-			if int(UserId.(float64)) != UserId {
+			UserId, hasUserId := claims["user_id"]
+			if !hasUserId{
 				utils.Logger().Info(errors.New(", Invalid API token").Error())
 				response := resources.UnAuthorized("INVALID_API_TOKEN")
 				c.Status(response.GetStatus()).JSON(response.GetData())
-				return
+				return nil
 			}
+
+			// if int(UserId.(float64)) != UserId {
+			// 	utils.Logger().Info(errors.New(", Invalid API token").Error())
+			// 	response := resources.UnAuthorized("INVALID_API_TOKEN")
+			// 	c.Status(response.GetStatus()).JSON(response.GetData())
+			// 	return nil
+			// }
 
 			// Get nowUnixTime time.
 			nowUnixTime := time.Now().Unix()
@@ -72,5 +79,6 @@ func AuthenticationMiddleware(a *fiber.App) func(c *fiber.Ctx) {
 			c.Set("user_id", strconv.FormatFloat(UserId.(float64), 'E', -1, 64))
 		}
 		c.Next()
+		return nil
 	}
 }

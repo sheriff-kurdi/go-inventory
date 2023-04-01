@@ -90,3 +90,6 @@ docker.stop.postgres:
 
 swag:
 	/home/kurdi/go/bin/swag init
+
+killport:
+	sudo kill -9 `sudo lsof -t -i:3000`
