@@ -18,7 +18,7 @@ func AuthenticationMiddleware() func(c *fiber.Ctx) error {
 	return func(ctx *fiber.Ctx) error {
 
 		if len(ctx.Get("Authorization")) == 0 {
-			utils.Logger().Info(errors.New("unauthorized access").Error())
+			utils.Logger().Info("Authorization header len = 0")
 			response := resources.UnAuthorized("GENERAL.API_TOKEN_REQUIRED")
 			ctx.Status(response.GetStatus()).JSON(response.GetData())
 			return errors.New("unauthorized access")
