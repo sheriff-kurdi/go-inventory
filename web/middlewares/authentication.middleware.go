@@ -24,7 +24,7 @@ func AuthenticationMiddleware() func(c *fiber.Ctx) error {
 			return errors.New("unauthorized access")
 		}
 
-		token, err := extractTokenFromAutoriztionHeader(ctx, ctx.Get("Authorization"))
+		token, err := extractTokenFromAutoriztionHeaderIfValid(ctx)
 		if err != nil {
 			return nil
 		}
@@ -37,9 +37,9 @@ func AuthenticationMiddleware() func(c *fiber.Ctx) error {
 	}
 }
 
-func extractTokenFromAutoriztionHeader(ctx *fiber.Ctx, authorizationHeaderValue string) (*jwt.Token, error) {
+func extractTokenFromAutoriztionHeaderIfValid(ctx *fiber.Ctx) (*jwt.Token, error) {
 
-	tokenString := strings.Replace(authorizationHeaderValue, "Bearer ", "", -1)
+	tokenString := strings.Replace(ctx.Get("Authorization"), "Bearer ", "", -1)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		// Don't forget to validate the alg is what you expect:
 		if token.Header["alg"] != "HS256" {
