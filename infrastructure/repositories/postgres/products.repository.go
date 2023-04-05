@@ -3,6 +3,7 @@ package postgres
 import (
 	"kurdi-go/core/contracts/repositories"
 	"kurdi-go/core/vm"
+	"os"
 
 	"gorm.io/gorm"
 )
@@ -66,7 +67,9 @@ func (repository ProductsRepository) SelectByCriteria(searchCriteria repositorie
 
 func (repository ProductsRepository) SelectAllByDetails(languageCode string) []vm.ProductVM {
 	var productsList []vm.ProductVM
-
+	if languageCode == ""{
+		languageCode = os.Getenv("DEFAULT_LANGUAGE")
+	}
 	query := `SELECT * FROM products
 		join product_details on product_details.language_code = ? and product_details.product_id = products.id;`
 	repository.Connection.Raw(query, languageCode).Scan(&productsList)
