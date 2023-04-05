@@ -12,7 +12,7 @@ const docTemplate = `{
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
             "name": "API Support",
-            "email": "your@mail.com"
+            "email": "sheriff.kurdi@gmail.com"
         },
         "license": {
             "name": "Apache 2.0",
@@ -23,8 +23,50 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/auth/login": {
+            "post": {
+                "description": "Login and get token.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login and get token",
+                "parameters": [
+                    {
+                        "description": "Login View Model",
+                        "name": "lognVM",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vm.LoginVM"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/vm.LoginVM"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/products": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get all products.",
                 "consumes": [
                     "application/json"
@@ -42,7 +84,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/products.Product"
+                                "$ref": "#/definitions/vm.ProductVM"
                             }
                         }
                     }
@@ -51,7 +93,15 @@ const docTemplate = `{
         },
         "/api/v1/products/{id}": {
             "get": {
-                "description": "Get book by given ID.",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all exists books.",
                 "consumes": [
                     "application/json"
                 ],
@@ -59,23 +109,14 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Book"
+                    "Products"
                 ],
-                "summary": "get book by given ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Product Id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
+                "summary": "get all exists books",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/products.Product"
+                            "$ref": "#/definitions/vm.ProductVM"
                         }
                     }
                 }
@@ -83,27 +124,18 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "entities.Language": {
+        "vm.LoginVM": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "password": {
                     "type": "string"
                 },
-                "deletedAt": {
-                    "type": "string"
-                },
-                "language_code": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updatedAt": {
+                "user_name": {
                     "type": "string"
                 }
             }
         },
-        "products.Product": {
+        "vm.ProductVM": {
             "type": "object",
             "properties": {
                 "available_stock": {
@@ -115,40 +147,11 @@ const docTemplate = `{
                 "deletedAt": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "integer"
-                },
-                "product_details": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/products.ProductDetails"
-                    }
-                },
-                "reserved_stock": {
-                    "type": "integer"
-                },
-                "total_stock": {
-                    "type": "integer"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "products.ProductDetails": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "type": "string"
-                },
                 "description": {
                     "type": "string"
                 },
-                "language": {
-                    "$ref": "#/definitions/entities.Language"
+                "id": {
+                    "type": "integer"
                 },
                 "language_code": {
                     "type": "string"
@@ -156,7 +159,10 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "product_id": {
+                "reserved_stock": {
+                    "type": "integer"
+                },
+                "total_stock": {
                     "type": "integer"
                 },
                 "updatedAt": {

@@ -14,19 +14,19 @@ type ProductsService struct {
 	Connection *gorm.DB
 }
 
-func NewProductsService() ProductsService {
-	service := ProductsService{
+func NewProductsService() AuthService {
+	service := AuthService{
 		repository: postgres.NewProductsRepository(postgresDatabse.Connect()),
 	}
 	return service
 }
 
-func (service ProductsService) ListAll(languageCode string) []vm.Product {
+func (service AuthService) ListAll(languageCode string) []vm.ProductVM {
 	return service.repository.SelectAllByDetails(languageCode)
 
 }
 
-func (service ProductsService) FindById(id int, languageCode string) *vm.Product {
+func (service AuthService) FindById(id int, languageCode string) *vm.ProductVM {
 	products := service.repository.SelectByCriteria(repository.ProductsSearcheCriteria{
 		Id: &id,
 		LanguageCode: &languageCode,

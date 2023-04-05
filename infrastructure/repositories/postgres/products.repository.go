@@ -18,16 +18,16 @@ func NewProductsRepository(connection *gorm.DB) ProductsRepository {
 	return repository
 }
 
-func (repository ProductsRepository) SelectAll() []vm.Product {
-	var products []vm.Product
+func (repository ProductsRepository) SelectAll() []vm.ProductVM {
+	var products []vm.ProductVM
 	query := `SELECT * FROM products ;`
 
 	repository.Connection.Raw(query).Scan(&products)
 	return products
 }
 
-func (repository ProductsRepository) SelectByCriteria(searchCriteria repositories.ProductsSearcheCriteria) []vm.Product {
-	var products []vm.Product
+func (repository ProductsRepository) SelectByCriteria(searchCriteria repositories.ProductsSearcheCriteria) []vm.ProductVM {
+	var products []vm.ProductVM
 	query := `SELECT * FROM products `
 	params := make([]interface{}, 0)
 	if searchCriteria.LanguageCode != nil && len(*searchCriteria.LanguageCode) != 0 {
@@ -64,8 +64,8 @@ func (repository ProductsRepository) SelectByCriteria(searchCriteria repositorie
 	return products
 }
 
-func (repository ProductsRepository) SelectAllByDetails(languageCode string) []vm.Product {
-	var productsList []vm.Product
+func (repository ProductsRepository) SelectAllByDetails(languageCode string) []vm.ProductVM {
+	var productsList []vm.ProductVM
 
 	query := `SELECT * FROM products
 		join product_details on product_details.language_code = ? and product_details.product_id = products.id;`
