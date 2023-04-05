@@ -14,7 +14,7 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func AuthenticationMiddleware() func(c *fiber.Ctx) error {
+func AuthenticationMiddleware() func(c *fiber.Ctx) error { 	
 	return func(ctx *fiber.Ctx) error {
 
 		if len(ctx.Get("Authorization")) == 0 {

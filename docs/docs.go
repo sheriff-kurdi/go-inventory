@@ -112,6 +112,15 @@ const docTemplate = `{
                     "Products"
                 ],
                 "summary": "get all exists books",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",

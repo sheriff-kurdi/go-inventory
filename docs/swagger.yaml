@@ -89,6 +89,12 @@ paths:
       consumes:
       - application/json
       description: Get all exists books.
+      parameters:
+      - description: Product Id
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
       - application/json
       responses:
