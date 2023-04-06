@@ -1,8 +1,8 @@
 package vm
 
 import (
-	"kurdi-go/core/entities"
-	"kurdi-go/core/entities/products"
+	"kurdi-go/core/models"
+	"kurdi-go/core/models/products"
 )
 
 type ProductVM struct {
@@ -11,5 +11,5 @@ type ProductVM struct {
 	Description  string            `json:"description"`
 	LanguageCode string            `json:"language_code"`
 	products.ProductQuantity
-	entities.TimeStamps
+	models.TimeStamps
 }

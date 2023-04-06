@@ -1,14 +1,12 @@
 package products
 
-import (
-	"kurdi-go/core/entities"
-)
+import "kurdi-go/core/models"
 
 type Product struct {
 	Id             uint             `gorm:"primary"`
 	ProductDetails []ProductDetails `gorm:"foreignKey:ProducId" json:"product_details"`
 	ProductQuantity
-	entities.TimeStamps
+	models.TimeStamps
 }
 
 //-------stock quantities section-----

@@ -1,4 +1,4 @@
-package entities
+package models
 
 type Language struct {
 	LanguageCode string `gorm:"primaryKey" json:"language_code"`
