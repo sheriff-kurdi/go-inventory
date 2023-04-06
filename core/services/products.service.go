@@ -25,7 +25,6 @@ func NewProductsService() ProductsService {
 
 func (service ProductsService) ListAll(languageCode string) []vm.ProductVM {
 	return service.repository.SelectAllByDetails(languageCode)
-
 }
 
 func (service ProductsService) FindById(id int, languageCode string) *vm.ProductVM {
@@ -37,14 +36,12 @@ func (service ProductsService) FindById(id int, languageCode string) *vm.Product
 		return nil
 	}
 	return &products[0]
-
 }
 
 func (service ProductsService) DeleteById(productId int) (err error) {
 	err = service.repository.DeleteById(service.Connection, productId)
 	return 
 }
-
 
 func (service ProductsService) Save(productVM vm.ProductSavingVM) (productId int, err error) {
 	transasction := service.Connection.Begin()

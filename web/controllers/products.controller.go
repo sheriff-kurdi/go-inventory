@@ -90,9 +90,7 @@ func (controller ProductsController) DeleteById(ctx *fiber.Ctx) error {
 		response := resources.ServerError(err.Error())
 		return ctx.Status(response.GetStatus()).JSON(response.GetData())
 	}
-	var response resources.IResource
-
-	response = resources.Ok(productId, "Deleted Successfully")
+	response := resources.Ok(productId, "Deleted Successfully")
 	return ctx.Status(response.GetStatus()).JSON(response.GetData())
 }
 
