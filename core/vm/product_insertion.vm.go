@@ -5,6 +5,7 @@ import "kurdi-go/core/models/products"
 type ProductInsertionVM struct {
 	Details []ProductDetailsInsertionVM `json:"details"`
 	products.ProductQuantity
+	products.ProductPrice
 }
 
 type ProductDetailsInsertionVM struct {
@@ -12,3 +13,4 @@ type ProductDetailsInsertionVM struct {
 	Description  string `json:"description"`
 	LanguageCode string `json:"language_code"`
 }
+

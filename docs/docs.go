@@ -206,14 +206,26 @@ const docTemplate = `{
                 "available_stock": {
                     "type": "integer"
                 },
+                "cost_price": {
+                    "type": "number"
+                },
                 "details": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/vm.ProductDetailsInsertionVM"
                     }
                 },
+                "discount": {
+                    "type": "number"
+                },
+                "is_discounted": {
+                    "type": "boolean"
+                },
                 "reserved_stock": {
                     "type": "integer"
+                },
+                "selling_price": {
+                    "type": "number"
                 },
                 "total_stock": {
                     "type": "integer"

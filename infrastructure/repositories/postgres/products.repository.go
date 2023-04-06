@@ -82,6 +82,7 @@ func (repository ProductsRepository) SelectAllByDetails(languageCode string) []v
 func (repository ProductsRepository) Insert(connection *gorm.DB, productVM vm.ProductInsertionVM) (productId int, err error) {
 	productModel := products.ProductModel{
 		ProductQuantity: productVM.ProductQuantity,
+		ProductPrice:    productVM.ProductPrice,
 	}
 
 	if err = connection.Save(&productModel).Error; err != nil {
@@ -92,10 +93,10 @@ func (repository ProductsRepository) Insert(connection *gorm.DB, productVM vm.Pr
 	productDetails := []products.ProductDetailsModel{}
 	for _, productDetailsVM := range productVM.Details {
 		productDetails = append(productDetails, products.ProductDetailsModel{
-			Name: productDetailsVM.Name,
+			Name:         productDetailsVM.Name,
 			Description:  productDetailsVM.Description,
 			LanguageCode: productDetailsVM.LanguageCode,
-			ProductId: productId,
+			ProductId:    productId,
 		})
 
 	}

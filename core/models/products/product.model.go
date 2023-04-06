@@ -8,9 +8,10 @@ import (
 )
 
 type ProductModel struct {
-	Id             uint             `gorm:"primary"`
+	Id             uint                  `gorm:"primary"`
 	ProductDetails []ProductDetailsModel `gorm:"foreignKey:ProductId" json:"product_details"`
 	ProductQuantity
+	ProductPrice
 	models.TimeStamps
 }
 

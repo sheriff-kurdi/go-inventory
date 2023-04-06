@@ -48,5 +48,6 @@ func (service AuthService) Insert(productVM vm.ProductInsertionVM) (productId in
 		utils.Logger().Info(err.Error())
 		return
 	}
+	transasction.Commit()
 	return
 }
