@@ -29,6 +29,14 @@ func (repository ProductsRepository) SelectAll() []vm.ProductVM {
 	return products
 }
 
+func (repository ProductsRepository) DeleteById(connection *gorm.DB, productId int) (err error) {
+	query := `
+		delete from products where id = ? cascade;
+	`
+	err = connection.Exec(query, productId).Error
+	return
+}
+
 func (repository ProductsRepository) SelectByCriteria(searchCriteria repositories.ProductsSearcheCriteria) []vm.ProductVM {
 	var products []vm.ProductVM
 	query := `SELECT * FROM products `
@@ -79,7 +87,7 @@ func (repository ProductsRepository) SelectAllByDetails(languageCode string) []v
 	return productsList
 }
 
-func (repository ProductsRepository) Upsert(connection *gorm.DB, productVM vm.ProductSavingVM) (productId int, err error) {
+func (repository ProductsRepository) Save(connection *gorm.DB, productVM vm.ProductSavingVM) (productId int, err error) {
 	productModel := products.ProductModel{
 		Id:              productVM.Id,
 		ProductQuantity: productVM.ProductQuantity,

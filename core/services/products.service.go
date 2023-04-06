@@ -15,20 +15,20 @@ type ProductsService struct {
 	Connection *gorm.DB
 }
 
-func NewProductsService() AuthService {
-	service := AuthService{
+func NewProductsService() ProductsService {
+	service := ProductsService{
 		repository: postgres.NewProductsRepository(postgresDatabse.Connect()),
 		Connection: postgresDatabse.Connect(),
 	}
 	return service
 }
 
-func (service AuthService) ListAll(languageCode string) []vm.ProductVM {
+func (service ProductsService) ListAll(languageCode string) []vm.ProductVM {
 	return service.repository.SelectAllByDetails(languageCode)
 
 }
 
-func (service AuthService) FindById(id int, languageCode string) *vm.ProductVM {
+func (service ProductsService) FindById(id int, languageCode string) *vm.ProductVM {
 	products := service.repository.SelectByCriteria(repository.ProductsSearcheCriteria{
 		Id:           &id,
 		LanguageCode: &languageCode,
@@ -40,9 +40,15 @@ func (service AuthService) FindById(id int, languageCode string) *vm.ProductVM {
 
 }
 
-func (service AuthService) Insert(productVM vm.ProductSavingVM) (productId int, err error) {
+func (service ProductsService) DeleteById(productId int) (err error) {
+	err = service.repository.DeleteById(service.Connection, productId)
+	return 
+}
+
+
+func (service ProductsService) Save(productVM vm.ProductSavingVM) (productId int, err error) {
 	transasction := service.Connection.Begin()
-	productId, err = service.repository.Upsert(transasction, productVM)
+	productId, err = service.repository.Save(transasction, productVM)
 	if err != nil {
 		transasction.Rollback()
 		utils.Logger().Info(err.Error())

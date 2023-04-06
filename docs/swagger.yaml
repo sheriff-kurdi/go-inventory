@@ -120,7 +120,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Create Product.
+      description: Save Product.
       parameters:
       - description: Product VM
         in: body
@@ -131,17 +131,40 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/vm.ProductSavingVM'
       security:
       - ApiKeyAuth: []
       - ApiKeyAuth: []
-      summary: Create Product
+      summary: Save Product
       tags:
       - Products
   /api/v1/products/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete product.
+      parameters:
+      - description: Product Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/vm.ProductVM'
+      security:
+      - ApiKeyAuth: []
+      - ApiKeyAuth: []
+      summary: Delete product.
+      tags:
+      - Products
     get:
       consumes:
       - application/json

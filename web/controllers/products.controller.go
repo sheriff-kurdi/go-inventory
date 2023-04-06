@@ -11,7 +11,7 @@ import (
 )
 
 type ProductsController struct {
-	productsService services.AuthService
+	productsService services.ProductsService
 }
 
 func NewProductsController() *ProductsController {
@@ -67,17 +67,47 @@ func (controller ProductsController) FindById(ctx *fiber.Ctx) error {
 	return ctx.Status(response.GetStatus()).JSON(response.GetData())
 }
 
-// @Description Create Product.
-// @Summary Create Product
+// @Description Delete product.
+// @Summary Delete product.
+// @Tags Products
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Param id path string true "Product Id"
+// @Success 200 {object} vm.ProductVM
+// @Security ApiKeyAuth
+// @Router /api/v1/products/{id} [delete]
+func (controller ProductsController) DeleteById(ctx *fiber.Ctx) error {
+
+	productId, err := strconv.Atoi(ctx.Params("id"))
+	if err != nil {
+		response := resources.ServerError(err.Error())
+		return ctx.Status(response.GetStatus()).JSON(response.GetData())
+	}
+	//delete by id
+	err = controller.productsService.DeleteById(productId)
+	if err != nil {
+		response := resources.ServerError(err.Error())
+		return ctx.Status(response.GetStatus()).JSON(response.GetData())
+	}
+	var response resources.IResource
+
+	response = resources.Ok(productId, "Deleted Successfully")
+	return ctx.Status(response.GetStatus()).JSON(response.GetData())
+}
+
+
+// @Description Save Product.
+// @Summary Save Product
 // @Tags Products
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
 // @Param productVM body vm.ProductSavingVM true "Product VM"
-// @Success 200 {object} vm.ProductSavingVM
+// @Success 201 {object} vm.ProductSavingVM
 // @Security ApiKeyAuth
 // @Router /api/v1/products/ [post]
-func (controller ProductsController) Insert(ctx *fiber.Ctx) error {
+func (controller ProductsController) Save(ctx *fiber.Ctx) error {
 
 	productVM := vm.ProductSavingVM{}
 	//binding
@@ -88,7 +118,7 @@ func (controller ProductsController) Insert(ctx *fiber.Ctx) error {
 	}
 
 	//find by id
-	productId, err := controller.productsService.Insert(productVM)
+	productId, err := controller.productsService.Save(productVM)
 	var response resources.IResource
 
 	if err != nil {
@@ -96,6 +126,6 @@ func (controller ProductsController) Insert(ctx *fiber.Ctx) error {
 		return ctx.Status(response.GetStatus()).JSON(response.GetData())
 	}
 
-	response = resources.Ok(productId, "Created Successfully")
+	response = resources.Ok(productId, "Saved Successfully")
 	return ctx.Status(response.GetStatus()).JSON(response.GetData())
 }
