@@ -5,6 +5,7 @@ import (
 	"kurdi-go/web/config"
 	"kurdi-go/web/middlewares"
 	"kurdi-go/web/routes"
+	"kurdi-go/web/utils"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
@@ -23,6 +24,9 @@ import (
 // @name Authorization
 // @BasePath /api
 func main() {
+	//------ GoRoutines
+	utils.LogGoRoutines()
+	//-------
 	//app
 	fiberConfig := config.FiberConfig()
 	app := fiber.New(fiberConfig)
@@ -50,5 +54,6 @@ func main() {
 		return
 	}
 	//----------------------------
+	
 
 }
