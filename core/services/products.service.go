@@ -5,6 +5,8 @@ import (
 	"kurdi-go/core/vm"
 	postgresDatabse "kurdi-go/infrastructure/database/postgres"
 	"kurdi-go/infrastructure/repositories/postgres"
+	"kurdi-go/web/utils"
+
 	"gorm.io/gorm"
 )
 
@@ -16,6 +18,7 @@ type ProductsService struct {
 func NewProductsService() AuthService {
 	service := AuthService{
 		repository: postgres.NewProductsRepository(postgresDatabse.Connect()),
+		Connection: postgresDatabse.Connect(),
 	}
 	return service
 }
@@ -27,7 +30,7 @@ func (service AuthService) ListAll(languageCode string) []vm.ProductVM {
 
 func (service AuthService) FindById(id int, languageCode string) *vm.ProductVM {
 	products := service.repository.SelectByCriteria(repository.ProductsSearcheCriteria{
-		Id: &id,
+		Id:           &id,
 		LanguageCode: &languageCode,
 	})
 	if len(products) == 0 {
@@ -35,4 +38,15 @@ func (service AuthService) FindById(id int, languageCode string) *vm.ProductVM {
 	}
 	return &products[0]
 
+}
+
+func (service AuthService) Insert(productVM vm.ProductInsertionVM) (productId int, err error) {
+	transasction := service.Connection.Begin()
+	productId, err = service.repository.Insert(transasction, productVM)
+	if err != nil {
+		transasction.Rollback()
+		utils.Logger().Info(err.Error())
+		return
+	}
+	return
 }

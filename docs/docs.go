@@ -91,6 +91,48 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/products/": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create Product.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Create Product",
+                "parameters": [
+                    {
+                        "description": "Product VM",
+                        "name": "productVM",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vm.ProductInsertionVM"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/vm.ProductVM"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/products/{id}": {
             "get": {
                 "security": [
@@ -101,7 +143,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Get all exists books.",
+                "description": "Get product.",
                 "consumes": [
                     "application/json"
                 ],
@@ -111,7 +153,7 @@ const docTemplate = `{
                 "tags": [
                     "Products"
                 ],
-                "summary": "get all exists books",
+                "summary": "get product.",
                 "parameters": [
                     {
                         "type": "string",
@@ -141,6 +183,40 @@ const docTemplate = `{
                 },
                 "user_name": {
                     "type": "string"
+                }
+            }
+        },
+        "vm.ProductDetailsInsertionVM": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "language_code": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "vm.ProductInsertionVM": {
+            "type": "object",
+            "properties": {
+                "available_stock": {
+                    "type": "integer"
+                },
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vm.ProductDetailsInsertionVM"
+                    }
+                },
+                "reserved_stock": {
+                    "type": "integer"
+                },
+                "total_stock": {
+                    "type": "integer"
                 }
             }
         },

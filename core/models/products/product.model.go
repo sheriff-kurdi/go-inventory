@@ -1,10 +1,15 @@
 package products
 
-import "kurdi-go/core/models"
+import (
+	"kurdi-go/core/models"
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type ProductModel struct {
 	Id             uint             `gorm:"primary"`
-	ProductDetails []ProductDetailsModel `gorm:"foreignKey:ProducId" json:"product_details"`
+	ProductDetails []ProductDetailsModel `gorm:"foreignKey:ProductId" json:"product_details"`
 	ProductQuantity
 	models.TimeStamps
 }
@@ -28,3 +33,17 @@ func (product *ProductModel) Selling(quantity int) {
 }
 
 //-------end stock quantities section-----
+
+func (m *ProductModel) BeforeUpdate(db *gorm.DB) error {
+	m.UpdatedAt = time.Now()
+	return nil
+}
+
+func (m *ProductModel) BeforeCreate(db *gorm.DB) error {
+	m.CreatedAt = time.Now()
+	return nil
+}
+
+func (m *ProductModel) TableName() string {
+	return "products"
+}

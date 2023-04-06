@@ -15,6 +15,8 @@ func ProductsRoutes(app *fiber.App) {
 		middlewares.JWTProtected(),
 		middlewares.AuthenticationMiddleware(),
 	)
+	
+	productsRoutes.Post("/", productsController.Insert)
 	productsRoutes.Get("/", productsController.GetAll)
 	productsRoutes.Get("/:id", productsController.FindById)
 

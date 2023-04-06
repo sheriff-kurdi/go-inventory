@@ -13,13 +13,10 @@ type Error500 struct {
 func ServerError(message string) IResource {
 	errors := make(map[string]interface{})
 	dataJson := &fiber.Map{
-		"success": true,
+		"success": false,
 		"message": message,
 		"data":    errors,
 	}
-	// logger, _ := zap.NewProduction()
-	// defer logger.Sync()
-	// logger.Error("Internal Server Error", zap.Any(message, errors))
 	resource := Error500{Status: 500, Message: "", Data: dataJson}
 	return &resource
 }

@@ -2,10 +2,12 @@ package postgres
 
 import (
 	"kurdi-go/core/contracts/repositories"
+	"kurdi-go/core/models/products"
 	"kurdi-go/core/vm"
 	"os"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type ProductsRepository struct {
@@ -67,7 +69,7 @@ func (repository ProductsRepository) SelectByCriteria(searchCriteria repositorie
 
 func (repository ProductsRepository) SelectAllByDetails(languageCode string) []vm.ProductVM {
 	var productsList []vm.ProductVM
-	if languageCode == ""{
+	if languageCode == "" {
 		languageCode = os.Getenv("DEFAULT_LANGUAGE")
 	}
 	query := `SELECT * FROM products
@@ -75,4 +77,34 @@ func (repository ProductsRepository) SelectAllByDetails(languageCode string) []v
 	repository.Connection.Raw(query, languageCode).Scan(&productsList)
 
 	return productsList
+}
+
+func (repository ProductsRepository) Insert(connection *gorm.DB, productVM vm.ProductInsertionVM) (productId int, err error) {
+	productModel := products.ProductModel{
+		ProductQuantity: productVM.ProductQuantity,
+	}
+
+	if err = connection.Save(&productModel).Error; err != nil {
+		return
+	}
+	productId = int(productModel.Id)
+
+	productDetails := []products.ProductDetailsModel{}
+	for _, productDetailsVM := range productVM.Details {
+		productDetails = append(productDetails, products.ProductDetailsModel{
+			Name: productDetailsVM.Name,
+			Description:  productDetailsVM.Description,
+			LanguageCode: productDetailsVM.LanguageCode,
+			ProductId: productId,
+		})
+
+	}
+
+	if err = connection.Clauses(clause.OnConflict{
+		Columns:   []clause.Column{{Name: "product_id"}, {Name: "name"}, {Name: "language_code"}},
+		DoUpdates: clause.AssignmentColumns([]string{"name", "description", "updated_at"}),
+	}).Save(&productDetails).Error; err != nil {
+		return
+	}
+	return
 }

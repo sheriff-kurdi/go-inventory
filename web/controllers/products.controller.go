@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"kurdi-go/core/services"
+	"kurdi-go/core/vm"
 	"kurdi-go/web/resources"
+	"kurdi-go/web/utils"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -34,9 +36,8 @@ func (controller ProductsController) GetAll(ctx *fiber.Ctx) error {
 	return ctx.Status(response.GetStatus()).JSON(response.GetData())
 }
 
-// GetBooks func gets all exists books.
-// @Description Get all exists books.
-// @Summary get all exists books
+// @Description Get product.
+// @Summary get product.
 // @Tags Products
 // @Accept json
 // @Produce json
@@ -64,5 +65,37 @@ func (controller ProductsController) FindById(ctx *fiber.Ctx) error {
 
 	}
 	return ctx.Status(response.GetStatus()).JSON(response.GetData())
+}
 
+// @Description Create Product.
+// @Summary Create Product
+// @Tags Products
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Param productVM body vm.ProductInsertionVM true "Product VM"
+// @Success 200 {object} vm.ProductVM
+// @Security ApiKeyAuth
+// @Router /api/v1/products/ [post]
+func (controller ProductsController) Insert(ctx *fiber.Ctx) error {
+
+	productVM := vm.ProductInsertionVM{}
+	//binding
+	if err := ctx.BodyParser(&productVM); err != nil {
+		utils.Logger().Info(err.Error())
+		response := resources.BadRequest("GENERAL.THERE_IS_AN_ERROR")
+		return ctx.Status(response.GetStatus()).JSON(response.GetData())
+	}
+
+	//find by id
+	productId, err := controller.productsService.Insert(productVM)
+	var response resources.IResource
+
+	if err != nil {
+		response := resources.ServerError("GENERAL.THERE_IS_AN_ERROR")
+		return ctx.Status(response.GetStatus()).JSON(response.GetData())
+	}
+
+	response = resources.Ok(productId, "Created Successfully")
+	return ctx.Status(response.GetStatus()).JSON(response.GetData())
 }
