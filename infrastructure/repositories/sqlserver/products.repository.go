@@ -2,7 +2,8 @@ package sqlserver
 
 import (
 	"kurdi-go/core/contracts/repositories"
-	"kurdi-go/core/entities/products"
+	"kurdi-go/core/models/products"
+
 	"gorm.io/gorm"
 )
 
@@ -17,16 +18,16 @@ func NewProductsRepository(connection *gorm.DB) ProductsRepository {
 	return repository
 }
 
-func (repository ProductsRepository) SelectAll() []products.Product {
-	var products []products.Product
+func (repository ProductsRepository) SelectAll() []products.ProductModel {
+	var products []products.ProductModel
 	query := `SELECT * FROM products ;`
 
 	repository.Connection.Raw(query).Scan(&products)
 	return products
 }
 
-func (repository ProductsRepository) SelectByCriteria(searchCriteria repositories.ProductsSearcheCriteria) []products.Product {
-	var products []products.Product
+func (repository ProductsRepository) SelectByCriteria(searchCriteria repositories.ProductsSearcheCriteria) []products.ProductModel {
+	var products []products.ProductModel
 	query := `SELECT * FROM products `
 	params := make([]interface{}, 0)
 
