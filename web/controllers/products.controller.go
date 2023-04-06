@@ -73,13 +73,13 @@ func (controller ProductsController) FindById(ctx *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
-// @Param productVM body vm.ProductInsertionVM true "Product VM"
-// @Success 200 {object} vm.ProductVM
+// @Param productVM body vm.ProductSavingVM true "Product VM"
+// @Success 200 {object} vm.ProductSavingVM
 // @Security ApiKeyAuth
 // @Router /api/v1/products/ [post]
 func (controller ProductsController) Insert(ctx *fiber.Ctx) error {
 
-	productVM := vm.ProductInsertionVM{}
+	productVM := vm.ProductSavingVM{}
 	//binding
 	if err := ctx.BodyParser(&productVM); err != nil {
 		utils.Logger().Info(err.Error())

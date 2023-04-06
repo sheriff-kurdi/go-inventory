@@ -9,7 +9,7 @@ import (
 type IProductsRepository interface {
 	SelectAll() []vm.ProductVM
 	SelectByCriteria(searchCriteria ProductsSearcheCriteria) []vm.ProductVM
-	Insert(connection *gorm.DB, productVM vm.ProductInsertionVM) (productId int, err error)
+	Upsert(connection *gorm.DB, productVM vm.ProductSavingVM) (productId int, err error)
 	SelectAllByDetails(languageCode string) []vm.ProductVM
 	//SelectById(query string) products.Product
 	// SelectAllByCondition(query string) []products.Product

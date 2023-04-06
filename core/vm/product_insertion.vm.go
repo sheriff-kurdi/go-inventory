@@ -2,7 +2,8 @@ package vm
 
 import "kurdi-go/core/models/products"
 
-type ProductInsertionVM struct {
+type ProductSavingVM struct {
+	Id      uint                        `gorm:"primary"`
 	Details []ProductDetailsInsertionVM `json:"details"`
 	products.ProductQuantity
 	products.ProductPrice
@@ -13,4 +14,3 @@ type ProductDetailsInsertionVM struct {
 	Description  string `json:"description"`
 	LanguageCode string `json:"language_code"`
 }
-

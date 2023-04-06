@@ -79,8 +79,9 @@ func (repository ProductsRepository) SelectAllByDetails(languageCode string) []v
 	return productsList
 }
 
-func (repository ProductsRepository) Insert(connection *gorm.DB, productVM vm.ProductInsertionVM) (productId int, err error) {
+func (repository ProductsRepository) Upsert(connection *gorm.DB, productVM vm.ProductSavingVM) (productId int, err error) {
 	productModel := products.ProductModel{
+		Id:              productVM.Id,
 		ProductQuantity: productVM.ProductQuantity,
 		ProductPrice:    productVM.ProductPrice,
 	}

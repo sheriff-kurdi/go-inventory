@@ -111,7 +111,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/vm.ProductInsertionVM"
+                            "$ref": "#/definitions/vm.ProductSavingVM"
                         }
                     }
                 ],
@@ -119,7 +119,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/vm.ProductVM"
+                            "$ref": "#/definitions/vm.ProductSavingVM"
                         }
                     }
                 }
@@ -192,7 +192,7 @@
                 }
             }
         },
-        "vm.ProductInsertionVM": {
+        "vm.ProductSavingVM": {
             "type": "object",
             "properties": {
                 "available_stock": {
@@ -209,6 +209,9 @@
                 },
                 "discount": {
                     "type": "number"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "is_discounted": {
                     "type": "boolean"

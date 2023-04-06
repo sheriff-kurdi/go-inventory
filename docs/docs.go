@@ -119,7 +119,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/vm.ProductInsertionVM"
+                            "$ref": "#/definitions/vm.ProductSavingVM"
                         }
                     }
                 ],
@@ -127,7 +127,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/vm.ProductVM"
+                            "$ref": "#/definitions/vm.ProductSavingVM"
                         }
                     }
                 }
@@ -200,7 +200,7 @@ const docTemplate = `{
                 }
             }
         },
-        "vm.ProductInsertionVM": {
+        "vm.ProductSavingVM": {
             "type": "object",
             "properties": {
                 "available_stock": {
@@ -217,6 +217,9 @@ const docTemplate = `{
                 },
                 "discount": {
                     "type": "number"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "is_discounted": {
                     "type": "boolean"

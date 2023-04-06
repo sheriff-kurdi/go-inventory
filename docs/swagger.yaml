@@ -15,7 +15,7 @@ definitions:
       name:
         type: string
     type: object
-  vm.ProductInsertionVM:
+  vm.ProductSavingVM:
     properties:
       available_stock:
         type: integer
@@ -27,6 +27,8 @@ definitions:
         type: array
       discount:
         type: number
+      id:
+        type: integer
       is_discounted:
         type: boolean
       reserved_stock:
@@ -125,14 +127,14 @@ paths:
         name: productVM
         required: true
         schema:
-          $ref: '#/definitions/vm.ProductInsertionVM'
+          $ref: '#/definitions/vm.ProductSavingVM'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/vm.ProductVM'
+            $ref: '#/definitions/vm.ProductSavingVM'
       security:
       - ApiKeyAuth: []
       - ApiKeyAuth: []

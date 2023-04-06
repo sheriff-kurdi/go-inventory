@@ -40,9 +40,9 @@ func (service AuthService) FindById(id int, languageCode string) *vm.ProductVM {
 
 }
 
-func (service AuthService) Insert(productVM vm.ProductInsertionVM) (productId int, err error) {
+func (service AuthService) Insert(productVM vm.ProductSavingVM) (productId int, err error) {
 	transasction := service.Connection.Begin()
-	productId, err = service.repository.Insert(transasction, productVM)
+	productId, err = service.repository.Upsert(transasction, productVM)
 	if err != nil {
 		transasction.Rollback()
 		utils.Logger().Info(err.Error())
