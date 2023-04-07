@@ -26,6 +26,7 @@ func NewProductsController() *ProductsController {
 // @Tags Products
 // @Accept json
 // @Produce json
+// @Param language_code query string false "Language Code"
 // @Success 200 {array} vm.ProductVM
 // @Security ApiKeyAuth
 // @Router /api/v1/products [get]
@@ -43,6 +44,7 @@ func (controller ProductsController) GetAll(ctx *fiber.Ctx) error {
 // @Produce json
 // @Security ApiKeyAuth
 // @Param id path string true "Product Id"
+// @Param language_code query string false "Language Code"
 // @Success 200 {object} vm.ProductVM
 // @Security ApiKeyAuth
 // @Router /api/v1/products/{id} [get]
