@@ -1,1 +1,4 @@
-# create composer file to create postgres database and build the app docker image and start app in specific port
+# create composer file to 
+# create postgres database 
+# run all tests if successd continue
+# build the app docker image and start app in specific port
