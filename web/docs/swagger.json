@@ -1,0 +1,325 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is an inventory API Docs.",
+        "title": "Inventory API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "email": "sheriff.kurdi@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/v1/auth/login": {
+            "post": {
+                "description": "Login and get token.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login and get token",
+                "parameters": [
+                    {
+                        "description": "Login View Model",
+                        "name": "lognVM",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vm.LoginVM"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/vm.LoginVM"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/products": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all products.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Products"
+                ],
+                "summary": "get all products",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Language Code",
+                        "name": "language_code",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/vm.ProductVM"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/products/": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Save Product.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Save Product",
+                "parameters": [
+                    {
+                        "description": "Product VM",
+                        "name": "productVM",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vm.ProductSavingVM"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/vm.ProductSavingVM"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/products/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get product.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Products"
+                ],
+                "summary": "get product.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Language Code",
+                        "name": "language_code",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/vm.ProductVM"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete product.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Delete product.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/vm.ProductVM"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "vm.LoginVM": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "user_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "vm.ProductDetailsInsertionVM": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "language_code": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "vm.ProductSavingVM": {
+            "type": "object",
+            "properties": {
+                "available_stock": {
+                    "type": "integer"
+                },
+                "cost_price": {
+                    "type": "number"
+                },
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vm.ProductDetailsInsertionVM"
+                    }
+                },
+                "discount": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_discounted": {
+                    "type": "boolean"
+                },
+                "reserved_stock": {
+                    "type": "integer"
+                },
+                "selling_price": {
+                    "type": "number"
+                },
+                "total_stock": {
+                    "type": "integer"
+                }
+            }
+        },
+        "vm.ProductVM": {
+            "type": "object",
+            "properties": {
+                "available_stock": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "language_code": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "reserved_stock": {
+                    "type": "integer"
+                },
+                "total_stock": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

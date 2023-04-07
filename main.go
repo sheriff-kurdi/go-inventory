@@ -1,42 +1,59 @@
 package main
 
 import (
+	"kurdi-go/web/config"
+	_ "kurdi-go/web/docs" // load API Docs files (Swagger)
+	"kurdi-go/web/middlewares"
+	"kurdi-go/web/routes"
+	"kurdi-go/web/utils"
+	"os"
+
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/joho/godotenv"
-	"kurdi-go/http/routes"
-	database2 "kurdi-go/infrastructure/infrastructure_database"
-	"log"
 )
 
+// @title Inventory API
+// @version 1.0
+// @description This is an inventory API Docs.
+// @termsOfService http://swagger.io/terms/
+// @contact.name API Support
+// @contact.email sheriff.kurdi@gmail.com
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+// @BasePath /api
 func main() {
+	//------ GoRoutines
+	utils.LogGoRoutines()
+	//-------
 	//app
-	app := fiber.New()
+	fiberConfig := config.FiberConfig()
+	app := fiber.New(fiberConfig)
 
-	//.env access
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	//----------env file loading-------
+	config.ENVConfig()
+	//----------------------------
 
-	//Database
-	// Connect to database
-	database2.Connect()
-	//migrate database
-	//TODO:Migrate based on env variable
-	database2.PostgresAutoMigrate()
+	//----------Database-------
+	// connection := postgresDatabse.Connect()
+	// database.AutoMigrate(connection)
+	//----------------------------
 
-	// Routes
-	app.Use(cors.New(cors.Config{
-		AllowHeaders:     "*",
-		AllowOrigins:     "*",
-		AllowCredentials: true,
-		AllowMethods:     "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
-	}))
-	routes.StockRoutes(app)
-	err = app.Listen(":3000")
+	//---------Routes-------------
+	middlewares.FiberMiddleware(app) // Register Fiber's middleware for app.
+	routes.SwaggerRoute(app)
+	routes.AuthRoutes(app)
+	routes.ProductsRoutes(app)
+
+	//----------------------------
+
+	//---------Port-------------
+	err := app.Listen(os.Getenv("PORT"))
 	if err != nil {
 		return
 	}
+	//----------------------------
+	
 
 }
