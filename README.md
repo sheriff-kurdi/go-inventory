@@ -50,7 +50,7 @@ To deploy this project
 To run tests, run the following command
 
 ```bash
-  go test ./...
+  go test ./test/...
 ```
 
 
