@@ -78,6 +78,14 @@ const docTemplate = `{
                     "Products"
                 ],
                 "summary": "get all products",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Language Code",
+                        "name": "language_code",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -161,6 +169,12 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Language Code",
+                        "name": "language_code",
+                        "in": "query"
                     }
                 ],
                 "responses": {

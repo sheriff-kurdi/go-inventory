@@ -102,6 +102,11 @@ paths:
       consumes:
       - application/json
       description: Get all products.
+      parameters:
+      - description: Language Code
+        in: query
+        name: language_code
+        type: string
       produces:
       - application/json
       responses:
@@ -174,6 +179,10 @@ paths:
         in: path
         name: id
         required: true
+        type: string
+      - description: Language Code
+        in: query
+        name: language_code
         type: string
       produces:
       - application/json
