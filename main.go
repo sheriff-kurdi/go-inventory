@@ -1,8 +1,8 @@
 package main
 
 import (
-	_ "kurdi-go/docs" // load API Docs files (Swagger)
 	"kurdi-go/web/config"
+	_ "kurdi-go/web/docs" // load API Docs files (Swagger)
 	"kurdi-go/web/middlewares"
 	"kurdi-go/web/routes"
 	"kurdi-go/web/utils"

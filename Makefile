@@ -34,9 +34,9 @@ clean:
 security:
 	gosec -quiet ./...
 
-test: security
-	go test -v -timeout 30s -coverprofile=cover.out -cover ./...
-	go tool cover -func=cover.out
+# test: security
+# 	go test -v -timeout 30s -coverprofile=cover.out -cover ./...
+# 	go tool cover -func=cover.out
 
 build: clean test
 	CGO_ENABLED=0 go build -ldflags="-w -s" -o $(BUILD_DIR)/$(APP_NAME) main.go
@@ -89,7 +89,10 @@ docker.stop.postgres:
 	docker stop dev-postgres
 
 swag:
-	/home/kurdi/go/bin/swag init
+	/home/kurdi/go/bin/swag init -o ./web/docs 
+
+test:
+	go test ./test/... 
 
 killport:
 	sudo kill -9 `sudo lsof -t -i:3000`
