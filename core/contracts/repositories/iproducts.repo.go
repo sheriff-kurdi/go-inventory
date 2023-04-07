@@ -7,10 +7,10 @@ import (
 )
 
 type IProductsRepository interface {
-	SelectAll() []vm.ProductVM
-	SelectByCriteria(searchCriteria ProductsSearcheCriteria) []vm.ProductVM
+	SelectAll(connection *gorm.DB) []vm.ProductVM
+	SelectByCriteria(connection *gorm.DB, searchCriteria ProductsSearcheCriteria) []vm.ProductVM
 	Save(connection *gorm.DB, productVM vm.ProductSavingVM) (productId int, err error)
-	SelectAllByDetails(languageCode string) []vm.ProductVM
+	SelectAllByDetails(connection *gorm.DB, languageCode string) []vm.ProductVM
 	DeleteById(connection *gorm.DB, productId int) (err error)
 
 	//SelectById(query string) products.Product

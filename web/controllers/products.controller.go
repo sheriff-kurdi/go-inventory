@@ -94,7 +94,6 @@ func (controller ProductsController) DeleteById(ctx *fiber.Ctx) error {
 	return ctx.Status(response.GetStatus()).JSON(response.GetData())
 }
 
-
 // @Description Save Product.
 // @Summary Save Product
 // @Tags Products

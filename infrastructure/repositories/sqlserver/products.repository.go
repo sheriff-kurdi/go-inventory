@@ -8,25 +8,23 @@ import (
 )
 
 type ProductsRepository struct {
-	Connection *gorm.DB
 }
 
 func NewProductsRepository(connection *gorm.DB) ProductsRepository {
 	repository := ProductsRepository{
-		Connection: connection,
 	}
 	return repository
 }
 
-func (repository ProductsRepository) SelectAll() []products.ProductModel {
+func (repository ProductsRepository) SelectAll(connection *gorm.DB) []products.ProductModel {
 	var products []products.ProductModel
 	query := `SELECT * FROM products ;`
 
-	repository.Connection.Raw(query).Scan(&products)
+	connection.Raw(query).Scan(&products)
 	return products
 }
 
-func (repository ProductsRepository) SelectByCriteria(searchCriteria repositories.ProductsSearcheCriteria) []products.ProductModel {
+func (repository ProductsRepository) SelectByCriteria(connection *gorm.DB, searchCriteria repositories.ProductsSearcheCriteria) []products.ProductModel {
 	var products []products.ProductModel
 	query := `SELECT * FROM products `
 	params := make([]interface{}, 0)
@@ -55,7 +53,7 @@ func (repository ProductsRepository) SelectByCriteria(searchCriteria repositorie
 		query += "products.is_discounted = ?"
 	}
 
-	repository.Connection.Raw(query, params...).Scan(&products)
+	connection.Raw(query, params...).Scan(&products)
 
 	return products
 }

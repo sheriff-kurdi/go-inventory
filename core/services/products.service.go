@@ -12,23 +12,23 @@ import (
 
 type ProductsService struct {
 	repository repository.IProductsRepository
-	Connection *gorm.DB
+	connection *gorm.DB
 }
 
 func NewProductsService() ProductsService {
 	service := ProductsService{
 		repository: postgres.NewProductsRepository(postgresDatabse.Connect()),
-		Connection: postgresDatabse.Connect(),
+		connection: postgresDatabse.Connect(),
 	}
 	return service
 }
 
 func (service ProductsService) ListAll(languageCode string) []vm.ProductVM {
-	return service.repository.SelectAllByDetails(languageCode)
+	return service.repository.SelectAllByDetails(service.connection, languageCode)
 }
 
 func (service ProductsService) FindById(id int, languageCode string) *vm.ProductVM {
-	products := service.repository.SelectByCriteria(repository.ProductsSearcheCriteria{
+	products := service.repository.SelectByCriteria(service.connection, repository.ProductsSearcheCriteria{
 		Id:           &id,
 		LanguageCode: &languageCode,
 	})
@@ -39,12 +39,12 @@ func (service ProductsService) FindById(id int, languageCode string) *vm.Product
 }
 
 func (service ProductsService) DeleteById(productId int) (err error) {
-	err = service.repository.DeleteById(service.Connection, productId)
+	err = service.repository.DeleteById(service.connection, productId)
 	return 
 }
 
 func (service ProductsService) Save(productVM vm.ProductSavingVM) (productId int, err error) {
-	transasction := service.Connection.Begin()
+	transasction := service.connection.Begin()
 	productId, err = service.repository.Save(transasction, productVM)
 	if err != nil {
 		transasction.Rollback()

@@ -11,21 +11,19 @@ import (
 )
 
 type ProductsRepository struct {
-	Connection *gorm.DB
 }
 
 func NewProductsRepository(connection *gorm.DB) ProductsRepository {
 	repository := ProductsRepository{
-		Connection: connection,
 	}
 	return repository
 }
 
-func (repository ProductsRepository) SelectAll() []vm.ProductVM {
+func (repository ProductsRepository) SelectAll(connection *gorm.DB) []vm.ProductVM {
 	var products []vm.ProductVM
 	query := `SELECT * FROM products ;`
 
-	repository.Connection.Raw(query).Scan(&products)
+	connection.Raw(query).Scan(&products)
 	return products
 }
 
@@ -37,7 +35,7 @@ func (repository ProductsRepository) DeleteById(connection *gorm.DB, productId i
 	return
 }
 
-func (repository ProductsRepository) SelectByCriteria(searchCriteria repositories.ProductsSearcheCriteria) []vm.ProductVM {
+func (repository ProductsRepository) SelectByCriteria(connection *gorm.DB, searchCriteria repositories.ProductsSearcheCriteria) []vm.ProductVM {
 	var products []vm.ProductVM
 	query := `SELECT * FROM products `
 	params := make([]interface{}, 0)
@@ -70,19 +68,19 @@ func (repository ProductsRepository) SelectByCriteria(searchCriteria repositorie
 		query += "products.is_discounted = ?"
 	}
 
-	repository.Connection.Raw(query, params...).Scan(&products)
+	connection.Raw(query, params...).Scan(&products)
 
 	return products
 }
 
-func (repository ProductsRepository) SelectAllByDetails(languageCode string) []vm.ProductVM {
+func (repository ProductsRepository) SelectAllByDetails(connection *gorm.DB, languageCode string) []vm.ProductVM {
 	var productsList []vm.ProductVM
 	if languageCode == "" {
 		languageCode = os.Getenv("DEFAULT_LANGUAGE")
 	}
 	query := `SELECT * FROM products
 		join product_details on product_details.language_code = ? and product_details.product_id = products.id;`
-	repository.Connection.Raw(query, languageCode).Scan(&productsList)
+	connection.Raw(query, languageCode).Scan(&productsList)
 
 	return productsList
 }
