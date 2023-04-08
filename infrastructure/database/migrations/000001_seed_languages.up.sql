@@ -1,3 +1,0 @@
-INSERT INTO "languages" ("id", "created_at", "updated_at", "deleted_at", "language_code", "name") VALUES
-                                                                                                      (1,	'2022-10-19 19:29:19.950907+00',	NULL,	NULL,	'ar',	'Arabic'),
-                                                                                                      (2,	'2022-10-19 19:29:19.950907+00',	NULL,	NULL,	'en',	'English');

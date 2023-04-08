@@ -1,31 +1,9 @@
-startPostgres:
-	sudo docker container start postgres
-
-createDB:
-	sudo docker exec -it postgres createdb --username=postgres --owner=postgres inventory
-
-dropDB:
-	sudo docker exec -it postgres dropdb --username=postgres inventory
-
-migrateUp:
-	migrate -path database/migrations -database "postgresql://postgres:123456789@localhost:5432/inventory?sslmode=disable" -verbose up
-
-migrateDown:
-	migrate -path database/migrations -database "postgresql://postgres:123456789@localhost:5432/inventory?sslmode=disable" -verbose down
-
-createMigration:
-	migrate create -ext sql -dir infrastructure/infrastructure_database/migrations -seq $(name)
-
-	# --------------------------------
-
-buildUp:	startPostgres createDB migrateUp
-
 
 .PHONY: clean test security build run
 
-APP_NAME = apiserver
+APP_NAME = inventory
 BUILD_DIR = $(PWD)/build
-MIGRATIONS_FOLDER = $(PWD)/platform/migrations
+MIGRATIONS_FOLDER = infrastructure/database/migrations
 DATABASE_URL = postgres://postgres:password@localhost/postgres?sslmode=disable
 
 clean:
@@ -40,53 +18,62 @@ security:
 
 build: clean test
 	CGO_ENABLED=0 go build -ldflags="-w -s" -o $(BUILD_DIR)/$(APP_NAME) main.go
+	cp .env build
 
-run: swag build
-	$(BUILD_DIR)/$(APP_NAME)
 
-migrate.up:
+migration.create:
+	migrate create -ext sql -dir $(MIGRATIONS_FOLDER) -seq $(name)
+
+migration.up:
 	migrate -path $(MIGRATIONS_FOLDER) -database "$(DATABASE_URL)" up
 
-migrate.down:
+migration.down:
 	migrate -path $(MIGRATIONS_FOLDER) -database "$(DATABASE_URL)" down
 
-migrate.force:
+migration.force:
 	migrate -path $(MIGRATIONS_FOLDER) -database "$(DATABASE_URL)" force $(version)
 
 docker.run: docker.network docker.postgres swag docker.fiber migrate.up
 
 docker.network:
-	docker network inspect dev-network >/dev/null 2>&1 || \
-	docker network create -d bridge dev-network
+	docker network inspect go-inventory-network >/dev/null 2>&1 || \
+	docker network create -d bridge go-inventory-network
 
 docker.fiber.build:
-	docker build -t fiber .
+	docker build -t go-inventory .
 
+#change netrowk to be the same of postgres
 docker.fiber: docker.fiber.build
 	docker run --rm -d \
-		--name dev-fiber \
-		--network dev-network \
-		-p 5000:5000 \
-		fiber
+		--name go-inventory \
+		--network maxab_basic_env \ 
+		-p 3000:3000 \
+		go-inventory
 
-docker.postgres:
+docker.postgres.create:
 	docker run --rm -d \
-		--name dev-postgres \
-		--network dev-network \
+		--name postgres \
+		--network go-inventory-network \
 		-e POSTGRES_USER=postgres \
 		-e POSTGRES_PASSWORD=password \
 		-e POSTGRES_DB=postgres \
-		-v ${HOME}/dev-postgres/data/:/var/lib/postgresql/data \
+		-v ${HOME}/postgres/data/:/var/lib/postgresql/data \
 		-p 5432:5432 \
 		postgres
 
+docker.db.create:
+	sudo docker exec -it postgres createdb --username=postgres --owner=postgres inventory
+
+docker.db.drop:
+	sudo docker exec -it postgres dropdb --username=postgres inventory
+
+docker.postgres.stop:
+	docker stop postgres
+
+docker.fiber.stop:
+	docker stop go-inventory
+
 docker.stop: docker.stop.fiber docker.stop.postgres
-
-docker.stop.fiber:
-	docker stop dev-fiber
-
-docker.stop.postgres:
-	docker stop dev-postgres
 
 swag:
 	/home/kurdi/go/bin/swag init -o ./web/docs 
