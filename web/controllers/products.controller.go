@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"kurdi-go/core/services"
-	"kurdi-go/core/vm"
-	"kurdi-go/web/resources"
-	"kurdi-go/web/utils"
+	"github.com/sheriff-kurdi/inventory/core/services"
+	"github.com/sheriff-kurdi/inventory/core/vm"
+	"github.com/sheriff-kurdi/inventory/web/resources"
+	"github.com/sheriff-kurdi/inventory/web/utils"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"

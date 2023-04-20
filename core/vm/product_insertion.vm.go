@@ -1,6 +1,6 @@
 package vm
 
-import "kurdi-go/core/models/products"
+import "github.com/sheriff-kurdi/inventory/core/models/products"
 
 type ProductSavingVM struct {
 	Id      uint                        `gorm:"primary"`

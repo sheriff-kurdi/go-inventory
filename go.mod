@@ -1,4 +1,4 @@
-module kurdi-go
+module github.com/sheriff-kurdi/inventory
 
 go 1.18
 

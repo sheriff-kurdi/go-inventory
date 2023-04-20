@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"kurdi-go/core/vm"
+	"github.com/sheriff-kurdi/inventory/core/vm"
 
 	"gorm.io/gorm"
 )

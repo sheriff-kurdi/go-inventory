@@ -1,8 +1,8 @@
 package database
 
 import (
-	"kurdi-go/core/models"
-	"kurdi-go/core/models/products"
+	"github.com/sheriff-kurdi/inventory/core/models"
+	"github.com/sheriff-kurdi/inventory/core/models/products"
 
 	"gorm.io/gorm"
 )

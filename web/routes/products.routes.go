@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"kurdi-go/web/controllers"
-	"kurdi-go/web/middlewares"
+	"github.com/sheriff-kurdi/inventory/web/controllers"
+	"github.com/sheriff-kurdi/inventory/web/middlewares"
 
 	"github.com/gofiber/fiber/v2"
 )

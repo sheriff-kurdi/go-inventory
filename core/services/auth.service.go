@@ -1,12 +1,12 @@
 package services
 
 import (
-	repository "kurdi-go/core/contracts/repositories"
-	"kurdi-go/core/vm"
-	postgresDatabse "kurdi-go/infrastructure/database/postgres"
-	"kurdi-go/infrastructure/repositories/postgres"
-	"kurdi-go/web/resources"
-	"kurdi-go/web/utils"
+	repository "github.com/sheriff-kurdi/inventory/core/contracts/repositories"
+	"github.com/sheriff-kurdi/inventory/core/vm"
+	postgresDatabse "github.com/sheriff-kurdi/inventory/infrastructure/database/postgres"
+	"github.com/sheriff-kurdi/inventory/infrastructure/repositories/postgres"
+	"github.com/sheriff-kurdi/inventory/web/resources"
+	"github.com/sheriff-kurdi/inventory/web/utils"
 
 	"gorm.io/gorm"
 )

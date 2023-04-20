@@ -1,9 +1,9 @@
 package postgres
 
 import (
-	"kurdi-go/core/contracts/repositories"
-	"kurdi-go/core/models/products"
-	"kurdi-go/core/vm"
+	"github.com/sheriff-kurdi/inventory/core/contracts/repositories"
+	"github.com/sheriff-kurdi/inventory/core/models/products"
+	"github.com/sheriff-kurdi/inventory/core/vm"
 	"os"
 
 	"gorm.io/gorm"

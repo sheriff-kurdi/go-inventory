@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"kurdi-go/web/controllers"
+	"github.com/sheriff-kurdi/inventory/web/controllers"
 
 	"github.com/gofiber/fiber/v2"
 )

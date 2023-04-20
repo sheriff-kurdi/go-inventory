@@ -3,8 +3,8 @@ package middlewares
 import (
 	"errors"
 	"fmt"
-	"kurdi-go/web/resources"
-	"kurdi-go/web/utils"
+	"github.com/sheriff-kurdi/inventory/web/resources"
+	"github.com/sheriff-kurdi/inventory/web/utils"
 	"os"
 	"strconv"
 	"strings"
