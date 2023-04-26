@@ -117,7 +117,7 @@ func (controller ProductsController) Save(ctx *fiber.Ctx) error {
 	}
 
 	//find by id
-	productId, err := controller.productsService.Save(productVM)
+		productId, err := controller.productsService.Save(productVM)
 	var response resources.IResource
 
 	if err != nil {

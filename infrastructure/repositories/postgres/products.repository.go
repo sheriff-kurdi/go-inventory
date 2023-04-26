@@ -1,10 +1,11 @@
 package postgres
 
 import (
+	"os"
+
 	"github.com/sheriff-kurdi/inventory/core/contracts/repositories"
 	"github.com/sheriff-kurdi/inventory/core/models/products"
 	"github.com/sheriff-kurdi/inventory/core/vm"
-	"os"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"

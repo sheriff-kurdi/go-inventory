@@ -11,5 +11,6 @@ type ProductVM struct {
 	Description  string            `json:"description"`
 	LanguageCode string            `json:"language_code"`
 	products.ProductQuantity
+	products.ProductPrice
 	models.TimeStamps
 }
