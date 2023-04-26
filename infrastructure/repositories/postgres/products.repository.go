@@ -15,8 +15,7 @@ type ProductsRepository struct {
 }
 
 func NewProductsRepository(connection *gorm.DB) ProductsRepository {
-	repository := ProductsRepository{
-	}
+	repository := ProductsRepository{}
 	return repository
 }
 
@@ -40,8 +39,13 @@ func (repository ProductsRepository) SelectByCriteria(connection *gorm.DB, searc
 	var products []vm.ProductVM
 	query := `SELECT * FROM products `
 	params := make([]interface{}, 0)
+
 	if searchCriteria.LanguageCode != nil && len(*searchCriteria.LanguageCode) != 0 {
 		params = append(params, &searchCriteria.LanguageCode)
+		query += "join product_details on product_details.language_code = ? and product_details.product_id = products.id "
+	} else {
+		defaultLanguage := os.Getenv("DEFAULT_LANGUAGE")
+		params = append(params, &defaultLanguage)
 		query += "join product_details on product_details.language_code = ? and product_details.product_id = products.id "
 	}
 
