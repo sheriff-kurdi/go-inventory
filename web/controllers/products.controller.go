@@ -1,11 +1,12 @@
 package controllers
 
 import (
+	"strconv"
+
 	"github.com/sheriff-kurdi/inventory/core/services"
 	"github.com/sheriff-kurdi/inventory/core/vm"
 	"github.com/sheriff-kurdi/inventory/web/resources"
 	"github.com/sheriff-kurdi/inventory/web/utils"
-	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -57,10 +58,12 @@ func (controller ProductsController) FindById(ctx *fiber.Ctx) error {
 		return ctx.Status(response.GetStatus()).JSON(response.GetData())
 	}
 	//find by id
-	product := controller.productsService.FindById(productId, languageCode)
+	product, err := controller.productsService.FindById(productId, languageCode)
 	var response resources.IResource
 
-	if product == nil {
+	if err != nil {
+		response = resources.ServerError(err.Error())
+	}else if product == nil {
 		response = resources.NotFound("")
 	} else {
 		response = resources.Ok(product, "")
@@ -117,7 +120,7 @@ func (controller ProductsController) Save(ctx *fiber.Ctx) error {
 	}
 
 	//find by id
-		productId, err := controller.productsService.Save(productVM)
+	productId, err := controller.productsService.Save(productVM)
 	var response resources.IResource
 
 	if err != nil {

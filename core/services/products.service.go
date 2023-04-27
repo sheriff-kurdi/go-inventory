@@ -27,10 +27,10 @@ func (service ProductsService) ListAll(languageCode string) []vm.ProductVM {
 	return service.repository.SelectAllByDetails(service.connection, languageCode)
 }
 
-func (service ProductsService) FindById(id int, languageCode string) *vm.ProductVM {
-	product := service.repository.SelectAllById(service.connection, id)
+func (service ProductsService) FindById(id int, languageCode string) (*vm.ProductVM, error) {
+	product, err := service.repository.SelectAllById(service.connection, id)
 
-	return &product
+	return &product, err
 }
 
 func (service ProductsService) DeleteById(productId int) (err error) {

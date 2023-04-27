@@ -119,10 +119,10 @@ func (repository ProductsRepository) SelectAllByDetails(connection *gorm.DB, lan
 	return productsVM
 }
 
-func (repository ProductsRepository) SelectAllById(connection *gorm.DB, id int) vm.ProductVM {
+func (repository ProductsRepository) SelectAllById(connection *gorm.DB, id int) (vm.ProductVM, error){
 	var productVM vm.ProductVM
 	var productModel products.ProductModel
-	connection.Preload("ProductDetails").Where("id = ?", id).First(&productModel)
+	err := connection.Preload("ProductDetails").Where("id = ?", id).First(&productModel).Error
 	productVM.Id = productModel.Id
 	productVM.TotalStock = productModel.TotalStock
 	productVM.AvailableStock = productModel.AvailableStock
@@ -142,7 +142,7 @@ func (repository ProductsRepository) SelectAllById(connection *gorm.DB, id int) 
 		})
 	}
 
-	return productVM
+	return productVM, err
 }
 
 func (repository ProductsRepository) Save(connection *gorm.DB, productVM vm.ProductSavingVM) (productId int, err error) {
