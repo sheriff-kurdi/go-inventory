@@ -36,7 +36,8 @@ func (repository ProductsRepository) DeleteById(connection *gorm.DB, productId i
 }
 
 func (repository ProductsRepository) SelectByCriteria(connection *gorm.DB, searchCriteria repositories.ProductsSearcheCriteria) []vm.ProductVM {
-	var products []vm.ProductVM
+	var productsVM []vm.ProductVM
+
 	query := `SELECT * FROM products `
 	params := make([]interface{}, 0)
 
@@ -73,21 +74,49 @@ func (repository ProductsRepository) SelectByCriteria(connection *gorm.DB, searc
 		query += "products.is_discounted = ?"
 	}
 
-	connection.Raw(query, params...).Scan(&products)
+	connection.Raw(query, params...).Scan(&productsVM)
 
-	return products
+	return productsVM
 }
 
 func (repository ProductsRepository) SelectAllByDetails(connection *gorm.DB, languageCode string) []vm.ProductVM {
-	var productsList []vm.ProductVM
-	if languageCode == "" {
+	productsVM := []vm.ProductVM{}
+	var productsModel []products.ProductModel
+	if languageCode == "" || len(languageCode) == 0 {
 		languageCode = os.Getenv("DEFAULT_LANGUAGE")
 	}
-	query := `SELECT * FROM products
-		join product_details on product_details.language_code = ? and product_details.product_id = products.id;`
-	connection.Raw(query, languageCode).Scan(&productsList)
 
-	return productsList
+
+	connection.Preload("ProductDetails", "language_code = ?", languageCode).Find(&productsModel)
+
+	for _, productModel := range productsModel {
+		productVM := vm.ProductVM{}
+
+		productVM.Id = productModel.Id
+		productVM.TotalStock = productModel.TotalStock
+		productVM.AvailableStock = productModel.AvailableStock
+		productVM.ReservedStock = productModel.ReservedStock
+
+		productVM.CostPrice = productModel.CostPrice
+		productVM.SellingPrice = productModel.SellingPrice
+		productVM.Discount = productModel.Discount
+		productVM.IsDiscounted = productModel.IsDiscounted
+
+		productVM.ProductDetails = []vm.ProductDetailsVM{}
+
+		for _, detail := range productModel.ProductDetails {
+			productVM.ProductDetails = append(productVM.ProductDetails, vm.ProductDetailsVM{
+				Name:         detail.Name,
+				Description:  detail.Description,
+				LanguageCode: detail.LanguageCode,
+				TimeStamps:   detail.TimeStamps,
+			})
+		}
+
+		productsVM = append(productsVM, productVM)
+	}
+
+	return productsVM
 }
 
 func (repository ProductsRepository) SelectAllById(connection *gorm.DB, id int) vm.ProductVM {
@@ -104,18 +133,17 @@ func (repository ProductsRepository) SelectAllById(connection *gorm.DB, id int) 
 	productVM.Discount = productModel.Discount
 	productVM.IsDiscounted = productModel.IsDiscounted
 	productVM.ProductDetails = []vm.ProductDetailsVM{}
-	for _, detail := range productModel.ProductDetails{
+	for _, detail := range productModel.ProductDetails {
 		productVM.ProductDetails = append(productVM.ProductDetails, vm.ProductDetailsVM{
-			Name: detail.Name,
-			Description: detail.Description,
+			Name:         detail.Name,
+			Description:  detail.Description,
 			LanguageCode: detail.LanguageCode,
-			TimeStamps: detail.TimeStamps,
+			TimeStamps:   detail.TimeStamps,
 		})
 	}
 
-	return productVM	
+	return productVM
 }
-
 
 func (repository ProductsRepository) Save(connection *gorm.DB, productVM vm.ProductSavingVM) (productId int, err error) {
 	productModel := products.ProductModel{
