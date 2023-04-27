@@ -18,5 +18,7 @@ func ProductsRoutes(app *fiber.App) {
 	productsRoutes.Post("/", productsController.Save)
 	productsRoutes.Get("/", productsController.GetAll)
 	productsRoutes.Get("/:id", productsController.FindById)
+	productsRoutes.Delete("/:id", productsController.DeleteById)
+
 
 }

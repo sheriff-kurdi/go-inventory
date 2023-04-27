@@ -28,10 +28,24 @@ func (repository ProductsRepository) SelectAll(connection *gorm.DB) []vm.Product
 }
 
 func (repository ProductsRepository) DeleteById(connection *gorm.DB, productId int) (err error) {
-	query := `
-		delete from products where id = ? cascade;
+	deleteProductQuery := `
+		delete from products where id = ?;
 	`
-	err = connection.Exec(query, productId).Error
+	deleteProductDetailsQuery := `
+		delete from product_details where product_id = ?;
+	`
+	tansaction := connection.Begin()
+	err = tansaction.Exec(deleteProductQuery, productId).Error
+	if err != nil {
+		tansaction.Rollback()
+		return
+	}
+	err = tansaction.Exec(deleteProductDetailsQuery, productId).Error
+	if err != nil {
+		tansaction.Rollback()
+		return
+	}
+	tansaction.Commit()
 	return
 }
 
@@ -86,7 +100,6 @@ func (repository ProductsRepository) SelectAllByDetails(connection *gorm.DB, lan
 		languageCode = os.Getenv("DEFAULT_LANGUAGE")
 	}
 
-
 	connection.Preload("ProductDetails", "language_code = ?", languageCode).Find(&productsModel)
 
 	for _, productModel := range productsModel {
@@ -119,7 +132,7 @@ func (repository ProductsRepository) SelectAllByDetails(connection *gorm.DB, lan
 	return productsVM
 }
 
-func (repository ProductsRepository) SelectAllById(connection *gorm.DB, id int) (vm.ProductVM, error){
+func (repository ProductsRepository) SelectAllById(connection *gorm.DB, id int) (vm.ProductVM, error) {
 	var productVM vm.ProductVM
 	var productModel products.ProductModel
 	err := connection.Preload("ProductDetails").Where("id = ?", id).First(&productModel).Error
@@ -152,6 +165,7 @@ func (repository ProductsRepository) Save(connection *gorm.DB, productVM vm.Prod
 		ProductPrice:    productVM.ProductPrice,
 	}
 
+
 	if err = connection.Save(&productModel).Error; err != nil {
 		return
 	}
@@ -169,7 +183,7 @@ func (repository ProductsRepository) Save(connection *gorm.DB, productVM vm.Prod
 	}
 
 	if err = connection.Clauses(clause.OnConflict{
-		Columns:   []clause.Column{{Name: "product_id"}, {Name: "name"}, {Name: "language_code"}},
+		Columns:   []clause.Column{{Name: "product_id"}, {Name: "language_code"}},
 		DoUpdates: clause.AssignmentColumns([]string{"name", "description", "updated_at"}),
 	}).Save(&productDetails).Error; err != nil {
 		return
