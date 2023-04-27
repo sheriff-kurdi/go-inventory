@@ -4,7 +4,7 @@ import "github.com/sheriff-kurdi/inventory/core/models/products"
 
 type ProductSavingVM struct {
 	Id      uint                        `gorm:"primary"`
-	Details []ProductDetailsInsertionVM `json:"details"`
+	ProductDetails []ProductDetailsInsertionVM `json:"product_details"`
 	products.ProductQuantity
 	products.ProductPrice
 }

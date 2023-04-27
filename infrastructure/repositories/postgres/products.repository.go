@@ -90,6 +90,33 @@ func (repository ProductsRepository) SelectAllByDetails(connection *gorm.DB, lan
 	return productsList
 }
 
+func (repository ProductsRepository) SelectAllById(connection *gorm.DB, id int) vm.ProductVM {
+	var productVM vm.ProductVM
+	var productModel products.ProductModel
+	connection.Preload("ProductDetails").Where("id = ?", id).First(&productModel)
+	productVM.Id = productModel.Id
+	productVM.TotalStock = productModel.TotalStock
+	productVM.AvailableStock = productModel.AvailableStock
+	productVM.ReservedStock = productModel.ReservedStock
+
+	productVM.CostPrice = productModel.CostPrice
+	productVM.SellingPrice = productModel.SellingPrice
+	productVM.Discount = productModel.Discount
+	productVM.IsDiscounted = productModel.IsDiscounted
+	productVM.ProductDetails = []vm.ProductDetailsVM{}
+	for _, detail := range productModel.ProductDetails{
+		productVM.ProductDetails = append(productVM.ProductDetails, vm.ProductDetailsVM{
+			Name: detail.Name,
+			Description: detail.Description,
+			LanguageCode: detail.LanguageCode,
+			TimeStamps: detail.TimeStamps,
+		})
+	}
+
+	return productVM	
+}
+
+
 func (repository ProductsRepository) Save(connection *gorm.DB, productVM vm.ProductSavingVM) (productId int, err error) {
 	productModel := products.ProductModel{
 		Id:              productVM.Id,
@@ -103,7 +130,7 @@ func (repository ProductsRepository) Save(connection *gorm.DB, productVM vm.Prod
 	productId = int(productModel.Id)
 
 	productDetails := []products.ProductDetailsModel{}
-	for _, productDetailsVM := range productVM.Details {
+	for _, productDetailsVM := range productVM.ProductDetails {
 		productDetails = append(productDetails, products.ProductDetailsModel{
 			Name:         productDetailsVM.Name,
 			Description:  productDetailsVM.Description,

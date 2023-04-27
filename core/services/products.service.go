@@ -28,14 +28,9 @@ func (service ProductsService) ListAll(languageCode string) []vm.ProductVM {
 }
 
 func (service ProductsService) FindById(id int, languageCode string) *vm.ProductVM {
-	products := service.repository.SelectByCriteria(service.connection, repository.ProductsSearcheCriteria{
-		Id:           &id,
-		LanguageCode: &languageCode,
-	})
-	if len(products) == 0 {
-		return nil
-	}
-	return &products[0]
+	product := service.repository.SelectAllById(service.connection, id)
+
+	return &product
 }
 
 func (service ProductsService) DeleteById(productId int) (err error) {

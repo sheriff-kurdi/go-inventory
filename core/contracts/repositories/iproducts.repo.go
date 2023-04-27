@@ -12,7 +12,7 @@ type IProductsRepository interface {
 	Save(connection *gorm.DB, productVM vm.ProductSavingVM) (productId int, err error)
 	SelectAllByDetails(connection *gorm.DB, languageCode string) []vm.ProductVM
 	DeleteById(connection *gorm.DB, productId int) (err error)
-
+	SelectAllById(connection *gorm.DB, id int) vm.ProductVM
 	//SelectById(query string) products.Product
 	// SelectAllByCondition(query string) []products.Product
 	// SelectByCondition(query string) products.Product

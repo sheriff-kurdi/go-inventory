@@ -6,11 +6,16 @@ import (
 )
 
 type ProductVM struct {
-	Id           uint              `json:"id"`
-	Name         string            `json:"name"`
-	Description  string            `json:"description"`
-	LanguageCode string            `json:"language_code"`
+	Id           uint   `json:"id"`
 	products.ProductQuantity
 	products.ProductPrice
+	ProductDetails []ProductDetailsVM `json:"product_details"`
 	models.TimeStamps
+}
+
+type ProductDetailsVM struct {
+	Name         string               `json:"name"`
+    Description  string               `json:"description"`
+    LanguageCode string               `gorm:"primaryKey" json:"language_code"`
+    models.TimeStamps
 }
