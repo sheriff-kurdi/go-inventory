@@ -3,8 +3,6 @@ package services
 import (
 	repository "github.com/sheriff-kurdi/inventory/core/contracts/repositories"
 	"github.com/sheriff-kurdi/inventory/core/vm"
-	postgresDatabse "github.com/sheriff-kurdi/inventory/infrastructure/database/postgres"
-	"github.com/sheriff-kurdi/inventory/infrastructure/repositories/postgres"
 	"github.com/sheriff-kurdi/inventory/web/utils"
 
 	"gorm.io/gorm"
@@ -15,10 +13,10 @@ type ProductsService struct {
 	connection *gorm.DB
 }
 
-func NewProductsService() ProductsService {
+func NewProductsService(repository repository.IProductsRepository, connection *gorm.DB) ProductsService {
 	service := ProductsService{
-		repository: postgres.NewProductsRepository(postgresDatabse.Connect()),
-		connection: postgresDatabse.Connect(),
+		repository: repository,
+		connection: connection ,
 	}
 	return service
 }

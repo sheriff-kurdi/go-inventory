@@ -1,14 +1,16 @@
 package controllers
 
 import (
+	postgresDatabse "github.com/sheriff-kurdi/inventory/infrastructure/database/postgres"
+
 	"strconv"
 
+	"github.com/gofiber/fiber/v2"
 	"github.com/sheriff-kurdi/inventory/core/services"
 	"github.com/sheriff-kurdi/inventory/core/vm"
+	"github.com/sheriff-kurdi/inventory/infrastructure/repositories/postgres"
 	"github.com/sheriff-kurdi/inventory/web/resources"
 	"github.com/sheriff-kurdi/inventory/web/utils"
-
-	"github.com/gofiber/fiber/v2"
 )
 
 type ProductsController struct {
@@ -17,7 +19,7 @@ type ProductsController struct {
 
 func NewProductsController() *ProductsController {
 	controller := ProductsController{
-		productsService: services.NewProductsService(),
+		productsService: services.NewProductsService(postgres.NewProductsRepository(postgresDatabse.Connect()), postgresDatabse.Connect()),
 	}
 	return &controller
 }
@@ -63,7 +65,7 @@ func (controller ProductsController) FindById(ctx *fiber.Ctx) error {
 
 	if err != nil {
 		response = resources.ServerError(err.Error())
-	}else if product == nil {
+	} else if product == nil {
 		response = resources.NotFound("")
 	} else {
 		response = resources.Ok(product, "")
