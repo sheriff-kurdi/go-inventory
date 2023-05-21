@@ -7,6 +7,9 @@ import (
 )
 
 type IProductsRepository interface {
+	GetById(id int) (productVM vm.ProductVM, err error)
+	GetByIdV2(name *string, id int) (productVM vm.ProductVM, err error)
+
 	SelectAll(connection *gorm.DB) []vm.ProductVM
 	SelectByCriteria(connection *gorm.DB, searchCriteria ProductsSearcheCriteria) []vm.ProductVM
 	Save(connection *gorm.DB, productVM vm.ProductSavingVM) (productId int, err error)

@@ -14,12 +14,21 @@ import (
 type ProductsRepository struct {
 }
 
-func NewProductsRepository(connection *gorm.DB) ProductsRepository {
-	repository := ProductsRepository{}
+func NewProductsRepository(connection *gorm.DB) *ProductsRepository {
+	repository := &ProductsRepository{}
 	return repository
 }
+func (repository *ProductsRepository) GetById(productId int) (productVM vm.ProductVM, err error) {
 
-func (repository ProductsRepository) SelectAll(connection *gorm.DB) []vm.ProductVM {
+	return vm.ProductVM{} , nil
+}
+
+func (repository *ProductsRepository) GetByIdV2(name *string, productId int) (productVM vm.ProductVM, err error) {
+
+	return vm.ProductVM{} , nil
+}
+
+func (repository *ProductsRepository) SelectAll(connection *gorm.DB) []vm.ProductVM {
 	var products []vm.ProductVM
 	query := `SELECT * FROM products ;`
 
@@ -27,7 +36,7 @@ func (repository ProductsRepository) SelectAll(connection *gorm.DB) []vm.Product
 	return products
 }
 
-func (repository ProductsRepository) DeleteById(connection *gorm.DB, productId int) (err error) {
+func (repository *ProductsRepository) DeleteById(connection *gorm.DB, productId int) (err error) {
 	deleteProductQuery := `
 		delete from products where id = ?;
 	`
@@ -49,7 +58,7 @@ func (repository ProductsRepository) DeleteById(connection *gorm.DB, productId i
 	return
 }
 
-func (repository ProductsRepository) SelectByCriteria(connection *gorm.DB, searchCriteria repositories.ProductsSearcheCriteria) []vm.ProductVM {
+func (repository *ProductsRepository) SelectByCriteria(connection *gorm.DB, searchCriteria repositories.ProductsSearcheCriteria) []vm.ProductVM {
 	var productsVM []vm.ProductVM
 
 	query := `SELECT * FROM products `
@@ -93,7 +102,7 @@ func (repository ProductsRepository) SelectByCriteria(connection *gorm.DB, searc
 	return productsVM
 }
 
-func (repository ProductsRepository) SelectAllByDetails(connection *gorm.DB, languageCode string) []vm.ProductVM {
+func (repository *ProductsRepository) SelectAllByDetails(connection *gorm.DB, languageCode string) []vm.ProductVM {
 	productsVM := []vm.ProductVM{}
 	var productsModel []products.ProductModel
 	if languageCode == "" || len(languageCode) == 0 {
@@ -132,7 +141,7 @@ func (repository ProductsRepository) SelectAllByDetails(connection *gorm.DB, lan
 	return productsVM
 }
 
-func (repository ProductsRepository) SelectAllById(connection *gorm.DB, id int) (vm.ProductVM, error) {
+func (repository *ProductsRepository) SelectAllById(connection *gorm.DB, id int) (vm.ProductVM, error) {
 	var productVM vm.ProductVM
 	var productModel products.ProductModel
 	err := connection.Preload("ProductDetails").Where("id = ?", id).First(&productModel).Error
@@ -158,7 +167,7 @@ func (repository ProductsRepository) SelectAllById(connection *gorm.DB, id int) 
 	return productVM, err
 }
 
-func (repository ProductsRepository) Save(connection *gorm.DB, productVM vm.ProductSavingVM) (productId int, err error) {
+func (repository *ProductsRepository) Save(connection *gorm.DB, productVM vm.ProductSavingVM) (productId int, err error) {
 	productModel := products.ProductModel{
 		Id:              productVM.Id,
 		ProductQuantity: productVM.ProductQuantity,

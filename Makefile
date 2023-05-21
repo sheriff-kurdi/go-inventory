@@ -78,6 +78,9 @@ docker.stop: docker.stop.fiber docker.stop.postgres
 swag:
 	/home/kurdi/go/bin/swag init -o ./web/docs 
 
+mock:
+	/home/kurdi/go/bin/mockery --all 
+
 test:
 	go test ./test/... 
 

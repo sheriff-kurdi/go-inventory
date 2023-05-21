@@ -22,6 +22,7 @@ func NewProductsService(repository repository.IProductsRepository, connection *g
 }
 
 func (service ProductsService) ListAll(languageCode string) []vm.ProductVM {
+	
 	return service.repository.SelectAllByDetails(service.connection, languageCode)
 }
 
@@ -36,6 +37,8 @@ func (service ProductsService) DeleteById(productId int) (err error) {
 	return 
 }
 
+
+
 func (service ProductsService) Save(productVM vm.ProductSavingVM) (productId int, err error) {
 	transasction := service.connection.Begin()
 	productId, err = service.repository.Save(transasction, productVM)
@@ -45,5 +48,23 @@ func (service ProductsService) Save(productVM vm.ProductSavingVM) (productId int
 		return
 	}
 	transasction.Commit()
+	return
+}
+
+func (service ProductsService) GetById(number int) (productVM vm.ProductVM, err error ) {
+	productVM, err = service.repository.GetById(number)
+	if err != nil {
+		utils.Logger().Info(err.Error())
+		return
+	}
+	return
+}
+
+func (service ProductsService) GetByIdV2(name *string, number int) (productVM vm.ProductVM, err error ) {
+	productVM, err = service.repository.GetByIdV2(name, number)
+	if err != nil {
+		utils.Logger().Info(err.Error())
+		return
+	}
 	return
 }
