@@ -1,4 +1,4 @@
-name: PR workflow
+name: Pull Request workflow
 on: 
   pull_request:
     branches: 
@@ -20,8 +20,12 @@ jobs:
           go get github.com/stretchr/testify/assert@v1.7.0
           go get github.com/stretchr/testify/mock@v1.7.0
           go install github.com/vektra/mockery/v2@latest
-          $HOME/go/bin/mockery --all
+          
+      - name: Mocks Generation
+        run: $HOME/go/bin/mockery --all
+
       - name: Build
         run: go mod tidy
+
       - name: Test with the Go CLI
         run: go test ./test/...
