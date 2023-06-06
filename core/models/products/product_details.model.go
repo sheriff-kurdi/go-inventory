@@ -1,7 +1,7 @@
 package products
 
 import (
-	"kurdi-go/core/models"
+	"github.com/sheriff-kurdi/inventory/core/models"
 	"time"
 
 	"gorm.io/gorm"

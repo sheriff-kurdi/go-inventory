@@ -1,8 +1,8 @@
 package sqlserver
 
 import (
-	"kurdi-go/core/contracts/repositories"
-	"kurdi-go/core/models/products"
+	"github.com/sheriff-kurdi/inventory/core/contracts/repositories"
+	"github.com/sheriff-kurdi/inventory/core/models/products"
 
 	"gorm.io/gorm"
 )

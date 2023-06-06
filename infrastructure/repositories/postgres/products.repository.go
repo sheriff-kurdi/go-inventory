@@ -1,10 +1,11 @@
 package postgres
 
 import (
-	"kurdi-go/core/contracts/repositories"
-	"kurdi-go/core/models/products"
-	"kurdi-go/core/vm"
 	"os"
+
+	"github.com/sheriff-kurdi/inventory/core/contracts/repositories"
+	"github.com/sheriff-kurdi/inventory/core/models/products"
+	"github.com/sheriff-kurdi/inventory/core/vm"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -13,13 +14,21 @@ import (
 type ProductsRepository struct {
 }
 
-func NewProductsRepository(connection *gorm.DB) ProductsRepository {
-	repository := ProductsRepository{
-	}
+func NewProductsRepository(connection *gorm.DB) *ProductsRepository {
+	repository := &ProductsRepository{}
 	return repository
 }
+func (repository *ProductsRepository) GetById(productId int) (productVM vm.ProductVM, err error) {
 
-func (repository ProductsRepository) SelectAll(connection *gorm.DB) []vm.ProductVM {
+	return vm.ProductVM{} , nil
+}
+
+func (repository *ProductsRepository) GetByIdV2(name *string, productId int) (productVM vm.ProductVM, err error) {
+
+	return vm.ProductVM{} , nil
+}
+
+func (repository *ProductsRepository) SelectAll(connection *gorm.DB) []vm.ProductVM {
 	var products []vm.ProductVM
 	query := `SELECT * FROM products ;`
 
@@ -27,20 +36,40 @@ func (repository ProductsRepository) SelectAll(connection *gorm.DB) []vm.Product
 	return products
 }
 
-func (repository ProductsRepository) DeleteById(connection *gorm.DB, productId int) (err error) {
-	query := `
-		delete from products where id = ? cascade;
+func (repository *ProductsRepository) DeleteById(connection *gorm.DB, productId int) (err error) {
+	deleteProductQuery := `
+		delete from products where id = ?;
 	`
-	err = connection.Exec(query, productId).Error
+	deleteProductDetailsQuery := `
+		delete from product_details where product_id = ?;
+	`
+	tansaction := connection.Begin()
+	err = tansaction.Exec(deleteProductQuery, productId).Error
+	if err != nil {
+		tansaction.Rollback()
+		return
+	}
+	err = tansaction.Exec(deleteProductDetailsQuery, productId).Error
+	if err != nil {
+		tansaction.Rollback()
+		return
+	}
+	tansaction.Commit()
 	return
 }
 
-func (repository ProductsRepository) SelectByCriteria(connection *gorm.DB, searchCriteria repositories.ProductsSearcheCriteria) []vm.ProductVM {
-	var products []vm.ProductVM
+func (repository *ProductsRepository) SelectByCriteria(connection *gorm.DB, searchCriteria repositories.ProductsSearcheCriteria) []vm.ProductVM {
+	var productsVM []vm.ProductVM
+
 	query := `SELECT * FROM products `
 	params := make([]interface{}, 0)
+
 	if searchCriteria.LanguageCode != nil && len(*searchCriteria.LanguageCode) != 0 {
 		params = append(params, &searchCriteria.LanguageCode)
+		query += "join product_details on product_details.language_code = ? and product_details.product_id = products.id "
+	} else {
+		defaultLanguage := os.Getenv("DEFAULT_LANGUAGE")
+		params = append(params, &defaultLanguage)
 		query += "join product_details on product_details.language_code = ? and product_details.product_id = products.id "
 	}
 
@@ -68,29 +97,83 @@ func (repository ProductsRepository) SelectByCriteria(connection *gorm.DB, searc
 		query += "products.is_discounted = ?"
 	}
 
-	connection.Raw(query, params...).Scan(&products)
+	connection.Raw(query, params...).Scan(&productsVM)
 
-	return products
+	return productsVM
 }
 
-func (repository ProductsRepository) SelectAllByDetails(connection *gorm.DB, languageCode string) []vm.ProductVM {
-	var productsList []vm.ProductVM
-	if languageCode == "" {
+func (repository *ProductsRepository) SelectAllByDetails(connection *gorm.DB, languageCode string) []vm.ProductVM {
+	productsVM := []vm.ProductVM{}
+	var productsModel []products.ProductModel
+	if languageCode == "" || len(languageCode) == 0 {
 		languageCode = os.Getenv("DEFAULT_LANGUAGE")
 	}
-	query := `SELECT * FROM products
-		join product_details on product_details.language_code = ? and product_details.product_id = products.id;`
-	connection.Raw(query, languageCode).Scan(&productsList)
 
-	return productsList
+	connection.Preload("ProductDetails", "language_code = ?", languageCode).Find(&productsModel)
+
+	for _, productModel := range productsModel {
+		productVM := vm.ProductVM{}
+
+		productVM.Id = productModel.Id
+		productVM.TotalStock = productModel.TotalStock
+		productVM.AvailableStock = productModel.AvailableStock
+		productVM.ReservedStock = productModel.ReservedStock
+
+		productVM.CostPrice = productModel.CostPrice
+		productVM.SellingPrice = productModel.SellingPrice
+		productVM.Discount = productModel.Discount
+		productVM.IsDiscounted = productModel.IsDiscounted
+
+		productVM.ProductDetails = []vm.ProductDetailsVM{}
+
+		for _, detail := range productModel.ProductDetails {
+			productVM.ProductDetails = append(productVM.ProductDetails, vm.ProductDetailsVM{
+				Name:         detail.Name,
+				Description:  detail.Description,
+				LanguageCode: detail.LanguageCode,
+				TimeStamps:   detail.TimeStamps,
+			})
+		}
+
+		productsVM = append(productsVM, productVM)
+	}
+
+	return productsVM
 }
 
-func (repository ProductsRepository) Save(connection *gorm.DB, productVM vm.ProductSavingVM) (productId int, err error) {
+func (repository *ProductsRepository) SelectAllById(connection *gorm.DB, id int) (vm.ProductVM, error) {
+	var productVM vm.ProductVM
+	var productModel products.ProductModel
+	err := connection.Preload("ProductDetails").Where("id = ?", id).First(&productModel).Error
+	productVM.Id = productModel.Id
+	productVM.TotalStock = productModel.TotalStock
+	productVM.AvailableStock = productModel.AvailableStock
+	productVM.ReservedStock = productModel.ReservedStock
+
+	productVM.CostPrice = productModel.CostPrice
+	productVM.SellingPrice = productModel.SellingPrice
+	productVM.Discount = productModel.Discount
+	productVM.IsDiscounted = productModel.IsDiscounted
+	productVM.ProductDetails = []vm.ProductDetailsVM{}
+	for _, detail := range productModel.ProductDetails {
+		productVM.ProductDetails = append(productVM.ProductDetails, vm.ProductDetailsVM{
+			Name:         detail.Name,
+			Description:  detail.Description,
+			LanguageCode: detail.LanguageCode,
+			TimeStamps:   detail.TimeStamps,
+		})
+	}
+
+	return productVM, err
+}
+
+func (repository *ProductsRepository) Save(connection *gorm.DB, productVM vm.ProductSavingVM) (productId int, err error) {
 	productModel := products.ProductModel{
 		Id:              productVM.Id,
 		ProductQuantity: productVM.ProductQuantity,
 		ProductPrice:    productVM.ProductPrice,
 	}
+
 
 	if err = connection.Save(&productModel).Error; err != nil {
 		return
@@ -98,7 +181,7 @@ func (repository ProductsRepository) Save(connection *gorm.DB, productVM vm.Prod
 	productId = int(productModel.Id)
 
 	productDetails := []products.ProductDetailsModel{}
-	for _, productDetailsVM := range productVM.Details {
+	for _, productDetailsVM := range productVM.ProductDetails {
 		productDetails = append(productDetails, products.ProductDetailsModel{
 			Name:         productDetailsVM.Name,
 			Description:  productDetailsVM.Description,
@@ -109,7 +192,7 @@ func (repository ProductsRepository) Save(connection *gorm.DB, productVM vm.Prod
 	}
 
 	if err = connection.Clauses(clause.OnConflict{
-		Columns:   []clause.Column{{Name: "product_id"}, {Name: "name"}, {Name: "language_code"}},
+		Columns:   []clause.Column{{Name: "product_id"}, {Name: "language_code"}},
 		DoUpdates: clause.AssignmentColumns([]string{"name", "description", "updated_at"}),
 	}).Save(&productDetails).Error; err != nil {
 		return

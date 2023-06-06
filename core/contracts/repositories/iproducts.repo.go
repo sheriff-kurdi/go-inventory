@@ -1,18 +1,21 @@
 package repositories
 
 import (
-	"kurdi-go/core/vm"
+	"github.com/sheriff-kurdi/inventory/core/vm"
 
 	"gorm.io/gorm"
 )
 
 type IProductsRepository interface {
+	GetById(id int) (productVM vm.ProductVM, err error)
+	GetByIdV2(name *string, id int) (productVM vm.ProductVM, err error)
+
 	SelectAll(connection *gorm.DB) []vm.ProductVM
 	SelectByCriteria(connection *gorm.DB, searchCriteria ProductsSearcheCriteria) []vm.ProductVM
 	Save(connection *gorm.DB, productVM vm.ProductSavingVM) (productId int, err error)
 	SelectAllByDetails(connection *gorm.DB, languageCode string) []vm.ProductVM
 	DeleteById(connection *gorm.DB, productId int) (err error)
-
+	SelectAllById(connection *gorm.DB, id int) (vm.ProductVM, error)
 	//SelectById(query string) products.Product
 	// SelectAllByCondition(query string) []products.Product
 	// SelectByCondition(query string) products.Product
