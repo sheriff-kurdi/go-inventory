@@ -1,11 +1,11 @@
 package main
 
 import (
-	"kurdi-go/web/config"
-	_ "kurdi-go/web/docs" // load API Docs files (Swagger)
-	"kurdi-go/web/middlewares"
-	"kurdi-go/web/routes"
-	"kurdi-go/web/utils"
+	"github.com/sheriff-kurdi/inventory/web/config"
+	_ "github.com/sheriff-kurdi/inventory/web/docs" // load API Docs files (Swagger)
+	"github.com/sheriff-kurdi/inventory/web/middlewares"
+	"github.com/sheriff-kurdi/inventory/web/routes"
+	"github.com/sheriff-kurdi/inventory/web/utils"
 	"os"
 
 	"github.com/gofiber/fiber/v2"

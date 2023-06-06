@@ -4,7 +4,7 @@
 APP_NAME = inventory
 BUILD_DIR = $(PWD)/build
 MIGRATIONS_FOLDER = infrastructure/database/migrations
-DATABASE_URL = postgres://postgres:password@localhost/postgres?sslmode=disable
+DATABASE_URL = postgres://postgres:123456789@localhost/inventory?sslmode=disable
 
 clean:
 	rm -rf ./build
@@ -62,10 +62,10 @@ docker.postgres.create:
 		postgres
 
 docker.db.create:
-	sudo docker exec -it postgres createdb --username=postgres --owner=postgres inventory
+	docker exec -it postgres createdb --username=postgres --owner=postgres inventory
 
 docker.db.drop:
-	sudo docker exec -it postgres dropdb --username=postgres inventory
+	docker exec -it postgres dropdb --username=postgres inventory
 
 docker.postgres.stop:
 	docker stop postgres
@@ -77,6 +77,9 @@ docker.stop: docker.stop.fiber docker.stop.postgres
 
 swag:
 	/home/kurdi/go/bin/swag init -o ./web/docs 
+
+mock:
+	/home/kurdi/go/bin/mockery --all 
 
 test:
 	go test ./test/... 

@@ -1,0 +1,31 @@
+name: Pull Request workflow
+on: 
+  pull_request:
+    branches: 
+      - '*'
+jobs:
+  UnitTest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.18.1'
+      - name: Install dependencies
+        run: |
+          go get .
+          go get github.com/stretchr/testify/mock@v1.7.0
+          go get github.com/stretchr/testify/assert@v1.7.0
+          go get github.com/stretchr/testify/mock@v1.7.0
+          go install github.com/vektra/mockery/v2@latest
+          
+      - name: Mocks Generation
+        run: $HOME/go/bin/mockery --all
+
+      - name: Build
+        run: go mod tidy
+
+      - name: Test with the Go CLI
+        run: go test ./test/...

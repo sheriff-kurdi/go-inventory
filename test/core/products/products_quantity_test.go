@@ -1,7 +1,7 @@
 package products
 
 import (
-	"kurdi-go/core/models/products"
+	"github.com/sheriff-kurdi/inventory/core/models/products"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

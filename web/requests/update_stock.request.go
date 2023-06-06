@@ -1,7 +1,7 @@
 package requests
 
 // import (
-// 	stockDomainEntities "kurdi-go/domain/domain_entities/stock"
+// 	stockDomainEntities "github.com/sheriff-kurdi/inventory/domain/domain_entities/stock"
 // 	"time"
 // )
 

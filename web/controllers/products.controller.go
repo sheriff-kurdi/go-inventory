@@ -1,13 +1,16 @@
 package controllers
 
 import (
-	"kurdi-go/core/services"
-	"kurdi-go/core/vm"
-	"kurdi-go/web/resources"
-	"kurdi-go/web/utils"
+	postgresDatabse "github.com/sheriff-kurdi/inventory/infrastructure/database/postgres"
+
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/sheriff-kurdi/inventory/core/services"
+	"github.com/sheriff-kurdi/inventory/core/vm"
+	"github.com/sheriff-kurdi/inventory/infrastructure/repositories/postgres"
+	"github.com/sheriff-kurdi/inventory/web/resources"
+	"github.com/sheriff-kurdi/inventory/web/utils"
 )
 
 type ProductsController struct {
@@ -16,7 +19,7 @@ type ProductsController struct {
 
 func NewProductsController() *ProductsController {
 	controller := ProductsController{
-		productsService: services.NewProductsService(),
+		productsService: services.NewProductsService(postgres.NewProductsRepository(postgresDatabse.Connect()), postgresDatabse.Connect()),
 	}
 	return &controller
 }
@@ -57,10 +60,12 @@ func (controller ProductsController) FindById(ctx *fiber.Ctx) error {
 		return ctx.Status(response.GetStatus()).JSON(response.GetData())
 	}
 	//find by id
-	product := controller.productsService.FindById(productId, languageCode)
+	product, err := controller.productsService.FindById(productId, languageCode)
 	var response resources.IResource
 
-	if product == nil {
+	if err != nil {
+		response = resources.ServerError(err.Error())
+	} else if product == nil {
 		response = resources.NotFound("")
 	} else {
 		response = resources.Ok(product, "")
